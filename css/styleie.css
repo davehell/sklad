@@ -1,0 +1,3 @@
+ul#menu li {
+	behavior: url('hover.htc');
+}
