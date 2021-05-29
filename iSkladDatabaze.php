@@ -14,7 +14,7 @@ if (($_SERVER["SERVER_NAME"] == "lmr") ||
   define ("SQL_HOST","localhost");
   define ("SQL_DBNAME",$db);
   define ("SQL_USERNAME","root");
-  define ("SQL_PASSWORD","");
+  define ("SQL_PASSWORD","root");
 }
 else {
   define ("SQL_HOST","localhost");
