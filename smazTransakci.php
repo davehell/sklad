@@ -42,8 +42,8 @@ function akceProSkupinu($skupina,$id)
       $SRBD=spojeniSRBD();
    }
    $dotaz = "SELECT * FROM transakce WHERE id='$id'";
-   $vysledek = MySQL_Query($dotaz,$SRBD);
-   $data = MySQL_Fetch_Array($vysledek);
+   $vysledek = mysqli_Query($dotaz,$SRBD);
+   $data = mysqli_Fetch_Array($vysledek);
    $mnozstvi = $data['mnozstvi'];  
    $id_zbozi = $data['id_zbozi'];
    
@@ -89,9 +89,9 @@ function akceProSkupinu($skupina,$id)
       $SRBD=spojeniSRBD();
    }
    $dotaz = "DELETE FROM transakce WHERE id='$id'";
-   $vysledek = MySQL_Query($dotaz,$SRBD);
+   $vysledek = mysqli_Query($dotaz,$SRBD);
 
-   if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
      //echo 'AA';
      session_register('hlaseniChyba');
      $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniTransakce'];

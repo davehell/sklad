@@ -24,20 +24,20 @@
   $dom = new DOMDocument();
   
   $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query("SELECT cena FROM prodejni_ceny, zbozi 
+  $vysledek = mysqli_Query("SELECT cena FROM prodejni_ceny, zbozi 
                            WHERE zbozi.id=prodejni_ceny.id_zbozi 
                              AND nazev = '$newnazev' 
                              AND c_vykresu = '$cv'
                              AND id_kategorie=$kategorie", $SRBD);
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   // detekce chyby
-  if(MySQL_num_rows($vysledek)==0)
+  if(mysqli_num_rows($vysledek)==0)
   { $cv = $dom->CreateElement('cena');
     $dom->appendChild($cv);
     $cvText = $dom->createTextNode("chyba");
     $cv->appendChild($cvText);
   }
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     $cv = $dom->CreateElement('cena');
     $dom->appendChild($cv);
     $cvText = $dom->createTextNode($data['cena']);

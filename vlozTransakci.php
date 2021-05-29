@@ -40,9 +40,9 @@ else //vse OK ve formulari
     }
 
     // kontrola existence c_vykresu a nazvu
-    $vysledek = MySQL_Query("SELECT id FROM zbozi
+    $vysledek = mysqli_Query("SELECT id FROM zbozi
      WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD);
-    if(mysql_num_rows($vysledek) != 1) {   //chyba
+    if(mysqli_num_rows($vysledek) != 1) {   //chyba
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['neexistujiciKarta'];
       header("Location: ".$_SERVER['HTTP_REFERER']);
@@ -50,7 +50,7 @@ else //vse OK ve formulari
     }
     //vseOK
     else {
-      While ($data = @MySQL_Fetch_Array($vysledek)) {
+      While ($data = @mysqli_Fetch_Array($vysledek)) {
         $id = $data["id"];
       }
       //echo 'id:'.$id;
@@ -88,8 +88,8 @@ function akceProSkupinu($skupina,$id)
     { //kontrola existence nake transakce a tedy prumerne a posledni ceny
       if (!isset($SRBD)) $SRBD=spojeniSRBD();
      
-      $vysledek = MySQL_Query("SELECT * FROM transakce WHERE id_zbozi='$id'",$SRBD);
-      if(mysql_num_rows($vysledek) == 0)  //neni zadna
+      $vysledek = mysqli_Query("SELECT * FROM transakce WHERE id_zbozi='$id'",$SRBD);
+      if(mysqli_num_rows($vysledek) == 0)  //neni zadna
       {
         session_register('hlaseniChyba');
         $_SESSION['hlaseniChyba'] = $texty['neniPrumCena'];
@@ -117,17 +117,17 @@ function akceProSkupinu($skupina,$id)
      if (!isset($SRBD)) $SRBD=spojeniSRBD();
      
      //echo 'ID:'.$id;
-     $vysledek = MySQL_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'",$SRBD);
-     $data = MySQL_Fetch_Array($vysledek);
+     $vysledek = mysqli_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'",$SRBD);
+     $data = mysqli_Fetch_Array($vysledek);
      $skladMnozstvi = $data["mnozstvi"];
      if($skladMnozstvi < $mnozstvi)
      {  // zbozi je malo
-        $vysledek2 = MySQL_Query("SELECT sum(T.mnozstvi) as rezervovano
+        $vysledek2 = mysqli_Query("SELECT sum(T.mnozstvi) as rezervovano
                                   FROM transakce as T join doklady as D on T.id_dokladu=D.id 
                                   WHERE D.skupina = 'Rezervace'  AND T.id_zbozi='$id' 
                                   GROUP BY T.id_zbozi",$SRBD);
-        $data2 = MySQL_Fetch_Array($vysledek2);
-        if(MySQL_num_rows($vysledek2)==0)
+        $data2 = mysqli_Fetch_Array($vysledek2);
+        if(mysqli_num_rows($vysledek2)==0)
           $rezervovano = '0';
         else 
           $rezervovano = $data2['rezervovano'];
@@ -176,8 +176,8 @@ function akceProSkupinu($skupina,$id)
         { //kontrola existence nake transakce a tedy prumerne a posledni ceny
           if (!isset($SRBD)) $SRBD=spojeniSRBD();
          
-          $vysledek = MySQL_Query("SELECT * FROM transakce WHERE id_zbozi='$id'",$SRBD);
-          if(mysql_num_rows($vysledek) == 0)  //neni zadna
+          $vysledek = mysqli_Query("SELECT * FROM transakce WHERE id_zbozi='$id'",$SRBD);
+          if(mysqli_num_rows($vysledek) == 0)  //neni zadna
           {
             session_register('hlaseniChyba');
             $_SESSION['hlaseniChyba'] = $texty['neniPrumCena'];
@@ -234,12 +234,12 @@ function akceProSkupinu($skupina,$id)
    $cenaKOO = str_replace(",", ".", $cenaKOO); //pripadne desetinne carky nahradi za tecky
    //$dotaz = "INSERT INTO transakce(id,id_zbozi, id_dokladu, mnozstvi, cena_MJ, cena_KOO)
    //                         VALUES (0,'$id','$id_dokladu','$mnozstvi',$cenaMJ,$cenaKOO)";
-   $vysledek = MySQL_Query("INSERT INTO transakce(id,id_zbozi, id_dokladu, mnozstvi, cena_MJ, cena_KOO)
-                            VALUES (0,'$id','$id_dokladu','$mnozstvi',$cenaMJ,$cenaKOO)",$SRBD) or Die(MySQL_Error());
-   $id_transakce = mysql_insert_id();      //zjisteni posledniho id - pro vyrobu
+   $vysledek = mysqli_Query("INSERT INTO transakce(id,id_zbozi, id_dokladu, mnozstvi, cena_MJ, cena_KOO)
+                            VALUES (0,'$id','$id_dokladu','$mnozstvi',$cenaMJ,$cenaKOO)",$SRBD) or Die(mysqli_Error());
+   $id_transakce = mysqli_insert_id();      //zjisteni posledniho id - pro vyrobu
    
    
-   if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
      session_register('hlaseniChyba');
      $_SESSION['hlaseniChyba'] = $texty['ChybaVlozeniTransakce'];
      header("Location: ".$_SERVER['HTTP_REFERER']);

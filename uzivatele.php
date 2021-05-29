@@ -119,8 +119,8 @@ function uzivatele() {
 <br />
 <?php
   $idModulu = dejIdModulu($_SESSION['modul']);
-  $vysledek = MySQL_Query("SELECT id, login, prava FROM uzivatele WHERE id_modulu='$idModulu' AND login!='admin'", $SRBD) or Die(MySQL_Error());
-  if (mysql_num_rows($vysledek) == 0) { // v DB neni ulozeny zadny uzivatel
+  $vysledek = mysqli_Query("SELECT id, login, prava FROM uzivatele WHERE id_modulu='$idModulu' AND login!='admin'", $SRBD) or Die(mysqli_Error());
+  if (mysqli_num_rows($vysledek) == 0) { // v DB neni ulozeny zadny uzivatel
     echo "<p>V databázi nejsou ulo¾eni ¾ádní u¾ivatelé.<p>";
   }
   else { //databaze obsahuje aspon jeden zaznam
@@ -130,7 +130,7 @@ function uzivatele() {
 <table>';
     printTableHeader($sloupce,"id=".$idZbozi);
 
-    While ($data = MySQL_Fetch_Array($vysledek)) {
+    While ($data = mysqli_Fetch_Array($vysledek)) {
       if($data["prava"] == 9) {
         $prava = $texty["admin"];
       }

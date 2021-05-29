@@ -22,8 +22,8 @@
   //zjisteni id
   $SRBD=spojeniSRBD();
   $dotaz = "SELECT id FROM zbozi WHERE nazev = '$newnazev' AND c_vykresu='$cv'";
-  $vysledek = MySQL_Query($dotaz, $SRBD);
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_query($SRBD, $dotaz);
+  $data = mysqli_Fetch_Array($vysledek);
   $id = $data['id'];
 
   if($typ=='nakup')

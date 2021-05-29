@@ -90,17 +90,17 @@ if($datumOK){
             
   
   if($paging)
-  {$vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  {$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
   //zjisteni poctu radku
-  $pocet = MySQL_num_rows($vysledek);
+  $pocet = mysqli_num_rows($vysledek);
   $dodatek = '';
   $dodatek .= pageOrderQuery($pocet,$rows);
 
   }//pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   
   if($paging)
@@ -115,8 +115,8 @@ if($datumOK){
   
   printTableHeader($jmena,$urldodatek);
 
-  $vysledek2 = MySQL_Query($dotaz2, $SRBD) or Die(MySQL_Error());
-  $data2 = MySQL_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $data2 = mysqli_Fetch_Array($vysledek2);
   
   $sudy = false;
   if($_GET['print']==1)
@@ -133,7 +133,7 @@ if($datumOK){
   
        <tbody>';
   $i=1;
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
   //$cenaCelkem = $data['cena_MJ']*$data['mnozstvi'];
   $mnozstvi = $data['mnozstvi']+$data['rezervace'];
   

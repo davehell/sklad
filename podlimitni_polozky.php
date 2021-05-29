@@ -21,8 +21,8 @@ echo '
 <!-- xxx -->
 <p>'.$texty["podlimitniTitle"].'</p>';
 
-$vysledek = MySQL_Query("SELECT nazev, c_vykresu, mnozstvi, min_limit FROM zbozi WHERE mnozstvi<min_limit", $SRBD) or Die(MySQL_Error());
-if(mysql_num_rows($vysledek) == 0) { //nic neni pod limitem
+$vysledek = mysqli_Query("SELECT nazev, c_vykresu, mnozstvi, min_limit FROM zbozi WHERE mnozstvi<min_limit", $SRBD) or Die(mysqli_Error());
+if(mysqli_num_rows($vysledek) == 0) { //nic neni pod limitem
   echo '
   <p><strong>'.$texty["nicPodLimit"].'</strong></p><br />';
 }
@@ -33,7 +33,7 @@ else { //existuji nejake podlimitni polozky
 <table>';
   printTableHeader($sloupce,"id=".$idZbozi);
 
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';

@@ -28,9 +28,9 @@
   $result .= "<prvky>\n";
   $SRBD=spojeniSRBD();
 
- $vysledek = MySQL_Query($dotaz, $SRBD);
+ $vysledek = mysqli_query($SRBD, $dotaz);
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
-   While ($data = MySQL_Fetch_Array($vysledek)) {
+   While ($data = mysqli_Fetch_Array($vysledek)) {
     $result.= "\t<prvek>";
     if (isset($_REQUEST['nazev']))  
       $result.= $data['c_vykresu'];

@@ -24,16 +24,16 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 }
 $id = $_GET['id'];
 //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
-$vysledek = MySQL_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(MySQL_Error());
-While ($data = @MySQL_Fetch_Array($vysledek)) {
+$vysledek = mysqli_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+While ($data = @mysqli_Fetch_Array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
   $skupina = $data["skupina"];
   $prodKategorie = $data["prod_kategorie"];
   $typVyroby = $data["typ_vyroby"];
     // zjisteni popisku prodejni kategorie
-    $vysledek2 = MySQL_Query("SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(MySQL_Error());
-    $data2 = @MySQL_Fetch_Array($vysledek2);
+    $vysledek2 = mysqli_Query("SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(mysqli_Error());
+    $data2 = @mysqli_Fetch_Array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 
 echo '
@@ -117,13 +117,13 @@ echo '
 <select onchange="vyber_cv();" id="nazev" name="nazev">
 <option value="">---------- vyberte ----------</option>';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = MySQL_Query($dotaz_nazev, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query($dotaz_nazev, $SRBD) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
   else $selected = '';
 
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     echo '<option value="'.$data['nazev'].'"';
     if($data['nazev'] == $selected)
       echo ' selected';
@@ -136,13 +136,13 @@ echo '
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = MySQL_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
   else $selected = '';
 
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     echo '<option value="'.$data['c_vykresu'].'"';
     if($data['c_vykresu'] == $selected)
       echo ' selected';
@@ -256,8 +256,8 @@ echo
   </tr>
   </thead>
   <tfoot>';
-    $vysledek = MySQL_Query("SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(MySQL_Error());
-    $data = @MySQL_Fetch_Array($vysledek);
+    $vysledek = mysqli_Query("SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(mysqli_Error());
+    $data = @mysqli_Fetch_Array($vysledek);
    echo'
    <tr>
     <td colspan="3">'.$texty['celkem'].'</td>
@@ -275,11 +275,11 @@ echo
   ';
   $sudyRadek = false;
   $i=1;
-  $vysledek = MySQL_Query("SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query("SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(mysqli_Error());
 
-While ($data = @MySQL_Fetch_Array($vysledek)) {
-    $vysledek2 = MySQL_Query('SELECT * FROM zbozi WHERE id='.$data["id_zbozi"], $SRBD) or Die(MySQL_Error());
-    $data2 = @MySQL_Fetch_Array($vysledek2);
+While ($data = @mysqli_Fetch_Array($vysledek)) {
+    $vysledek2 = mysqli_Query('SELECT * FROM zbozi WHERE id='.$data["id_zbozi"], $SRBD) or Die(mysqli_Error());
+    $data2 = @mysqli_Fetch_Array($vysledek2);
     echo '
   <tr';
   if($sudyRadek)

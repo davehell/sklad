@@ -93,19 +93,19 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
 
 //    echo $this->dotaz;
     // ulozeni vysledku do
-    $result1 = MySQL_Query(self::dotazTrans, $this->SRBD) or Die(MySQL_Error());
+    $result1 = mysqli_Query(self::dotazTrans, $this->SRBD) or Die(mysqli_Error());
 
-    $result2 = MySQL_Query(self::dotazAmount, $this->SRBD) or Die(MySQL_Error());
+    $result2 = mysqli_Query(self::dotazAmount, $this->SRBD) or Die(mysqli_Error());
     
-    $numrows1 = mysql_num_rows($result1);
-    $numrows2 = mysql_num_rows($result2);
+    $numrows1 = mysqli_num_rows($result1);
+    $numrows2 = mysqli_num_rows($result2);
 
     $updated = 0;
 
     if(($numrows1 == $numrows2) && ($numrows1 != 0))
     {
       //iterace pres kurzory
-      while(($data1 = mysql_fetch_array($result1)) && ($data2 = mysql_fetch_array($result2)))
+      while(($data1 = mysqli_fetch_array($result1)) && ($data2 = mysqli_fetch_array($result2)))
       {
          if($data1['mnozstvi'] == $data2['mnozstvi'])
          {
@@ -147,7 +147,7 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
         if($this->editDB)
         {
           $query = "UPDATE zbozi SET mnozstvi = '$amount' WHERE id='$id'";
-          MySQL_Query($query, $this->SRBD);
+          mysqli_Query($query, $this->SRBD);
         }
     }
 
@@ -160,7 +160,7 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
         if($this->editDB)
         {
           $query = "UPDATE transakce SET mnozstvi = '$amount' WHERE id='$id'";
-          MySQL_Query($query, $this->SRBD);
+          mysqli_Query($query, $this->SRBD);
         }
 
     }
@@ -170,12 +170,12 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
      */
     public function echoInconsistentItems()
     {
-    $result1 = MySQL_Query(self::dotazTrans, $this->SRBD) or Die(MySQL_Error());
+    $result1 = mysqli_Query(self::dotazTrans, $this->SRBD) or Die(mysqli_Error());
 
-    $result2 = MySQL_Query(self::dotazAmount, $this->SRBD) or Die(MySQL_Error());
+    $result2 = mysqli_Query(self::dotazAmount, $this->SRBD) or Die(mysqli_Error());
     
-    $numrows1 = mysql_num_rows($result1);
-    $numrows2 = mysql_num_rows($result2);
+    $numrows1 = mysqli_num_rows($result1);
+    $numrows2 = mysqli_num_rows($result2);
 
     $updated = 0;
 
@@ -183,7 +183,7 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
     {
 
       //iterace pres kurzory
-      while(($data1 = mysql_fetch_array($result1)) && ($data2 = mysql_fetch_array($result2)))
+      while(($data1 = mysqli_fetch_array($result1)) && ($data2 = mysqli_fetch_array($result2)))
       {
          if($data1['mnozstvi'] == $data2['mnozstvi'])
          {

@@ -40,8 +40,8 @@ else //vse OK ve formulari
     $dotaz = "SELECT celek FROM sestavy as S join zbozi as Z on Z.id=S.celek
      WHERE nazev='$nazev' AND c_vykresu='$cv'";
     echo $dotaz;
-    $vysledek = MySQL_Query($dotaz, $SRBD);
-    if(mysql_num_rows($vysledek) == 0) {   //chyba
+    $vysledek = mysqli_query($SRBD, $dotaz);
+    if(mysqli_num_rows($vysledek) == 0) {   //chyba
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['neniVyrobek'];
       header("Location: ".$_SERVER['HTTP_REFERER']);
@@ -51,9 +51,9 @@ else //vse OK ve formulari
     else {
       $dotaz = "SELECT id FROM zbozi as Z
       WHERE nazev='$nazev' AND c_vykresu='$cv'";
-      $vysledek = MySQL_Query($dotaz, $SRBD);
+      $vysledek = mysqli_query($SRBD, $dotaz);
 
-      While ($data = @MySQL_Fetch_Array($vysledek)) {
+      While ($data = @mysqli_Fetch_Array($vysledek)) {
         $id = $data["id"];
       }
       

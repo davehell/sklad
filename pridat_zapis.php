@@ -30,18 +30,18 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
  * vkladani NOVE karty
  ******************************************************************************/
 if($_POST["odeslat"] == $texty["pridatKartu"]) { //vkladani NOVEHO zajezdu
-  MySQL_Query("INSERT INTO zbozi (id, nazev, c_vykresu, jednotka, min_limit, cena_prace)
+  mysqli_Query("INSERT INTO zbozi (id, nazev, c_vykresu, jednotka, min_limit, cena_prace)
   VALUES (0, '$nazev', '$cv', '$jednotka', '$limit', '$cenaPrace')", $SRBD);
 
-  if (mysql_errno() == 1582) { //vkladan duplicitni zaznam
+  if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['novaKarta']);
     exit;
   }
   else {
-    $vysledek = MySQL_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(MySQL_Error());
-    While ($data = @MySQL_Fetch_Array($vysledek)) {
+    $vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
+    While ($data = @mysqli_Fetch_Array($vysledek)) {
       $id = $data["id"];
     }
     session_register('hlaseniOK');
@@ -57,8 +57,8 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) { //vkladani NOVEHO zajezdu
  * uprava STAVAJICI karty
  ******************************************************************************/
 if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
-  MySQL_Query("UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'", $SRBD);
-  if (mysql_errno() == 1582) { //vkladan duplicitni zaznam
+  mysqli_Query("UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'", $SRBD);
+  if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['upravitKarta'].'?id='.$id);
@@ -80,9 +80,9 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
 if(isset($_GET["odebrat"])) {
   $odstranovaneID = $_GET["odebrat"];
 
-  $vysledek = MySQL_Query("SELECT id FROM zbozi WHERE id='$odstranovaneID'", $SRBD) or Die(MySQL_Error());
-  if(mysql_num_rows($vysledek) == 1) { //vse v poradku
-    MySQL_Query("DELETE FROM zbozi WHERE id='$odstranovaneID'", $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query("SELECT id FROM zbozi WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+  if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
+    mysqli_Query("DELETE FROM zbozi WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['kartaOdebratOK'];
     session_unregister('promenneFormulare');  // zru¹ení kontextu formuláøe

@@ -15,8 +15,8 @@ function getPrumernaCena($id)
 {
 
   $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query("SELECT prum_cena FROM zbozi WHERE id='$id'", $SRBD) or Die(MySQL_Error());
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  $vysledek = mysqli_Query("SELECT prum_cena FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     $result = $data['prum_cena'];
   } 
   return $result;
@@ -45,8 +45,8 @@ function getPosledniCena($id, $typ)
              GROUP BY T.id
              ORDER BY datum DESC , T.id DESC
              LIMIT 1";
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data = mysqli_Fetch_Array($vysledek);
   if($typ == 'MJ')
     return $data['cena_MJ'];
   else
@@ -61,10 +61,10 @@ function countPrumerna($id)
   //echo 'bbb'.$id;
   $SRBD=spojeniSRBD();
   $dotaz =
-  $vysledek = MySQL_Query("SELECT sum(mnozstvi*cena_MJ)/sum(mnozstvi) as prumer 
+  $vysledek = mysqli_Query("SELECT sum(mnozstvi*cena_MJ)/sum(mnozstvi) as prumer 
                            FROM transakce as T join doklady as D on T.id_dokladu = D.id
                            WHERE id_zbozi='$id' AND D.skupina in ('Nákup','Inventura','Výroba','Kooperace')");
-  $data = MySQL_Fetch_Array($vysledek);
+  $data = mysqli_Fetch_Array($vysledek);
   
   return $data['prumer'];
 
@@ -78,7 +78,7 @@ function countAndSetPrumerna($id)
 {
   $prumernaCena = countPrumerna($id);
   if (!isset($SRBD)) $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query("UPDATE zbozi SET prum_cena='$prumernaCena' WHERE id='$id'"); 
+  $vysledek = mysqli_Query("UPDATE zbozi SET prum_cena='$prumernaCena' WHERE id='$id'"); 
      
 }//countAndSetPrumerna()
 
@@ -90,8 +90,8 @@ function countAndSetPrumerna($id)
 function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
 {
   $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query("SELECT soucastka, mnozstvi FROM sestavy WHERE celek=$id",$SRBD) or Die(MySQL_Error());
-  while ($data = MySQL_Fetch_Array($vysledek)) {
+  $vysledek = mysqli_Query("SELECT soucastka, mnozstvi FROM sestavy WHERE celek=$id",$SRBD) or Die(mysqli_Error());
+  while ($data = mysqli_Fetch_Array($vysledek)) {
      $id_souc = $data['soucastka'];
      $souc_mnozstvi = $data['mnozstvi'];
      $celk_mnozstvi = ($mnozstvi*$souc_mnozstvi);
@@ -100,7 +100,7 @@ function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
      {  zmenaMnozstviZbozi('pridej', $id_souc, ($mnozstvi*$souc_mnozstvi));
         if($id_vyroby!='')
         {
-          $vysledek2 = MySQL_Query("DELETE FROM vyroba_odpisy WHERE id_vyroby = '$id_vyroby'",$SRBD) or Die(MySQL_Error());
+          $vysledek2 = mysqli_Query("DELETE FROM vyroba_odpisy WHERE id_vyroby = '$id_vyroby'",$SRBD) or Die(mysqli_Error());
         }
      }
      elseif($typ_akce=='odeber')
@@ -108,8 +108,8 @@ function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
         zmenaMnozstviZbozi('odeber', $id_souc, ($mnozstvi*$souc_mnozstvi));
         if($id_vyroby!='')
         {
-          $vysledek2 = MySQL_Query("INSERT INTO vyroba_odpisy(id,id_vyroby,id_zbozi, mnozstvi)
-                            VALUES (0,'$id_vyroby','$id_souc','$celk_mnozstvi')",$SRBD) or Die(MySQL_Error());
+          $vysledek2 = mysqli_Query("INSERT INTO vyroba_odpisy(id,id_vyroby,id_zbozi, mnozstvi)
+                            VALUES (0,'$id_vyroby','$id_souc','$celk_mnozstvi')",$SRBD) or Die(mysqli_Error());
         }
      }
      else 
@@ -127,11 +127,11 @@ function pridejDoSkladu($id,$mnozstvi)
 {
   $SRBD=spojeniSRBD();
   
-  $vysledek = MySQL_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'");
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'");
+  $data = mysqli_Fetch_Array($vysledek);
   $noveMnozstvi = $data["mnozstvi"] + $mnozstvi;   
   
-  $vysledek3 = MySQL_Query("UPDATE zbozi SET mnozstvi=$noveMnozstvi WHERE id=$id") or Die(MySQL_Error());
+  $vysledek3 = mysqli_Query("UPDATE zbozi SET mnozstvi=$noveMnozstvi WHERE id=$id") or Die(mysqli_Error());
 
 }//pridejDoSkladu()
 
@@ -150,28 +150,28 @@ function lzeVyrobit2($id_zbozi, $mnozstvi, $max_zanor)
      
      // zjistim si nazev zbozi 
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
-     $record=MySQL_Fetch_Array($vysledek);
+     $vysledek = mysqli_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
+     $record=mysqli_Fetch_Array($vysledek);
      
      
      // z jakych primych casti se vyrobek sklada ???
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
+     $vysledek = mysqli_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
      // pocet soucastek poslouzi k tomu zda lze soucastku vyrobit nebo ne
      // tedy pokud neni dostatek na sklade NEJDE ani vyrobit :-)
-     $pocet_soucastek = mysql_num_rows($vysledek);      
+     $pocet_soucastek = mysqli_num_rows($vysledek);      
      
      if($pocet_soucastek<1)
      {
        $lze=true;  //pozor bylo zmeneno z false, to bylo vyuzito asi v rekurzvnim volani
      }
      else { // pruchod jednotlivymi castmi celku, a jejich test zda jich je na skladu dost
-      while ($record=MySQL_Fetch_Array($vysledek)):
+      while ($record=mysqli_Fetch_Array($vysledek)):
      
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
-        $vysledek2 = MySQL_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(MySQL_Error());  // provézt dotaz
-        $record2 = MySQL_Fetch_Array($vysledek2);
+        $vysledek2 = mysqli_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(mysqli_Error());  // provézt dotaz
+        $record2 = mysqli_Fetch_Array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))
             $reserved[$record['soucastka']]=0;
@@ -240,22 +240,22 @@ function printNedostatekTable($nedostatek)
       {
         $SRBD = spojeniSRBD();
         //echo 'SELECT id, nazev, c_vykresu FROM zbozi WHERE id='.$i;
-        $vysledek = MySQL_Query('SELECT id, nazev, c_vykresu, mnozstvi FROM zbozi WHERE id='.$i, $SRBD);  // provézt dotaz
-        $data = MySQL_Fetch_Array($vysledek);
+        $vysledek = mysqli_Query('SELECT id, nazev, c_vykresu, mnozstvi FROM zbozi WHERE id='.$i, $SRBD);  // provézt dotaz
+        $data = mysqli_Fetch_Array($vysledek);
         $pozadovano = $data['mnozstvi']+$prvek;
         //print_r($data);
         
-        $vysledek = MySQL_Query("SELECT celek FROM sestavy WHERE celek=$i",$SRBD);
-        if(MySQL_num_rows($vysledek)!=0)
+        $vysledek = mysqli_Query("SELECT celek FROM sestavy WHERE celek=$i",$SRBD);
+        if(mysqli_num_rows($vysledek)!=0)
           $celek = true;
         else $celek = false;
         
-        $vysledek2 = MySQL_Query("SELECT sum(T.mnozstvi) as rezervovano
+        $vysledek2 = mysqli_Query("SELECT sum(T.mnozstvi) as rezervovano
                                   FROM transakce as T join doklady as D on T.id_dokladu=D.id 
                                   WHERE D.skupina = 'Rezervace'  AND T.id_zbozi='$i' 
                                   GROUP BY T.id_zbozi",$SRBD);
-        $data2 = MySQL_Fetch_Array($vysledek2);
-        if(MySQL_num_rows($vysledek2)==0)
+        $data2 = mysqli_Fetch_Array($vysledek2);
+        if(mysqli_num_rows($vysledek2)==0)
           $rezervovano = '0';
         else 
           $rezervovano = $data2['rezervovano'];
@@ -407,8 +407,8 @@ function sumaCenMaterialu($id_celku)
   
   //echo $dotaz;
   $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query($dotaz,$SRBD);
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_Query($dotaz,$SRBD);
+  $data = mysqli_Fetch_Array($vysledek);
   
   return $data['cena_matr'];
 
@@ -422,8 +422,8 @@ function sumaCenMaterialu($id_celku)
 function cenaPrace($id)
 {
   $SRBD=spojeniSRBD();
-  $vysledek = MySQL_Query("SELECT cena_prace FROM zbozi WHERE id='$id'",$SRBD);
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_Query("SELECT cena_prace FROM zbozi WHERE id='$id'",$SRBD);
+  $data = mysqli_Fetch_Array($vysledek);
   
   return $data['cena_prace'];
 }//cenaPrace()
@@ -438,14 +438,14 @@ function zmenaMnozstviZbozi($typ_akce, $id, $mnozstvi)
 {
    if (!isset($SRBD)) $SRBD=spojeniSRBD();
    $dotaz = "SELECT mnozstvi FROM zbozi WHERE id='$id'";
-   $vysledek = MySQL_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'");
-   $data = MySQL_Fetch_Array($vysledek);
+   $vysledek = mysqli_Query("SELECT mnozstvi FROM zbozi WHERE id='$id'");
+   $data = mysqli_Fetch_Array($vysledek);
    if($typ_akce=='pridej')
      $noveMnozstvi = $data["mnozstvi"] + $mnozstvi;
    elseif($typ_akce=='odeber')
      $noveMnozstvi = $data["mnozstvi"] - $mnozstvi;
    //vsechno se ulozi
-   $vysledek = MySQL_Query("UPDATE zbozi SET mnozstvi='$noveMnozstvi' WHERE id='$id'");
+   $vysledek = mysqli_Query("UPDATE zbozi SET mnozstvi='$noveMnozstvi' WHERE id='$id'");
    
 }//mnozstviZbozi
 
@@ -458,8 +458,8 @@ function getCoefficient($nSRBD)
 {
   global $SRBD;
  
-  $vysledek = MySQL_Query("SELECT hodnota FROM koeficienty WHERE id = 1", $SRBD) or Die(MySQL_Error());;
-  $data = MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_Query("SELECT hodnota FROM koeficienty WHERE id = 1", $SRBD) or Die(mysqli_Error());;
+  $data = mysqli_Fetch_Array($vysledek);
   $hodnota = $data["hodnota"];
   
   return $hodnota;

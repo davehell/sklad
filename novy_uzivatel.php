@@ -93,10 +93,10 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
 if($_POST["odeslat"] == $texty["pridat"]) { //vkladani NOVEHO uzivatele
 
   $idModulu = dejIdModulu($_SESSION['modul']);
-  MySQL_Query("INSERT INTO uzivatele (id, login, heslo, prava, id_modulu)
+  mysqli_Query("INSERT INTO uzivatele (id, login, heslo, prava, id_modulu)
   VALUES (0, '$loginUsername', '$zakodovaneHeslo', $loginRights, $idModulu)", $SRBD);
 
-  if(mysql_errno() != 0) { //uzivatelem se stejnym loginem uz v modulu je
+  if(mysqli_errno() != 0) { //uzivatelem se stejnym loginem uz v modulu je
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['duplicitniLogin'];
     header('Location: '.$soubory['uzivatele']);
@@ -119,8 +119,8 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
 
   if($loginUsername != $puvodniLogin) { //uzivatel si zmenil login
   //je treba se podivat, jestli uz se novy login v DB nevyskytuje
-    $vysledek = MySQL_Query("SELECT login FROM uzivatele WHERE login = '$loginUsername'", $SRBD);  // provézt dotaz
-    if (mysql_num_rows($vysledek) == 1) { // v DB uz je uzivatel se stejnym loginem
+    $vysledek = mysqli_Query("SELECT login FROM uzivatele WHERE login = '$loginUsername'", $SRBD);  // provézt dotaz
+    if (mysqli_num_rows($vysledek) == 1) { // v DB uz je uzivatel se stejnym loginem
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['duplicitniLogin'];
       header('Location: '.$_SERVER['HTTP_REFERER']);
@@ -129,7 +129,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   }
 
   //aktualizace udaju v profilu
-  MySQL_Query("UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'", $SRBD) or Die(MySQL_Error());
+  mysqli_Query("UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'", $SRBD) or Die(mysqli_Error());
   $_SESSION["uzivatelskeJmeno"] = $loginUsername; //aktualizuje se login prihlaseneho uzivatele
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['editOK'];

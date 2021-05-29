@@ -71,7 +71,7 @@ if(isset($_GET['od']) && $datumOK){
     $dodatek .= pageOrderQuery($pocet,$rows);
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   //echo $dotaz;
   
@@ -85,8 +85,8 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek,$zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumstroje');
-  $vysledek2 = MySQL_Query($dotaz2, $SRBD) or Die(MySQL_Error());
-  $data2 = MySQL_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
   if($_GET['print']==1)
@@ -106,7 +106,7 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = MySQL_Fetch_Array($vysledek)) 
+  While ($data = mysqli_Fetch_Array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
     $cenaMJ = number_format($data['prum_cena'], 2, ".", " ");
@@ -141,7 +141,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   // dodatek o puvodnim URL
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
@@ -162,8 +162,8 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek, $zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumsestavy');
-  $vysledek2 = MySQL_Query($dotaz2, $SRBD) or Die(MySQL_Error());
-  $data2 = MySQL_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
   if($_GET['print']==1)
@@ -182,7 +182,7 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = MySQL_Fetch_Array($vysledek)) 
+  While ($data = mysqli_Fetch_Array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
     $cenaMJ = number_format($data['cena_MJ'], 2, ".", " ");
@@ -215,7 +215,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   // dodatek o puvodnim URL
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
@@ -236,8 +236,8 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek, $zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumrozprac');
-  $vysledek2 = MySQL_Query($dotaz2, $SRBD) or Die(MySQL_Error());
-  $data2 = MySQL_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
   if($_GET['print']==1)
@@ -256,7 +256,7 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = MySQL_Fetch_Array($vysledek)) 
+  While ($data = mysqli_Fetch_Array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
     $cenaMJ = $data['cena_MJ'];

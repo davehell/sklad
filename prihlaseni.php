@@ -24,20 +24,20 @@ function kontrolaHesla($uzivatelskeJmeno, $prihlasovaciHeslo) {
    $idModulu = dejIdModulu($_SESSION['modul']);
    
    if($uzivatelskeJmeno == "admin") {//u admina neni nutne kontrolovat id_modulu (tento ucet slouzi k prihlaseni do vsech modulu)
-    $vysledek = MySQL_Query("SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'", $SRBD);  // provézt dotaz
+    $vysledek = mysqli_Query($SRBD, "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'");  // provézt dotaz
    }
    else {
-    $vysledek = MySQL_Query("SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo' AND id_modulu = '$idModulu'", $SRBD);  // provézt dotaz
+    $vysledek = mysqli_Query($SRBD, "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo' AND id_modulu = '$idModulu'");  // provézt dotaz
    }
 
-   if (mysql_num_rows($vysledek) == 1) { // právě jeden řádek je správné nalezení uživatele
+   if (mysqli_num_rows($vysledek) == 1) { // právě jeden řádek je správné nalezení uživatele
       session_register('uzivatelskeJmeno'); // registrace uživatele indikuje přihlášení
       $_SESSION['uzivatelskeJmeno'] = $uzivatelskeJmeno;
       session_register('casPristupu'); // sem se uklada cas posledni uzivatelem provedene akce
       $_SESSION["casPristupu"] = time();
 
-      $vysledek = MySQL_Query("SELECT prava FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'", $SRBD);  // provézt dotaz
-     	While ($data = MySQL_Fetch_Array($vysledek)) {
+      $vysledek = mysqli_Query($SRBD, "SELECT prava FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'");  // provézt dotaz
+     	While ($data = mysqli_Fetch_Array($vysledek)) {
         $prava = $data["prava"];
       }
       session_register('uzivatelskaPrava');
@@ -95,8 +95,8 @@ function prihlasovaciStranka() {
   <select id="moduly" name="moduly" onchange="vyber_cv()">
   <option value="">-------- vyberte --------</option>
 <?php
-  $vysledek = MySQL_Query("SELECT modul FROM moduly ORDER BY id ASC", $SRBD);  // provézt dotaz
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  $vysledek = mysqli_query($SRBD, "SELECT modul FROM moduly ORDER BY id ASC");  // provézt dotaz
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['modul'].'">'.$data['modul']."</option>\n";
   } //while
 ?>

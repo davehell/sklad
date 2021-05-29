@@ -34,9 +34,9 @@ if(isset($_POST['rezNaProdej']))
     $dotaz = "UPDATE doklady SET c_dokladu=$cDokladu, datum='$timestamp_date', skupina='Prodej' WHERE id='$id'";
     
     //echo $dotaz;
-    MySQL_Query($dotaz, $SRBD);
+    mysqli_query($SRBD, $dotaz);
     
-    if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+    if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['NovyDokladDuplicitni'];
       
@@ -56,22 +56,22 @@ elseif(isset($_POST['ruseniRez']))
     $dotaz = "SELECT T.id as id, T.id_zbozi, T.mnozstvi
               FROM transakce as T JOIN doklady as D ON T.id_dokladu=D.id 
               WHERE D.id='$id'";
-    $vysledek = MySQL_Query($dotaz, $SRBD);
-    if(MySQL_num_rows($vysledek) > 0)         //jsou polozky v dokladu
+    $vysledek = mysqli_query($SRBD, $dotaz);
+    if(mysqli_num_rows($vysledek) > 0)         //jsou polozky v dokladu
     {
-      While ($data = @MySQL_Fetch_Array($vysledek)) {
+      While ($data = @mysqli_Fetch_Array($vysledek)) {
         $id_transakce = $data['id'];
         // pro kazdou transakci musim vratit zbozi do skladu
         
         //nakonec ho smazu z db
         $dotaz2 = "DELETE FROM transakce WHERE id=$id_transakce";
-        MySQL_Query($dotaz2, $SRBD);
+        mysqli_Query($dotaz2, $SRBD);
       }
     }
     //smazani polozky z tabulky doklady
     $dotaz = "DELETE FROM doklady WHERE id=$id";
-    MySQL_Query($dotaz, $SRBD);
-    if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+    mysqli_query($SRBD, $dotaz);
+    if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['chybaMazaniRezervace'];
       

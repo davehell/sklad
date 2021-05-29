@@ -29,16 +29,16 @@ echo '
 <option value="">---------- vyberte ----------</option>';
   //prvni rozbalovaci seznam - vyberou se jen veci ktere maji podsestavy/material = jsou celky
   /// WHERE id IN (select celek from sestavy where celek=Z.id)
-  $vysledek = MySQL_Query("SELECT Z.id, Z.nazev 
+  $vysledek = mysqli_Query("SELECT Z.id, Z.nazev 
                            FROM zbozi Z
                            
-                           GROUP BY nazev", $SRBD) or Die(MySQL_Error());
+                           GROUP BY nazev", $SRBD) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
   else $selected = '';
   
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     echo '<option value="'.$data['nazev'].'"';
     if($data['nazev'] == $selected)
       echo ' selected';

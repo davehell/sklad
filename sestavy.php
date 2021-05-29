@@ -76,8 +76,8 @@ function lzeVyrobit($id_zbozi, $mnozstvi, $echo_offset='',$max_zanor)
      
      // zjistim si nazev zbozi 
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
-     $record=MySQL_Fetch_Array($vysledek);
+     $vysledek = mysqli_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
+     $record=mysqli_Fetch_Array($vysledek);
      //echo "ECHO: " . $echo_offset. '<br />';
      $pridavek = '|---';
      echo $echo_offset.'ZBOZI: ' . $record['nazev']. ' id= '.$id_zbozi."<BR />";
@@ -86,22 +86,22 @@ function lzeVyrobit($id_zbozi, $mnozstvi, $echo_offset='',$max_zanor)
      
      // z jakych primych casti se vyrobek sklada ???
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
+     $vysledek = mysqli_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
      // pocet soucastek poslouzi k tomu zda lze soucastku vyrobit nebo ne
      // tedy pokud neni dostatek na sklade NEJDE ani vyrobit :-)
-     $pocet_soucastek = mysql_num_rows($vysledek);      
+     $pocet_soucastek = mysqli_num_rows($vysledek);      
      
      if($pocet_soucastek<1)
      {
        $lze=false;
      }
      else { // pruchod jednotlivymi castmi celku, a jejich test zda jich je na skladu dost
-      while ($record=MySQL_Fetch_Array($vysledek)):
+      while ($record=mysqli_Fetch_Array($vysledek)):
      
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
-        $vysledek2 = MySQL_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(MySQL_Error());  // provézt dotaz
-        $record2 = MySQL_Fetch_Array($vysledek2);
+        $vysledek2 = mysqli_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(mysqli_Error());  // provézt dotaz
+        $record2 = mysqli_Fetch_Array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))
             $reserved[$record['soucastka']]=0;
@@ -159,28 +159,28 @@ function lzeVyrobit2($id_zbozi, $mnozstvi, $max_zanor)
      
      // zjistim si nazev zbozi 
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
-     $record=MySQL_Fetch_Array($vysledek);
+     $vysledek = mysqli_Query('SELECT nazev FROM zbozi WHERE id='.$id_zbozi, $SRBD);  
+     $record=mysqli_Fetch_Array($vysledek);
      
      
      // z jakych primych casti se vyrobek sklada ???
      $SRBD = spojeniSRBD();
-     $vysledek = MySQL_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
+     $vysledek = mysqli_Query('SELECT celek, soucastka, mnozstvi FROM sestavy WHERE celek='.$id_zbozi, $SRBD);  // provézt dotaz
      // pocet soucastek poslouzi k tomu zda lze soucastku vyrobit nebo ne
      // tedy pokud neni dostatek na sklade NEJDE ani vyrobit :-)
-     $pocet_soucastek = mysql_num_rows($vysledek);      
+     $pocet_soucastek = mysqli_num_rows($vysledek);      
      
      if($pocet_soucastek<1)
      {
        $lze=false;
      }
      else { // pruchod jednotlivymi castmi celku, a jejich test zda jich je na skladu dost
-      while ($record=MySQL_Fetch_Array($vysledek)):
+      while ($record=mysqli_Fetch_Array($vysledek)):
      
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
-        $vysledek2 = MySQL_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(MySQL_Error());  // provézt dotaz
-        $record2 = MySQL_Fetch_Array($vysledek2);
+        $vysledek2 = mysqli_Query('SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'], $SRBD) or Die(mysqli_Error());  // provézt dotaz
+        $record2 = mysqli_Fetch_Array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))
             $reserved[$record['soucastka']]=0;

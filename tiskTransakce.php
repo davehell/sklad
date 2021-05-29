@@ -108,12 +108,12 @@ if(isset($_GET['od']) && $datumOK){
   $urldodatek = 't='.$_GET['t'].'&od='.$_GET['od'].'&do='.$_GET['do'];
   
   $dotaz = udelejDotaz($typ,$_GET['od'],$_GET['do']);
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
   $dotaz3 = udelejSumDotaz($typ,$_GET['od'],$_GET['do']);
 
   //zjisteni poctu radku
-  $pocet = MySQL_num_rows($vysledek);
+  $pocet = mysqli_num_rows($vysledek);
   $dodatek = '';
   if($paging)
     $dodatek .= pageOrderQuery($pocet,$rows);
@@ -121,7 +121,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   //if ($pocet>$rows)
   if($paging)
@@ -149,8 +149,8 @@ if(isset($_GET['od']) && $datumOK){
 //   {
 //     $dotaz2 .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 //   }
-  $vysledek2 = MySQL_Query($dotaz3, $SRBD) or Die(MySQL_Error());
-  $data = MySQL_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_Query($dotaz3, $SRBD) or Die(mysqli_Error());
+  $data = mysqli_Fetch_Array($vysledek2);
   
   $sudy = false;
   if($_GET['print']==1)
@@ -183,7 +183,7 @@ if(isset($_GET['od']) && $datumOK){
         
        <tbody>';
   $i=1;
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     $cenaCelkem = $data['cena_MJ']*$data['mnozstvi'];
     $tiskDatum = date("d.m.y",$data["datum"]);
     $cenaMJ = $data['cena_MJ'];

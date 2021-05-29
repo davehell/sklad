@@ -36,8 +36,8 @@ else //vse OK ve formulari
   
   //muze existovat jen jeden doklad typu Inventura
   if($skupina == 'Inventura') {
-    $vysledekX = MySQL_Query('select id from doklady where skupina="Inventura"') or Die(MySQL_Error());
-    if(mysql_num_rows($vysledekX) != 0) {
+    $vysledekX = mysqli_Query('select id from doklady where skupina="Inventura"') or Die(mysqli_Error());
+    if(mysqli_num_rows($vysledekX) != 0) {
         session_register('hlaseniChyba');
         $_SESSION['hlaseniChyba'] = $texty['jenJednaInventura'];
         header("Location: " . $soubory['novyDoklad']);
@@ -61,17 +61,17 @@ else //vse OK ve formulari
   //echo $dotaz;
   
   //echo $dotaz;
-  MySQL_Query($dotaz, $SRBD);
+  mysqli_query($SRBD, $dotaz);
   
-  if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['NovyDokladDuplicitni'];
     header('Location: '.$soubory['novyDoklad']);
     exit;
   }
   else {
-    $vysledek = MySQL_Query("SELECT id FROM doklady WHERE c_dokladu='$cDokladu'", $SRBD) or Die(MySQL_Error());
-    While ($data = @MySQL_Fetch_Array($vysledek)) {
+    $vysledek = mysqli_Query("SELECT id FROM doklady WHERE c_dokladu='$cDokladu'", $SRBD) or Die(mysqli_Error());
+    While ($data = @mysqli_Fetch_Array($vysledek)) {
       $id = $data["id"];
     }
     session_register('hlaseniOK');

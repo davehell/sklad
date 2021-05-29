@@ -23,12 +23,12 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 }
 $id = $_GET['id'];
 
-$vysledek = MySQL_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(MySQL_Error());
-While ($data = @MySQL_Fetch_Array($vysledek)) {
+$vysledek = mysqli_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+While ($data = @mysqli_Fetch_Array($vysledek)) {
   $prodKategorie = $data["prod_kategorie"];
     // zjisteni udaju o odberateli
-    $vysledek2 = MySQL_Query("SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(MySQL_Error());
-    $data2 = @MySQL_Fetch_Array($vysledek2);
+    $vysledek2 = mysqli_Query("SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(mysqli_Error());
+    $data2 = @mysqli_Fetch_Array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 }
 

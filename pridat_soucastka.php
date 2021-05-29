@@ -23,8 +23,8 @@ $cv = $_SESSION['promenneFormulare']["cv"]; //cislo vykresu      //soucastka
 $kusy = $_SESSION['promenneFormulare']["kusy"];                  //soucastka
 $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
-$vysledek = MySQL_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND cv_rozmer='$cv'", $SRBD) or Die(MySQL_Error());
-While ($data = @MySQL_Fetch_Array($vysledek)) {
+$vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND cv_rozmer='$cv'", $SRBD) or Die(mysqli_Error());
+While ($data = @mysqli_Fetch_Array($vysledek)) {
   $soucastka = $data["id"];
 }
 
@@ -46,8 +46,8 @@ if (! $korektniParametry)  { // byly chyby
 
 
 
-MySQL_Query("INSERT INTO sestavy (id, celek, soucastka, kusy) VALUES (0, '$celek', '$soucastka', '$kusy')", $SRBD);
-if (mysql_errno() == 1582) { //vkladan duplicitni zaznam
+mysqli_Query("INSERT INTO sestavy (id, celek, soucastka, kusy) VALUES (0, '$celek', '$soucastka', '$kusy')", $SRBD);
+if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
   header('Location: '.$_SERVER['HTTP_REFERER']);

@@ -29,8 +29,8 @@ if(!isset($_GET["odebrat"])) {
   $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
 
-  $vysledek = MySQL_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(MySQL_Error());
-  $data = @MySQL_Fetch_Array($vysledek);
+  $vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
+  $data = @mysqli_Fetch_Array($vysledek);
   $soucastka = $data["id"];
 
 
@@ -51,8 +51,8 @@ if(!isset($_GET["odebrat"])) {
   }
 
   $mnozstvi = str_replace(",", ".", $mnozstvi);
-  MySQL_Query("INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')", $SRBD);// or Die(MySQL_Error());
-  if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+  mysqli_Query("INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')", $SRBD);// or Die(mysqli_Error());
+  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
     header('Location: '.$_SERVER['HTTP_REFERER']);
@@ -73,9 +73,9 @@ else {
   if(isset($_GET["celek"])) {$celek = $_GET["celek"];}
   $soucastka = $_GET["odebrat"];
 
-  $vysledek = MySQL_Query("SELECT id FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(MySQL_Error());
-  if(mysql_num_rows($vysledek) == 1) { //vse v poradku
-    MySQL_Query("DELETE FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query("SELECT id FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(mysqli_Error());
+  if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
+    mysqli_Query("DELETE FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['soucastkaOdebratOK'];
     session_unregister('promenneFormulare');  // zru¹ení kontextu formuláøe

@@ -37,14 +37,14 @@ if($_POST) {
   
   //vytvoreni nove db
   $db = $_SESSION["modul"].$rok;
-  MySQL_Query("create database `$db` COLLATE=latin2_czech_cs");
-  if (mysql_errno() != 0) { //vkladan duplicitni zaznam
+  mysqli_Query("create database `$db` COLLATE=latin2_czech_cs");
+  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novyRokDuplicitni'];
     header('Location: '.$soubory['archiv'], true, 303);
     exit;
   }
-  MySQL_Select_Db($db, $SRBD) or Die(MySQL_Error());
+  mysqli_Select_Db($db, $SRBD) or Die(mysqli_Error());
 
   //nacte ze souboru sql skript pro vytvoreni tabulek
   $query = "";
@@ -56,7 +56,7 @@ if($_POST) {
 
   //vytvoreni potrebnych tabulek v databazi
   foreach (explode(';', $query) as $sql) {
-    mysql_query($sql, $SRBD);
+    mysqli_query($sql, $SRBD);
   }
 
 
@@ -66,26 +66,26 @@ if($_POST) {
   foreach($tabulky as $tab) {
     if(file_exists($soubor)) unlink($soubor);
     $stareSRBD=spojeniSRBD($_SESSION["modul"].$_SESSION["rokArchiv"]);
-    mysql_unbuffered_query ("SELECT * FROM $tab INTO OUTFILE '".$soubor."'", $stareSRBD);
+    mysqli_unbuffered_query ("SELECT * FROM $tab INTO OUTFILE '".$soubor."'", $stareSRBD);
     $noveSRBD=spojeniSRBD($_SESSION["modul"].$rok);
-    mysql_unbuffered_query ("LOAD DATA INFILE '".$soubor."' INTO TABLE $tab", $noveSRBD);
+    mysqli_unbuffered_query ("LOAD DATA INFILE '".$soubor."' INTO TABLE $tab", $noveSRBD);
     if($tab == "zbozi") {
-      mysql_query ("UPDATE zbozi SET mnozstvi=0", $noveSRBD);
+      mysqli_query ("UPDATE zbozi SET mnozstvi=0", $noveSRBD);
     }
   }
 
   //pridani procedur
-  mysql_query("SET NAMES 'latin2';", $SRBD);
-  mysql_query('delimiter //', $SRBD);
+  mysqli_query("SET NAMES 'latin2';", $SRBD);
+  mysqli_query('delimiter //', $SRBD);
   $f = fopen("sql/transakce_triggery.sql", "r");
   while (!feof ($f)) {
     $query .= fgets($f, 4096);
   }
   fclose ($f);
   foreach (explode('//', $query) as $sql) {
-    mysql_query($sql, $SRBD);
+    mysqli_query($sql, $SRBD);
   }
-  mysql_query('delimiter ;', $SRBD);
+  mysqli_query('delimiter ;', $SRBD);
 
 
   session_register('hlaseniOK');

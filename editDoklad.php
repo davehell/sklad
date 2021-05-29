@@ -39,11 +39,11 @@ makeArraySelectList('skupina',$poleSkupin,$_POST['skupina'],'','id="skupina" onc
 <select id="prodejniCena" name="prodejniCena">
 <option value="-">--- V¹echno ---</option>';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = MySQL_Query("SELECT id, popis FROM prodejni_kategorie ", $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ", $SRBD) or Die(mysqli_Error());
   
   $selected = $_POST['prodejniCena'];
   
-  While ($data = MySQL_Fetch_Array($vysledek)) {
+  While ($data = mysqli_Fetch_Array($vysledek)) {
     echo '<option value="'.$data['id'].'"';
     if($data['id'] == $selected)
       echo ' selected';
@@ -69,8 +69,8 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   
   $rows = POCET_RADKU;
   $dotaz = sestavDotaz();
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
-  $pocet = mysql_num_rows($vysledek);
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $pocet = mysqli_num_rows($vysledek);
   $jmena = array('c_dokladu','datum','skupina','prod_kategorie','typ_vyroby');
   $dodatek = '';
   //echo $pocet.'XXX'.$rows;
@@ -79,7 +79,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'].'&odeslat';
   
@@ -109,8 +109,8 @@ printTableHeader($jmena,$urldodatek);
   $sudyRadek = false;
   //echo sestavDotaz();
   //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
-  $vysledek = MySQL_Query($dotaz, $SRBD) or Die(MySQL_Error());
-  While ($data = @MySQL_Fetch_Array($vysledek)) {
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  While ($data = @mysqli_Fetch_Array($vysledek)) {
     $cDokladu = $data["c_dokladu"];
     $datum = date("d.m.Y",$data["datum"]);
     $skupina = $data["skupina"];

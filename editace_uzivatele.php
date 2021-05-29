@@ -36,7 +36,7 @@ if (isset($_POST['loginRights'])) {
 }
   
 //aktualizace udaju (uzivatelskych prav)
-MySQL_Query("UPDATE uzivatele SET prava='$loginRights' WHERE id='$id'", $SRBD) or Die(MySQL_Error());
+mysqli_Query("UPDATE uzivatele SET prava='$loginRights' WHERE id='$id'", $SRBD) or Die(mysqli_Error());
 session_register('hlaseniOK');
 $_SESSION['hlaseniOK'] = $texty['editOK'];
 header('Location: '.$soubory['uzivatele']);

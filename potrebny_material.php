@@ -16,15 +16,15 @@ $SRBD=spojeniSRBD();
 //kontrola, jestli existuje karta s id, ktere je hodnotou parametru
 if(isset($_GET["id"])) {
   $id = $_GET["id"];
-  $vysledek = MySQL_Query("SELECT nazev, c_vykresu FROM zbozi WHERE id='$id'", $SRBD) or Die(MySQL_Error());
-  if(mysql_num_rows($vysledek) != 1) { //zadane id neni v DB
+  $vysledek = mysqli_Query("SELECT nazev, c_vykresu FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+  if(mysqli_num_rows($vysledek) != 1) { //zadane id neni v DB
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['neexistujiciKarta'];
     header('Location: '.$soubory['nahledKarta']);
     exit;
   }
   else {//pozadovana karta se nachazi v DB
-    $data = @MySQL_Fetch_Array($vysledek);
+    $data = @mysqli_Fetch_Array($vysledek);
     $nazev = $data["nazev"];
     $cv = $data["c_vykresu"];
   }
