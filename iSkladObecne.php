@@ -10,8 +10,10 @@ include $soubory['includeKonstanty'];           // rùzné systémové a jiné konsta
 
 function session_register(){ 
     $args = func_get_args(); 
-    foreach ($args as $key){ 
-        $_SESSION[$key]=$GLOBALS[$key]; 
+    foreach ($args as $key) {
+        if(isset($GLOBALS[$key])) {
+            $_SESSION[$key] = $GLOBALS[$key];
+        } 
     } 
 } 
 function session_is_registered($key){ 
@@ -73,7 +75,7 @@ function zobrazitLogin() {
 
     $suffix = (strpos($_SERVER["REQUEST_URI"], "?") === false ? "?" : "&amp;") . "print=1&amp;paging=no";
     echo
-    '<a href="'.$_SERVER[REQUEST_URI].$suffix.'" title="'.$texty["verzeTiskTitle"].'">'.$texty["verzeTisk"].'</a>
+    '<a href="'.$_SERVER["REQUEST_URI"].$suffix.'" title="'.$texty["verzeTiskTitle"].'">'.$texty["verzeTisk"].'</a>
   </p>
   ';
   } // if
