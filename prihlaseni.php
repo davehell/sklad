@@ -142,7 +142,7 @@ if (isset($_POST["loginUsername"])) { // parametr uživatelské jméno přes POS
    $uzivatelskeJmenoUsch = odstraneniEscape($_POST["loginUsername"], 30);
    } // if
 if (isset($_POST["loginPassword"])) { // heslo přes POST
-   $prihlasovaciHeslo = odstraneniEscape($_POST["loginPassword"], 8);
+   $prihlasovaciHeslo = odstraneniEscape($_POST["loginPassword"], 100);
    } // if
 
 if (session_is_registered('uzivatelskeJmeno')) { // pokud je uživatel již přihlášen

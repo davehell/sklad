@@ -65,7 +65,7 @@ if($loginPassword != $loginPassword2) { //obe hesla nejsou stejna
   $_SESSION['hlaseniChyba'] = $texty['wrongPassword'];
   $korektniParametry = false;
 }
-if ((strlen($loginPassword) > 10) ||
+if ((strlen($loginPassword) > 100) ||
     (strlen($loginPassword)  <  4)) {
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['formatPassword']; // chybné heslo
