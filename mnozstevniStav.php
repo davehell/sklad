@@ -115,7 +115,7 @@ if($datumOK){
   
   printTableHeader($jmena,$urldodatek);
 
-  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_Error());
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   $sudy = false;

@@ -15,7 +15,8 @@ kontrolaPrav($potrebnaPrava);
 
 $SRBD = spojeniSRBD();
 
-$vysledek = mysqli_Query("SELECT hodnota FROM koeficienty WHERE id = 1", $SRBD);
+$dotaz = "SELECT hodnota FROM koeficienty WHERE id = 1";
+$vysledek = mysqli_query($SRBD, $dotaz);
 $data = mysqli_Fetch_Array($vysledek);
 $hodnota = $data["hodnota"];
 
@@ -42,7 +43,8 @@ if($_POST) {
   }  // if !korektni parametry
 
   $hodnota = str_replace(",", ".", $hodnota);//pripadne desetinne carky nahradi za tecky
-  mysqli_Query("UPDATE koeficienty SET hodnota='$hodnota' WHERE id=1", $SRBD) or Die(mysqli_Error());
+  $dotaz = "UPDATE koeficienty SET hodnota='$hodnota' WHERE id=1";
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['editOK'];
   //header('Location: '.$_SERVER['HTTP_REFERER']);

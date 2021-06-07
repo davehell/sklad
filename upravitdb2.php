@@ -8,17 +8,17 @@ $dbs = array("lmr2011","obrobna2011","test2011");
 
 foreach ($dbs as $db) {
     echo "databáze $db: ";
-    $SRBD = mysqli_Connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_Error());
-    $vysledek = mysqli_Select_Db($db, $SRBD);
+    $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_Error());
+    $vysledek = mysqli_select_db($SRBD, $db);
     if($vysledek == 0)   { //nepovedlo se pripojeni k DB
         echo "CHYBA: Pøipojení k $db se nepodaøilo.<br />\n";
     }
     else {
-          mysqli_query("SET NAMES 'latin2';", $SRBD);
+          mysqli_query($SRBD, "SET NAMES 'latin2';");
         
           
 
-          mysqli_query('delimiter //', $SRBD);
+          mysqli_query($SRBD, 'delimiter //');
 
           $f = fopen("sql/transakce_triggery.sql", "r");
           //$f = fopen("sql/drop_trigger.sql", "r");
@@ -29,10 +29,10 @@ foreach ($dbs as $db) {
           
 
           foreach (explode('//', $query) as $sql) {
-            mysqli_query($sql, $SRBD);
+            mysqli_query($SRBD, $sql);
           }
 
-          mysqli_query('delimiter ;', $SRBD);
+          mysqli_query($SRBD, 'delimiter ;');
 
         if(mysqli_errno() != 0 && mysqli_errno()!=1064)   { //dotaz se neprovedl
             echo "CHYBA: ".mysqli_errno()."<br />\n";

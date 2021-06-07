@@ -42,7 +42,7 @@ if (isset($_POST['loginRights'])) {
 $korektniParametry = true;
 // uzivatelske jmeno
 
-if (!ereg('^[a-zA-Z0-9_]+$', $loginUsername)) {// jméno nesmí obsahovat bílé znaky
+if (!preg_match('^[a-zA-Z0-9_]+$', $loginUsername)) {// jméno nesmí obsahovat bílé znaky
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['deraveJmeno'];
   $korektniParametry = false;
@@ -93,8 +93,8 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
 if($_POST["odeslat"] == $texty["pridat"]) { //vkladani NOVEHO uzivatele
 
   $idModulu = dejIdModulu($_SESSION['modul']);
-  mysqli_Query("INSERT INTO uzivatele (id, login, heslo, prava, id_modulu)
-  VALUES (0, '$loginUsername', '$zakodovaneHeslo', $loginRights, $idModulu)", $SRBD);
+  mysqli_query($SRBD, "INSERT INTO uzivatele (id, login, heslo, prava, id_modulu)
+  VALUES (0, '$loginUsername', '$zakodovaneHeslo', $loginRights, $idModulu)");
 
   if(mysqli_errno() != 0) { //uzivatelem se stejnym loginem uz v modulu je
     session_register('hlaseniChyba');
@@ -119,7 +119,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
 
   if($loginUsername != $puvodniLogin) { //uzivatel si zmenil login
   //je treba se podivat, jestli uz se novy login v DB nevyskytuje
-    $vysledek = mysqli_Query("SELECT login FROM uzivatele WHERE login = '$loginUsername'", $SRBD);  // provézt dotaz
+    $vysledek = mysqli_query($SRBD, "SELECT login FROM uzivatele WHERE login = '$loginUsername'");  // provézt dotaz
     if (mysqli_num_rows($vysledek) == 1) { // v DB uz je uzivatel se stejnym loginem
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['duplicitniLogin'];
@@ -129,7 +129,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   }
 
   //aktualizace udaju v profilu
-  mysqli_Query("UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'", $SRBD) or Die(mysqli_Error());
+  mysqli_query($SRBD, "UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'") or Die(mysqli_error());
   $_SESSION["uzivatelskeJmeno"] = $loginUsername; //aktualizuje se login prihlaseneho uzivatele
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['editOK'];

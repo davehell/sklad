@@ -93,9 +93,9 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
 
 //    echo $this->dotaz;
     // ulozeni vysledku do
-    $result1 = mysqli_Query(self::dotazTrans, $this->SRBD) or Die(mysqli_Error());
+    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error());
 
-    $result2 = mysqli_Query(self::dotazAmount, $this->SRBD) or Die(mysqli_Error());
+    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error());
     
     $numrows1 = mysqli_num_rows($result1);
     $numrows2 = mysqli_num_rows($result2);
@@ -147,7 +147,7 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
         if($this->editDB)
         {
           $query = "UPDATE zbozi SET mnozstvi = '$amount' WHERE id='$id'";
-          mysqli_Query($query, $this->SRBD);
+          mysqli_query($query, $this->SRBD);
         }
     }
 
@@ -160,7 +160,7 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
         if($this->editDB)
         {
           $query = "UPDATE transakce SET mnozstvi = '$amount' WHERE id='$id'";
-          mysqli_Query($query, $this->SRBD);
+          mysqli_query($query, $this->SRBD);
         }
 
     }
@@ -170,9 +170,9 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
      */
     public function echoInconsistentItems()
     {
-    $result1 = mysqli_Query(self::dotazTrans, $this->SRBD) or Die(mysqli_Error());
+    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error());
 
-    $result2 = mysqli_Query(self::dotazAmount, $this->SRBD) or Die(mysqli_Error());
+    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error());
     
     $numrows1 = mysqli_num_rows($result1);
     $numrows2 = mysqli_num_rows($result2);

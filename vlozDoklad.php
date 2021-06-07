@@ -36,7 +36,7 @@ else //vse OK ve formulari
   
   //muze existovat jen jeden doklad typu Inventura
   if($skupina == 'Inventura') {
-    $vysledekX = mysqli_Query('select id from doklady where skupina="Inventura"') or Die(mysqli_Error());
+    $vysledekX = mysqli_query('select id from doklady where skupina="Inventura"') or Die(mysqli_Error());
     if(mysqli_num_rows($vysledekX) != 0) {
         session_register('hlaseniChyba');
         $_SESSION['hlaseniChyba'] = $texty['jenJednaInventura'];
@@ -58,9 +58,6 @@ else //vse OK ve formulari
     $dotaz .= "NULL";
   $dotaz .= ")";
   
-  //echo $dotaz;
-  
-  //echo $dotaz;
   mysqli_query($SRBD, $dotaz);
   
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
@@ -70,7 +67,8 @@ else //vse OK ve formulari
     exit;
   }
   else {
-    $vysledek = mysqli_Query("SELECT id FROM doklady WHERE c_dokladu='$cDokladu'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "SELECT id FROM doklady WHERE c_dokladu='$cDokladu'";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
     While ($data = @mysqli_Fetch_Array($vysledek)) {
       $id = $data["id"];
     }

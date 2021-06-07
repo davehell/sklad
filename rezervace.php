@@ -32,8 +32,6 @@ if(isset($_POST['rezNaProdej']))
     
     $timestamp_date = strtotime($datum);
     $dotaz = "UPDATE doklady SET c_dokladu=$cDokladu, datum='$timestamp_date', skupina='Prodej' WHERE id='$id'";
-    
-    //echo $dotaz;
     mysqli_query($SRBD, $dotaz);
     
     if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
@@ -59,13 +57,13 @@ elseif(isset($_POST['ruseniRez']))
     $vysledek = mysqli_query($SRBD, $dotaz);
     if(mysqli_num_rows($vysledek) > 0)         //jsou polozky v dokladu
     {
-      While ($data = @mysqli_Fetch_Array($vysledek)) {
+      While ($data = @mysqli_fetch_array($vysledek)) {
         $id_transakce = $data['id'];
         // pro kazdou transakci musim vratit zbozi do skladu
         
         //nakonec ho smazu z db
         $dotaz2 = "DELETE FROM transakce WHERE id=$id_transakce";
-        mysqli_Query($dotaz2, $SRBD);
+        mysqli_query($SRBD, $dotaz2);
       }
     }
     //smazani polozky z tabulky doklady

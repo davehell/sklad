@@ -7,14 +7,14 @@ $dbs = array("lmr2010", "obrobna2010", "test2010");
 
 foreach ($dbs as $db) {
     echo "databáze $db: ";
-    $SRBD = mysqli_Connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_Error());
-    $vysledek = mysqli_Select_Db($db, $SRBD);
+    $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_Error());
+    $vysledek = mysqli_select_db($SRBD, $db);
     if($vysledek == 0)   { //nepovedlo se pripojeni k DB
         echo "CHYBA: Pøipojení k $db se nepodaøilo.<br />\n";
     }
     else {
-        mysqli_query("SET NAMES 'latin2';", $SRBD);
-        mysqli_query('ALTER TABLE `doklady` CHANGE `typ_vyroby` `typ_vyroby` enum("Montá¾","Obrobna","Svaøovna","Montá¾ vozíkù","Montá¾ blokù","Obrobna bloky")', $SRBD);
+        mysqli_query($SRBD, "SET NAMES 'latin2';");
+        mysqli_query($SRBD, 'ALTER TABLE `doklady` CHANGE `typ_vyroby` `typ_vyroby` enum("Montá¾","Obrobna","Svaøovna","Montá¾ vozíkù","Montá¾ blokù","Obrobna bloky")');
         if(mysqli_errno() != 0)   { //dotaz se neprovedl
             echo "CHYBA: ".mysqli_errno()."<br />\n";
         }

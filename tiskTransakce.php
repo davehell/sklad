@@ -149,8 +149,8 @@ if(isset($_GET['od']) && $datumOK){
 //   {
 //     $dotaz2 .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 //   }
-  $vysledek2 = mysqli_Query($dotaz3, $SRBD) or Die(mysqli_Error());
-  $data = mysqli_Fetch_Array($vysledek2);
+  $vysledek2 = mysqli_query($SRBD, $dotaz3) or Die(mysqli_Error());
+  $data = mysqli_fetch_array($vysledek2);
   
   $sudy = false;
   if($_GET['print']==1)
@@ -183,7 +183,7 @@ if(isset($_GET['od']) && $datumOK){
         
        <tbody>';
   $i=1;
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $cenaCelkem = $data['cena_MJ']*$data['mnozstvi'];
     $tiskDatum = date("d.m.y",$data["datum"]);
     $cenaMJ = $data['cena_MJ'];

@@ -48,8 +48,9 @@ if(!isset($_GET["id"])) {
 <input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'.$_SESSION['promenneFormulare']['cenaPrace'].'" /><br />
 ';
   //vypsani textovych poli pro vsechny prodejni ceny
-  $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC", $SRBD) or Die(mysqli_Error());
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  While ($data = @mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
 <label for="prodejniCena'.$idProdejni.'">'.$texty['prodejniCena'].' '.$data["popis"].':</label>
@@ -69,9 +70,9 @@ dejTlacitko('odeslat','pridatKartu').'
 else {
 //Hlavicka karty uz byla vyplnena, tedy se zobrazi misto formulare zobrazi
 //pouze vypis hlavicky karty
-  $vysledek = mysqli_Query("SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace
-  FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
-  $data = @mysqli_Fetch_Array($vysledek);
+  $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace FROM zbozi WHERE id='$id'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $data = @mysqli_fetch_array($vysledek);
     echo '
 <dl class="floatleft">
   <dt>'.$texty["nazev"].':</dt><dd>'.$data["nazev"].'</dd>
@@ -83,14 +84,15 @@ else {
 
 //////////////////////
 // obrazek
-  $vysledek = mysqli_Query("SELECT obrazek, nazev, c_vykresu FROM zbozi WHERE id='$id' AND obrazek is not NULL", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT obrazek, nazev, c_vykresu FROM zbozi WHERE id='$id' AND obrazek is not NULL";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   if(mysqli_num_rows($vysledek) == 0) { //zbozi nema v DB zadnou fotku
     echo '
 <p class="floatleft">Toto zbo¾í nemá pøiøazen ¾ádný obrázek.</p>
 <br class="clearleft" />';
   } //if
   else {
-    $data = @mysqli_Fetch_Array($vysledek);
+    $data = @mysqli_fetch_array($vysledek);
       echo '
 <a href="nahledy/'.$data["obrazek"].'" alt="'.$data["obrazek"].'"
    title="'.$data['nazev'].' '.$data['c_vykresu'].'"
@@ -107,12 +109,14 @@ else {
   echo '
 <dl>';
     //vypsani vsech prodejnich cen
-    $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ORDER BY id", $SRBD) or Die(mysqli_Error());
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    While ($data = @mysqli_fetch_array($vysledek)) {
       $idKat = $data["id"];
       $cena = "-";
-      $vysledek2 = mysqli_Query("SELECT cena FROM prodejni_ceny WHERE id_zbozi='$id' AND id_kategorie='$idKat'", $SRBD) or Die(mysqli_Error());
-      While ($data2 = @mysqli_Fetch_Array($vysledek2)) {
+      $dotaz = "SELECT cena FROM prodejni_ceny WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
+      $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+      While ($data2 = @mysqli_fetch_array($vysledek2)) {
         if($data2["cena"] == "") {$cena = "-";}
         else {$cena = $data2["cena"];}
       }
@@ -150,8 +154,9 @@ else {
   //prvni rozbalovaci seznam (nazev / rozmer)
   //neobsahuje vyrobek, ktery je prave editovan (jinak by slo nastavit, ze
   //tento vyrobek je slozen z toho sameho vyrobku)
-  $vysledek = mysqli_Query("SELECT id, nazev FROM zbozi WHERE id<>'$id' GROUP BY nazev", $SRBD) or Die(mysqli_Error());
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  $dotaz = "SELECT id, nazev FROM zbozi WHERE id<>'$id' GROUP BY nazev";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['nazev'].'">'.$data['nazev']."</option>\n";
   } //while
   echo '
@@ -161,8 +166,9 @@ else {
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['c_vykresu'].'">'.$data['c_vykresu']."</option>\n";
   } //while
   echo '

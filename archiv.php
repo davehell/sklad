@@ -37,14 +37,14 @@ if($_POST) {
   
   //vytvoreni nove db
   $db = $_SESSION["modul"].$rok;
-  mysqli_Query("create database `$db` COLLATE=latin2_czech_cs");
+  mysqli_query("create database `$db` COLLATE=latin2_czech_cs");
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novyRokDuplicitni'];
     header('Location: '.$soubory['archiv'], true, 303);
     exit;
   }
-  mysqli_Select_Db($db, $SRBD) or Die(mysqli_Error());
+  mysqli_Select_Db($db, $SRBD) or Die(mysqli_error());
 
   //nacte ze souboru sql skript pro vytvoreni tabulek
   $query = "";
@@ -56,7 +56,7 @@ if($_POST) {
 
   //vytvoreni potrebnych tabulek v databazi
   foreach (explode(';', $query) as $sql) {
-    mysqli_query($sql, $SRBD);
+    mysqli_query($SRBD, $sql);
   }
 
 
@@ -70,22 +70,23 @@ if($_POST) {
     $noveSRBD=spojeniSRBD($_SESSION["modul"].$rok);
     mysqli_unbuffered_query ("LOAD DATA INFILE '".$soubor."' INTO TABLE $tab", $noveSRBD);
     if($tab == "zbozi") {
-      mysqli_query ("UPDATE zbozi SET mnozstvi=0", $noveSRBD);
+      $dotaz = "UPDATE zbozi SET mnozstvi=0";
+      mysqli_query ($noveSRBD, $dotaz);
     }
   }
 
   //pridani procedur
-  mysqli_query("SET NAMES 'latin2';", $SRBD);
-  mysqli_query('delimiter //', $SRBD);
+  mysqli_query($SRBD, "SET NAMES 'latin2';");
+  mysqli_query($SRBD, 'delimiter //');
   $f = fopen("sql/transakce_triggery.sql", "r");
   while (!feof ($f)) {
     $query .= fgets($f, 4096);
   }
   fclose ($f);
   foreach (explode('//', $query) as $sql) {
-    mysqli_query($sql, $SRBD);
+    mysqli_query($SRBD, $sql);
   }
-  mysqli_query('delimiter ;', $SRBD);
+  mysqli_query($SRBD, 'delimiter ;');
 
 
   session_register('hlaseniOK');

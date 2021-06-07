@@ -52,13 +52,14 @@ makeArraySelectList('skupina',$poleSkupin,$_SESSION['promenneFormulare']['skupin
 <select id="prodejniCena" name="prodejniCena">
 <option value="">----- vyberte -----</option>';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['prodejniCena'];
   else $selected = '';
   
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['id'].'"';
     if($data['id'] == $selected)
       echo ' selected';

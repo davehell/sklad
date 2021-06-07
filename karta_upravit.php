@@ -21,12 +21,12 @@ if((isset($_POST["nazev"])) && ($_POST["nazev"] == "Vyberte")) {
 
 
 //zpracovani formulare pro vyber konkretni karty
-if($_POST["odeslat"] == $texty["zobrazitKartu"]) {
+if(isset($_POST["odeslat"]) && $_POST["odeslat"] == $texty["zobrazitKartu"]) {
   if(isset($_POST["nazev"])) $nazev = $_POST["nazev"];
   if(isset($_POST["cv"])) $cv = $_POST["cv"];
 
-  $vysledek = mysqli_Query("SELECT id FROM zbozi
-  WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   if(mysqli_num_rows($vysledek) == 1) {
     While ($data = @mysqli_Fetch_Array($vysledek)) {
       $id = $data["id"];
@@ -46,8 +46,8 @@ if($_POST["odeslat"] == $texty["zobrazitKartu"]) {
 if(isset($_GET["id"])) {
   $id = $_GET["id"];
 
-  $vysledek = mysqli_Query("SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace
-  FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace FROM zbozi WHERE id='$id'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
 
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     While ($data = mysqli_Fetch_Array($vysledek)) {
@@ -60,8 +60,8 @@ if(isset($_GET["id"])) {
         $_SESSION['promenneFormulare']['limit'] = $data["min_limit"];
         $_SESSION['promenneFormulare']['cenaPrace'] = $data["cena_prace"];
         
-        $vysledek2 = mysqli_Query("SELECT cena, id_kategorie FROM prodejni_ceny
-        WHERE id_zbozi='$id' ORDER BY id_kategorie ASC", $SRBD) or Die(mysqli_Error());
+        $dotaz = "SELECT cena, id_kategorie FROM prodejni_ceny WHERE id_zbozi='$id' ORDER BY id_kategorie ASC";
+        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
         While ($data2 = @mysqli_Fetch_Array($vysledek2)) {
           $_SESSION['promenneFormulare']['prodejniCena'.$data2['id_kategorie']] = $data2['cena'];
         }
@@ -96,7 +96,8 @@ echo '
 <option value="">---------- vyberte ----------</option>
 ';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_Query("SELECT id, nazev FROM zbozi GROUP BY nazev", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, nazev FROM zbozi GROUP BY nazev";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
@@ -114,7 +115,8 @@ echo '
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
@@ -173,12 +175,13 @@ if(isset($_GET["id"])) {
 if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
 { //zamestnanci prodejni ceny neuvidi
   //vypsani textovych poli pro vsechny prodejni ceny
-  $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ORDER BY id", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   While ($data = @mysqli_Fetch_Array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
 <label for="prodejniCena'.$idProdejni.'">'.$texty['prodejniCena'].' '.$data["popis"].':</label>
-<input type="text" maxlength="40" id="prodejniCena'.$idProdejni.'" name="prodejniCena'.$idProdejni.'" value="'.$_SESSION['promenneFormulare']['prodejniCena'.$idProdejni].'" /><br />
+<input type="text" maxlength="40" id="prodejniCena'.$idProdejni.'" name="prodejniCena'.$idProdejni.'" value="'. (isset($_SESSION['promenneFormulare']['prodejniCena'.$idProdejni]) ? $_SESSION['promenneFormulare']['prodejniCena'.$idProdejni] : "") .'" /><br />
 ';
   }//while
 }
@@ -197,7 +200,8 @@ echo '
 <fieldset>
 <legend>'.$texty['obrazek'].'</legend>';
 
-$vysledek = mysqli_Query("SELECT obrazek FROM zbozi WHERE id='$id' AND obrazek is not NULL", $SRBD) or Die(mysqli_Error());
+$dotaz = "SELECT obrazek FROM zbozi WHERE id='$id' AND obrazek is not NULL";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
 if(mysqli_num_rows($vysledek) == 0) { //zbozi nema v DB zadnou fotku
   echo '
   <p>Toto zbo¾í nemá pøiøazen ¾ádný obrázek.</p>';
@@ -240,7 +244,8 @@ echo '
 <option value="">---------- vyberte ----------</option>
 ';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_Query("SELECT id, nazev FROM zbozi WHERE id<>'$id' GROUP BY nazev", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, nazev FROM zbozi WHERE id<>'$id' GROUP BY nazev";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
@@ -258,7 +263,8 @@ echo '
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];

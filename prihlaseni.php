@@ -24,10 +24,12 @@ function kontrolaHesla($uzivatelskeJmeno, $prihlasovaciHeslo) {
    $idModulu = dejIdModulu($_SESSION['modul']);
    
    if($uzivatelskeJmeno == "admin") {//u admina neni nutne kontrolovat id_modulu (tento ucet slouzi k prihlaseni do vsech modulu)
-    $vysledek = mysqli_Query($SRBD, "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'");  // provézt dotaz
+      $dotaz = "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'";
+      $vysledek = mysqli_query($SRBD, $dotaz);
    }
    else {
-    $vysledek = mysqli_Query($SRBD, "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo' AND id_modulu = '$idModulu'");  // provézt dotaz
+      $dotaz = "SELECT heslo FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo' AND id_modulu = '$idModulu'";
+      $vysledek = mysqli_query($SRBD, $dotaz);
    }
 
    if (mysqli_num_rows($vysledek) == 1) { // právě jeden řádek je správné nalezení uživatele
@@ -35,9 +37,9 @@ function kontrolaHesla($uzivatelskeJmeno, $prihlasovaciHeslo) {
       $_SESSION['uzivatelskeJmeno'] = $uzivatelskeJmeno;
       session_register('casPristupu'); // sem se uklada cas posledni uzivatelem provedene akce
       $_SESSION["casPristupu"] = time();
-
-      $vysledek = mysqli_Query($SRBD, "SELECT prava FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'");  // provézt dotaz
-     	While ($data = mysqli_Fetch_Array($vysledek)) {
+      $dotaz = "SELECT prava FROM uzivatele WHERE login = '$uzivatelskeJmeno'  AND heslo = '$zakodovaneHeslo'";
+      $vysledek = mysqli_query($SRBD, $dotaz);
+     	While ($data = mysqli_fetch_array($vysledek)) {
         $prava = $data["prava"];
       }
       session_register('uzivatelskaPrava');
@@ -95,7 +97,8 @@ function prihlasovaciStranka() {
   <select id="moduly" name="moduly" onchange="vyber_cv()">
   <option value="">-------- vyberte --------</option>
 <?php
-  $vysledek = mysqli_query($SRBD, "SELECT modul FROM moduly ORDER BY id ASC");  // provézt dotaz
+  $dotaz = "SELECT modul FROM moduly ORDER BY id ASC";
+  $vysledek = mysqli_query($SRBD, $dotaz);
   While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['modul'].'">'.$data['modul']."</option>\n";
   } //while

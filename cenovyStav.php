@@ -71,7 +71,7 @@ if(isset($_GET['od']) && $datumOK){
     $dodatek .= pageOrderQuery($pocet,$rows);
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
   //echo $dotaz;
   
@@ -85,7 +85,7 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek,$zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumstroje');
-  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error());
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
@@ -141,7 +141,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
   // dodatek o puvodnim URL
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
@@ -162,7 +162,7 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek, $zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumsestavy');
-  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error());
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
@@ -215,7 +215,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
   // dodatek o puvodnim URL
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
@@ -236,7 +236,7 @@ if(isset($_GET['od']) && $datumOK){
   printTableHeader($jmena,$urldodatek, $zobrazit);
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumrozprac');
-  $vysledek2 = mysqli_Query($dotaz2, $SRBD) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error());
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print

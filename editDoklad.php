@@ -39,11 +39,12 @@ makeArraySelectList('skupina',$poleSkupin,$_POST['skupina'],'','id="skupina" onc
 <select id="prodejniCena" name="prodejniCena">
 <option value="-">--- V¹echno ---</option>';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
   $selected = $_POST['prodejniCena'];
   
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['id'].'"';
     if($data['id'] == $selected)
       echo ' selected';
@@ -69,7 +70,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   
   $rows = POCET_RADKU;
   $dotaz = sestavDotaz();
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   $pocet = mysqli_num_rows($vysledek);
   $jmena = array('c_dokladu','datum','skupina','prod_kategorie','typ_vyroby');
   $dodatek = '';
@@ -79,7 +80,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
   $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'].'&odeslat';
   
@@ -109,8 +110,8 @@ printTableHeader($jmena,$urldodatek);
   $sudyRadek = false;
   //echo sestavDotaz();
   //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  While ($data = @mysqli_fetch_array($vysledek)) {
     $cDokladu = $data["c_dokladu"];
     $datum = date("d.m.Y",$data["datum"]);
     $skupina = $data["skupina"];

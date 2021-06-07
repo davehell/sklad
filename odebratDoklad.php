@@ -26,7 +26,7 @@ $id = $_GET['odebrat'];
 
 //obsahuje doklad nejake polozky?
 $dotaz = "SELECT id FROM transakce WHERE id_dokladu='$id'";
-$vysledek = mysqli_Query($dotaz,$SRBD);
+$vysledek = mysqli_query($SRBD, $dotaz);
 
 if (mysqli_num_rows($vysledek) != 0) { //doklad obsahuje polozky - nemuze byt smazan
     session_register('hlaseniChyba');
@@ -37,7 +37,7 @@ if (mysqli_num_rows($vysledek) != 0) { //doklad obsahuje polozky - nemuze byt sm
 else
 {//doklad je prazdny - muze byt smazan
     $dotaz = "DELETE FROM doklady WHERE id='$id'";
-    $vysledek = mysqli_Query($dotaz,$SRBD);
+    $vysledek = mysqli_query($SRBD, $dotaz);
 
     if (mysqli_errno() != 0) { 
      session_register('hlaseniChyba');

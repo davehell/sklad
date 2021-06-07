@@ -30,8 +30,9 @@ zobrazitHlaseni();
 
 if(isset($_GET["upravit"])) {
   $upravovaneId = odstraneniEscape($_GET["upravit"], 5);
-  $vysledek3 = mysqli_Query("SELECT * FROM prodejni_kategorie WHERE id='$upravovaneId'", $SRBD) or Die(mysqli_Error());
-  $data3 = mysqli_Fetch_Array($vysledek3);
+  $dotaz = "SELECT * FROM prodejni_kategorie WHERE id='$upravovaneId'";
+  $vysledek3 = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data3 = mysqli_fetch_array($vysledek3);
 }
 else {
   $upravovaneId = "";
@@ -41,7 +42,8 @@ else {
 echo '
 <h2>'.$texty["stavajiciKategorie"].'</h2>';
 
-$vysledek = mysqli_Query("SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC", $SRBD) or Die(mysqli_Error());
+$dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 if(mysqli_num_rows($vysledek) != 0) {
   $sudyRadek = false;
   $sloupce = array('','popis');
@@ -49,7 +51,7 @@ if(mysqli_num_rows($vysledek) != 0) {
 <table>';
   printTableHeader($sloupce,"id=".$idZbozi);
 
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = @mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';
@@ -151,8 +153,8 @@ function pridatKategorii($udaje) {
     $SRBD=spojeniSRBD();
   }
 
-  mysqli_Query("INSERT INTO prodejni_kategorie (id,popis,nazev,mesto,ulice,ico,dic)
-  VALUES (0, '$popis', '$nazev', '$ulice', '$mesto', '$ico', '$dic')", $SRBD);
+  $dotaz = "INSERT INTO prodejni_kategorie (id,popis,nazev,mesto,ulice,ico,dic) VALUES (0, '$popis', '$nazev', '$ulice', '$mesto', '$ico', '$dic')";
+  mysqli_query($SRBD, $dotaz);
 
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -203,9 +205,10 @@ function upravitKategorii($udaje) {
     $SRBD=spojeniSRBD();
   }
 
-  mysqli_Query("UPDATE prodejni_kategorie SET
-  popis='$popis', nazev='$nazev', ulice='$ulice', mesto='$mesto', ico='$ico', dic='$dic'
-  WHERE id=$upravovaneId", $SRBD);
+  $dotaz = "UPDATE prodejni_kategorie
+            SET popis='$popis', nazev='$nazev', ulice='$ulice', mesto='$mesto', ico='$ico', dic='$dic'
+            WHERE id=$upravovaneId";
+  mysqli_query($SRBD, $dotaz);
 
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -230,9 +233,11 @@ function odebratKategorii($odstranovaneID) {
     $SRBD=spojeniSRBD();
   }
 
-  $vysledek = mysqli_Query("SELECT id FROM prodejni_kategorie WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id FROM prodejni_kategorie WHERE id='$odstranovaneID'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
-    mysqli_Query("DELETE FROM prodejni_kategorie WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "DELETE FROM prodejni_kategorie WHERE id='$odstranovaneID'";
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['kategorieOdebratOK'];
   }

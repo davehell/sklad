@@ -23,8 +23,9 @@ $cv = $_SESSION['promenneFormulare']["cv"]; //cislo vykresu      //soucastka
 $kusy = $_SESSION['promenneFormulare']["kusy"];                  //soucastka
 $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
-$vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND cv_rozmer='$cv'", $SRBD) or Die(mysqli_Error());
-While ($data = @mysqli_Fetch_Array($vysledek)) {
+$dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND cv_rozmer='$cv'";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+While ($data = @mysqli_fetch_array($vysledek)) {
   $soucastka = $data["id"];
 }
 
@@ -45,8 +46,8 @@ if (! $korektniParametry)  { // byly chyby
 }
 
 
-
-mysqli_Query("INSERT INTO sestavy (id, celek, soucastka, kusy) VALUES (0, '$celek', '$soucastka', '$kusy')", $SRBD);
+$dotaz = "INSERT INTO sestavy (id, celek, soucastka, kusy) VALUES (0, '$celek', '$soucastka', '$kusy')";
+mysqli_query($SRBD, $dotaz);
 if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];

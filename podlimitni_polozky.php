@@ -21,7 +21,8 @@ echo '
 <!-- xxx -->
 <p>'.$texty["podlimitniTitle"].'</p>';
 
-$vysledek = mysqli_Query("SELECT nazev, c_vykresu, mnozstvi, min_limit FROM zbozi WHERE mnozstvi<min_limit", $SRBD) or Die(mysqli_Error());
+$dotaz = "SELECT nazev, c_vykresu, mnozstvi, min_limit FROM zbozi WHERE mnozstvi<min_limit";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 if(mysqli_num_rows($vysledek) == 0) { //nic neni pod limitem
   echo '
   <p><strong>'.$texty["nicPodLimit"].'</strong></p><br />';

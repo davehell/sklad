@@ -119,7 +119,8 @@ function uzivatele() {
 <br />
 <?php
   $idModulu = dejIdModulu($_SESSION['modul']);
-  $vysledek = mysqli_Query("SELECT id, login, prava FROM uzivatele WHERE id_modulu='$idModulu' AND login!='admin'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, login, prava FROM uzivatele WHERE id_modulu='$idModulu' AND login!='admin'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   if (mysqli_num_rows($vysledek) == 0) { // v DB neni ulozeny zadny uzivatel
     echo "<p>V databázi nejsou ulo¾eni ¾ádní u¾ivatelé.<p>";
   }
@@ -130,7 +131,7 @@ function uzivatele() {
 <table>';
     printTableHeader($sloupce,"id=".$idZbozi);
 
-    While ($data = mysqli_Fetch_Array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       if($data["prava"] == 9) {
         $prava = $texty["admin"];
       }

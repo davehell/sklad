@@ -24,14 +24,16 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 $id = $_GET['id'];
 
 
-$vysledek = mysqli_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(mysqli_Error());
-While ($data = @mysqli_Fetch_Array($vysledek)) {
+$dotaz = "SELECT * FROM doklady WHERE id='$id'";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+While ($data = @mysqli_fetch_array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
   $prodKategorie = $data["prod_kategorie"];
     // zjisteni udaju o odberateli
-    $vysledek2 = mysqli_Query("SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(mysqli_Error());
-    $data2 = @mysqli_Fetch_Array($vysledek2);
+    $dotaz = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 }
 
@@ -94,9 +96,9 @@ WHERE t.id_dokladu='.$id.'
 AND t.id_zbozi = z.id
 ';
 //echo $sql;
-$vysledek = mysqli_Query($sql, $SRBD) or Die(mysqli_Error());
+$vysledek = mysqli_query($sql, $SRBD) or Die(mysqli_error());
 $i=1;
-While ($data = mysqli_Fetch_Array($vysledek)) {
+While ($data = mysqli_fetch_array($vysledek)) {
     echo '
       <tr>
         <td>'.$i++.'</td>

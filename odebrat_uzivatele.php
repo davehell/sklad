@@ -21,9 +21,11 @@ if(isset($_GET["id"])) {
   }
 }
 
-$vysledek = mysqli_Query("SELECT login FROM uzivatele WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+$dotaz = "SELECT login FROM uzivatele WHERE id='$odstranovaneID'";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 if (mysqli_num_rows($vysledek) == 1) { // v DB je uzivatel s ID, ktere chceme smazat
-  mysqli_Query("DELETE FROM uzivatele WHERE id = '$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "DELETE FROM uzivatele WHERE id = '$odstranovaneID'";
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['odebraniUzivateleOK'];

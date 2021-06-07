@@ -28,9 +28,9 @@ if(!isset($_GET["odebrat"])) {
   $mnozstvi = $_SESSION['promenneFormulare']["mnozstvi"];                  //soucastka
   $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
-
-  $vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
-  $data = @mysqli_Fetch_Array($vysledek);
+  $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data = @mysqli_fetch_array($vysledek);
   $soucastka = $data["id"];
 
 
@@ -51,7 +51,8 @@ if(!isset($_GET["odebrat"])) {
   }
 
   $mnozstvi = str_replace(",", ".", $mnozstvi);
-  mysqli_Query("INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')", $SRBD);// or Die(mysqli_Error());
+  $dotaz = "INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')";
+  mysqli_query($SRBD, $dotaz);// or Die(mysqli_Error());
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
@@ -73,9 +74,11 @@ else {
   if(isset($_GET["celek"])) {$celek = $_GET["celek"];}
   $soucastka = $_GET["odebrat"];
 
-  $vysledek = mysqli_Query("SELECT id FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
-    mysqli_Query("DELETE FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "DELETE FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'";
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['soucastkaOdebratOK'];
     session_unregister('promenneFormulare');  // zru¹ení kontextu formuláøe

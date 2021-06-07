@@ -24,11 +24,13 @@
   $dom = new DOMDocument();
   
   $SRBD=spojeniSRBD();
-  $vysledek = mysqli_Query("SELECT cena FROM prodejni_ceny, zbozi 
-                           WHERE zbozi.id=prodejni_ceny.id_zbozi 
-                             AND nazev = '$newnazev' 
-                             AND c_vykresu = '$cv'
-                             AND id_kategorie=$kategorie", $SRBD);
+  $dotaz = "SELECT cena
+            FROM prodejni_ceny, zbozi 
+            WHERE zbozi.id=prodejni_ceny.id_zbozi 
+            AND nazev = '$newnazev' 
+            AND c_vykresu = '$cv'
+            AND id_kategorie=$kategorie";
+  $vysledek = mysqli_query($SRBD, $dotaz);
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   // detekce chyby
   if(mysqli_num_rows($vysledek)==0)
@@ -37,7 +39,7 @@
     $cvText = $dom->createTextNode("chyba");
     $cv->appendChild($cvText);
   }
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $cv = $dom->CreateElement('cena');
     $dom->appendChild($cv);
     $cvText = $dom->createTextNode($data['cena']);

@@ -15,10 +15,10 @@ session_start();
     
 if(!isset($_GET['id']) || !isset($_GET['skupina']) || !ereg($soubory['dokladTransakce'],$_SERVER['HTTP_REFERER']))
 {
-      session_register('hlaseniChyba');
-      $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniTransakce'];
-      header("Location: ".$soubory['hlavniStranka']);
-      exit;
+   session_register('hlaseniChyba');
+   $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniTransakce'];
+   header("Location: ".$soubory['hlavniStranka']);
+   exit;
 }
 
 $skupina = $_GET['skupina'];
@@ -42,8 +42,8 @@ function akceProSkupinu($skupina,$id)
       $SRBD=spojeniSRBD();
    }
    $dotaz = "SELECT * FROM transakce WHERE id='$id'";
-   $vysledek = mysqli_Query($dotaz,$SRBD);
-   $data = mysqli_Fetch_Array($vysledek);
+   $vysledek = mysqli_query($SRBD, $dotaz);
+   $data = mysqli_fetch_array($vysledek);
    $mnozstvi = $data['mnozstvi'];  
    $id_zbozi = $data['id_zbozi'];
    
@@ -89,7 +89,7 @@ function akceProSkupinu($skupina,$id)
       $SRBD=spojeniSRBD();
    }
    $dotaz = "DELETE FROM transakce WHERE id='$id'";
-   $vysledek = mysqli_Query($dotaz,$SRBD);
+   $vysledek = mysqli_query($SRBD, $dotaz);
 
    if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
      //echo 'AA';

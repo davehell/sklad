@@ -24,16 +24,18 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 }
 $id = $_GET['id'];
 //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
-$vysledek = mysqli_Query("SELECT * FROM doklady WHERE id='$id'", $SRBD) or Die(mysqli_Error());
-While ($data = @mysqli_Fetch_Array($vysledek)) {
+$dotaz = "SELECT * FROM doklady WHERE id='$id'";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+While ($data = @mysqli_fetch_array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
   $skupina = $data["skupina"];
   $prodKategorie = $data["prod_kategorie"];
   $typVyroby = $data["typ_vyroby"];
     // zjisteni popisku prodejni kategorie
-    $vysledek2 = mysqli_Query("SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'", $SRBD) or Die(mysqli_Error());
-    $data2 = @mysqli_Fetch_Array($vysledek2);
+    $dotaz = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 
 echo '
@@ -117,13 +119,13 @@ echo '
 <select onchange="vyber_cv();" id="nazev" name="nazev">
 <option value="">---------- vyberte ----------</option>';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_Query($dotaz_nazev, $SRBD) or Die(mysqli_Error());
+  $vysledek = mysqli_query($dotaz_nazev, $SRBD) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
   else $selected = '';
 
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['nazev'].'"';
     if($data['nazev'] == $selected)
       echo ' selected';
@@ -136,13 +138,14 @@ echo '
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
   else $selected = '';
 
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['c_vykresu'].'"';
     if($data['c_vykresu'] == $selected)
       echo ' selected';
@@ -256,8 +259,9 @@ echo
   </tr>
   </thead>
   <tfoot>';
-    $vysledek = mysqli_Query("SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(mysqli_Error());
-    $data = @mysqli_Fetch_Array($vysledek);
+    $dotaz = "SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $data = @mysqli_fetch_array($vysledek);
    echo'
    <tr>
     <td colspan="3">'.$texty['celkem'].'</td>
@@ -275,11 +279,13 @@ echo
   ';
   $sudyRadek = false;
   $i=1;
-  $vysledek = mysqli_Query("SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
 
-While ($data = @mysqli_Fetch_Array($vysledek)) {
-    $vysledek2 = mysqli_Query('SELECT * FROM zbozi WHERE id='.$data["id_zbozi"], $SRBD) or Die(mysqli_Error());
-    $data2 = @mysqli_Fetch_Array($vysledek2);
+While ($data = @mysqli_fetch_array($vysledek)) {
+    $dotaz = 'SELECT * FROM zbozi WHERE id='.$data["id_zbozi"];
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $data2 = @mysqli_fetch_array($vysledek2);
     echo '
   <tr';
   if($sudyRadek)

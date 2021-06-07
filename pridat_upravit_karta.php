@@ -19,12 +19,13 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
  ******************************************************************************/
 if(isset($_GET["odebrat"])) {
   $odstranovaneID = $_GET["odebrat"];
-
-  $vysledek = mysqli_Query("SELECT obrazek FROM zbozi WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
-  $data = mysqli_Fetch_Array($vysledek);
+  $dotaz = "SELECT obrazek FROM zbozi WHERE id='$odstranovaneID'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data = mysqli_fetch_array($vysledek);
   
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
-    mysqli_Query("DELETE FROM zbozi WHERE id='$odstranovaneID'", $SRBD);
+    $dotaz = "DELETE FROM zbozi WHERE id='$odstranovaneID'";
+    mysqli_query($dotaz, $SRBD);
     if(mysqli_errno() != 0) { //zbozi nejde odstranit
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['kartaOdebratChyba'];
@@ -124,8 +125,9 @@ if ((!ereg("[0-9]", $cenaPrace)) || // cena prace muze obsahovat pouze cislice
   $korektniParametry = false;
 }
 // vsechny prodejni ceny
-$vysledek = mysqli_Query("SELECT id as id_kat FROM prodejni_kategorie ORDER BY popis ASC", $SRBD) or Die(mysqli_Error());
-While ($data = @mysqli_Fetch_Array($vysledek)) {
+$dotaz = "SELECT id as id_kat FROM prodejni_kategorie ORDER BY popis ASC";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+While ($data = @mysqli_fetch_array($vysledek)) {
   $cena = $_SESSION['promenneFormulare']["prodejniCena".$data["id_kat"]];
   if ($cena != "") { // prodejni cena nesmi byt prazdna
     if ((!ereg("[0-9]", $cena)) || //prodejni cena muze obsahovat pouze cislice
@@ -157,8 +159,8 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
   $zacatekCV = dejZacVykresu($cv); //pouze prvni cast c. vykresu
   $cenaPrace = str_replace(",", ".", $cenaPrace); //pripadne desetinne carky nahradi za tecky
   //ulozeni hlavicky karty
-  mysqli_Query("INSERT INTO zbozi (id, nazev, c_vykresu, zac_c_vykresu, jednotka, min_limit, cena_prace, mnozstvi)
-  VALUES (0, '$nazev', '$cv', '$zacatekCV', '$jednotka', '$limit', '$cenaPrace', 0)", $SRBD);
+  $dotaz = "INSERT INTO zbozi (id, nazev, c_vykresu, zac_c_vykresu, jednotka, min_limit, cena_prace, mnozstvi) VALUES (0, '$nazev', '$cv', '$zacatekCV', '$jednotka', '$limit', '$cenaPrace', 0)";
+  mysqli_query($SRBD, $dotaz);
   //echo $dotaz;
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -168,22 +170,26 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
   }
   else {//hlavicka karty je v poradku
     //zjisteni id prave vlozene karty
-    $vysledek = mysqli_Query("SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    While ($data = @mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     //ulozeni prodejnich cen
-    $vysledek = mysqli_Query("SELECT id as id_kat, popis FROM prodejni_kategorie ORDER BY popis ASC", $SRBD) or Die(mysqli_Error());
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    $dotaz = "SELECT id as id_kat, popis FROM prodejni_kategorie ORDER BY popis ASC";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    While ($data = @mysqli_fetch_array($vysledek)) {
       $idKat = $data["id_kat"];
       $cena = $_SESSION['promenneFormulare']["cenaPrace".$idKat];
       
       if($cena == "") { //misto ceny se vlozi NULL
-        mysqli_Query("INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')", $SRBD);
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')"
+        mysqli_query($SRBD, $dotaz);
       }
       else {
         $cena = str_replace(",", ".", $cena);//pripadne desetinne carky nahradi za tecky
-        mysqli_Query("INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')", $SRBD);
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')"
+        mysqli_query($SRBD, $dotaz);
       }
     }
 
@@ -191,7 +197,8 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
     if (is_uploaded_file($_FILES["jmeno_souboru"]["tmp_name"])) {
       $name = $_FILES["jmeno_souboru"]["name"];
       move_uploaded_file($_FILES["jmeno_souboru"]["tmp_name"], "./nahledy/$name");
-      mysqli_Query("UPDATE zbozi SET obrazek='$name' WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+      $dotaz = "UPDATE zbozi SET obrazek='$name' WHERE id='$id'";
+      mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
       zmensiObrazek($name, "thumb");
       zmensiObrazek($name, "normal");
     }
@@ -225,7 +232,8 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
 */
   $zacatekCV = dejZacVykresu($cv); //pouze prvni cast c. vykresu
   $cenaPrace = str_replace(",", ".", $cenaPrace); //pripadne desetinne carky nahradi za tecky
-  mysqli_Query("UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', zac_c_vykresu='$zacatekCV', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', zac_c_vykresu='$zacatekCV', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'";
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -234,31 +242,35 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
     exit;
   }
   else {
-    $vysledek = mysqli_Query("SELECT id as id_kategorie FROM prodejni_kategorie ORDER BY id", $SRBD) or Die(mysqli_Error());
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    $dotaz = "SELECT id as id_kategorie FROM prodejni_kategorie ORDER BY id";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    While ($data = @mysqli_fetch_array($vysledek)) {
       $cena = $_SESSION['promenneFormulare']['prodejniCena'.$data['id_kategorie']];
 
       $idKat = $data["id_kategorie"];
       //pokusi se ulozit prodejni cena, pokud uz vyrobek u cenove kategorie ma
       //cenu ulozenou, tato hodnota se updatuje
       if($cena == "") { //misto ceny se vlozi NULL
-        mysqli_Query("INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')", $SRBD);
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')";
+        mysqli_query($SRBD, $dotaz);
       }
       else {
         $cena = str_replace(",", ".", $cena);//pripadne desetinne carky nahradi za tecky
-        mysqli_Query("INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')", $SRBD);
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')";
+        mysqli_query($SRBD, $dotaz);
       }
       
       if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
         if($cena == "") { //misto ceny se vlozi NULL
-          mysqli_Query("UPDATE prodejni_ceny SET cena=NULL WHERE id_zbozi='$id' AND id_kategorie='$idKat'", $SRBD);
+          $dotaz = "UPDATE prodejni_ceny SET cena=NULL WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
+          mysqli_query($SRBD, $dotaz);
         }
         else {
           $cena = str_replace(",", ".", $cena);//pripadne desetinne carky nahradi za tecky
-          mysqli_Query("UPDATE prodejni_ceny SET cena='$cena' WHERE id_zbozi='$id' AND id_kategorie='$idKat'", $SRBD);
+          $dotaz = "UPDATE prodejni_ceny SET cena='$cena' WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
+          mysqli_query($SRBD, $dotaz);
         }
       }
-      
     }//while
 
     session_register('hlaseniOK');

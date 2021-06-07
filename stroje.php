@@ -37,13 +37,13 @@ echo '
 <option value="">---------- vyberte ----------</option>
 ';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_Query("SELECT id, nazev FROM zbozi GROUP BY nazev", $SRBD) or Die(mysqli_Error());
+  $vysledek = mysqli_query("SELECT id, nazev FROM zbozi GROUP BY nazev", $SRBD) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
   else $selected = '';
 
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['nazev'].'"';
     if($data['nazev'] == $selected)
       echo ' selected';
@@ -55,13 +55,14 @@ echo '
 <option value="">----- vyberte -----</option>
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
-  $vysledek = mysqli_Query("SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
   else $selected = '';
 
-  While ($data = mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['c_vykresu'].'"';
     if($data['c_vykresu'] == $selected)
       echo ' selected';
@@ -89,7 +90,7 @@ if(mysqli_num_rows($vysledek) != 0) {
   printTableHeader($sloupce,"id=".$idZbozi);
 
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = @mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';
@@ -124,10 +125,10 @@ function pridatStroj($nazev, $cv) {
     $SRBD=spojeniSRBD();
   }
 
-  $vysledek = mysqli_Query("SELECT id FROM zbozi
-  WHERE nazev='$nazev' AND c_vykresu='$cv'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   if(mysqli_num_rows($vysledek) == 1) {
-    $data = @mysqli_Fetch_Array($vysledek);
+    $data = @mysqli_fetch_array($vysledek);
     $idZbozi = $data["id"];
   }
   else {
@@ -137,8 +138,8 @@ function pridatStroj($nazev, $cv) {
     exit;
   }
 
-
-  mysqli_Query("INSERT INTO stroje (id,id_zbozi) VALUES (0, '$idZbozi')", $SRBD);
+  $dotaz = "INSERT INTO stroje (id,id_zbozi) VALUES (0, '$idZbozi')";
+  mysqli_query($SRBD, $dotaz);
 
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -162,9 +163,11 @@ function odebratStroj($odstranovaneID) {
     $SRBD=spojeniSRBD();
   }
 
-  $vysledek = mysqli_Query("SELECT id FROM stroje WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id FROM stroje WHERE id='$odstranovaneID'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
-    mysqli_Query("DELETE FROM stroje WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "DELETE FROM stroje WHERE id='$odstranovaneID'";
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['strojOdebratOK'];
   }

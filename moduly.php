@@ -28,7 +28,8 @@ zobrazitHlaseni();
 echo '
 <h2>'.$texty["prehledModulu"].'</h2>';
 
-$vysledek = mysqli_Query("SELECT id, modul FROM moduly ORDER BY id ASC", $SRBD) or Die(mysqli_Error());
+$dotaz = "SELECT id, modul FROM moduly ORDER BY id ASC";
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 if(mysqli_num_rows($vysledek) != 0) {
   $sudyRadek = false;
   $sloupce = array('','modul');
@@ -36,7 +37,7 @@ if(mysqli_num_rows($vysledek) != 0) {
 <table>';
   printTableHeader($sloupce);
 
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = @mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';
@@ -111,7 +112,8 @@ function pridatModul($nazev) {
     exit;
   }
 
-  mysqli_Query("INSERT INTO moduly (id,modul) VALUES (0, '$nazev')", $SRBD);
+  $dotaz = "INSERT INTO moduly (id,modul) VALUES (0, '$nazev')";
+  mysqli_query($SRBD, $dotaz);
 
   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -123,8 +125,8 @@ function pridatModul($nazev) {
   }
 
   $nazev .= $_SESSION["rokArchiv"];
-  mysqli_Query("create database `$nazev` COLLATE=latin2_czech_cs") or Die(mysqli_Error());
-  mysqli_Select_Db($nazev, $SRBD) or Die(mysqli_Error());
+  mysqli_query("create database `$nazev` COLLATE=latin2_czech_cs") or Die(mysqli_Error());
+  mysqli_Select_Db($SRBD, $nazev) or Die(mysqli_Error());
   
 
   $query = "";
@@ -136,7 +138,7 @@ function pridatModul($nazev) {
 
   //vytvoreni potrebnych tabulek v databazi
   foreach (explode(';', $query) as $sql) {
-    mysqli_query($sql, $SRBD);
+    mysqli_query($SRBD, $sql);
   }
   
   $query = "";
@@ -146,22 +148,22 @@ function pridatModul($nazev) {
   }
   fclose ($f);
   
-  mysqli_query('delimiter //', $SRBD);
+  mysqli_query($SRBD, 'delimiter //');
   
   //vytvoreni potrebnych tabulek v databazi
   foreach (explode('//', $query) as $sql) {
-    mysqli_query($sql, $SRBD);
+    mysqli_query($SRBD, $sql);
   }
   
-  mysqli_query('delimiter ;', $SRBD);
+  mysqli_query($SRBD, 'delimiter ;');
 /*
   //zjisteni id posledne vlozeneho modulu
-  $vysledek = mysqli_Query("SELECT id from moduly ORDER BY id DESC LIMIT 1", $SRBD);
-  $data = @mysqli_Fetch_Array($vysledek);
+  $vysledek = mysqli_query($SRBD, "SELECT id from moduly ORDER BY id DESC LIMIT 1");
+  $data = @mysqli_fetch_array($vysledek);
   $posledniID = $data["id"];
   //vlozeni vychoziho admin. uctu k novemu modulu
-  mysqli_Query("INSERT INTO uzivatele (id,login, heslo, prava, id_modulu)
-  VALUES (0, 'admin', '211a066003eaea06511874be3918417b75069ea7', 9, '$posledniID')", $SRBD);
+  mysqli_query($SRBD, "INSERT INTO uzivatele (id,login, heslo, prava, id_modulu)
+  VALUES (0, 'admin', '211a066003eaea06511874be3918417b75069ea7', 9, '$posledniID')");
 */
   //zabrani opetovnemu zaslani POST dat pri refreshi stranky
   header('Location: '.$soubory['moduly'], true, 303);
@@ -176,12 +178,14 @@ function odebratModul($odstranovaneID) {
     $SRBD=spojeniSRBD("sklad");
   }
 
-  $vysledek = mysqli_Query("SELECT modul FROM moduly WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
-  $data = @mysqli_Fetch_Array($vysledek);
+  $dotaz = "SELECT modul FROM moduly WHERE id='$odstranovaneID'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data = @mysqli_fetch_array($vysledek);
   $modul = $data["modul"];
   
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
-    mysqli_Query("DELETE FROM moduly WHERE id='$odstranovaneID'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "DELETE FROM moduly WHERE id='$odstranovaneID'";
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['modulOdebratOK'];
   }
@@ -190,9 +194,9 @@ function odebratModul($odstranovaneID) {
     $_SESSION['hlaseniChyba'] = $texty['modulOdebratChyba'];
   }
 
-  $vysledek = mysqli_Query("show databases like '$modul%'", $SRBD) or Die(mysqli_Error());
-  While ($data = mysqli_Fetch_Array($vysledek)) {
-    mysqli_Query("drop database if exists `$data[0]`") or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, "show databases like '$modul%'") or Die(mysqli_Error());
+  While ($data = mysqli_fetch_array($vysledek)) {
+    mysqli_query("drop database if exists `$data[0]`") or Die(mysqli_Error());
     //echo $data[0];
   }
 

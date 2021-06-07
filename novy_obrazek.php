@@ -11,11 +11,13 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
 //odebrani obrazku. id zbozi je v parametru "odstranit"
 if(isset($_GET["odstranit"])) {
   $id = $_GET["odstranit"];
-  $vysledek = mysqli_Query("SELECT obrazek FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
-  $data = mysqli_Fetch_Array($vysledek);
+  $dotaz = "SELECT obrazek FROM zbozi WHERE id='$id'";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $data = mysqli_fetch_array($vysledek);
   if(File_Exists("nahledy/".$data["obrazek"])) unlink("nahledy/".$data["obrazek"]);  //vymazani souboru
   if(File_Exists("nahledy/thumb_".$data["obrazek"])) unlink("nahledy/thumb_".$data["obrazek"]);//vymazani souboru
-  mysqli_Query("UPDATE zbozi SET obrazek=NULL WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+  $dotaz = "UPDATE zbozi SET obrazek=NULL WHERE id='$id'";
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['odebratObrazekOK'];
@@ -33,12 +35,14 @@ if(isset($_POST["id"])) {
     zmensiObrazek($name, "thumb");
     zmensiObrazek($name, "normal");
     //smazani predchoziho obrazku
-    $vysledek = mysqli_Query("SELECT obrazek FROM zbozi WHERE id='$id'", $SRBD) or Die(mysqli_Error());
-    $data = mysqli_Fetch_Array($vysledek);
+    $dotaz = "SELECT obrazek FROM zbozi WHERE id='$id'";
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $data = mysqli_fetch_array($vysledek);
     if(File_Exists("nahledy/".$data["obrazek"])) unlink("nahledy/".$data["obrazek"]);  //vymazani souboru
     if(File_Exists("nahledy/thumb_".$data["obrazek"])) unlink("nahledy/thumb_".$data["obrazek"]);//vymazani souboru
     //ulozeni nazvu noveho souboru do db
-    mysqli_Query("UPDATE zbozi SET obrazek='$name' WHERE id='$id'", $SRBD) or Die(mysqli_Error());
+    $dotaz = "UPDATE zbozi SET obrazek='$name' WHERE id='$id'";
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['novyObrazekOK'];

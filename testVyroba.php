@@ -53,7 +53,7 @@ else //vse OK ve formulari
       WHERE nazev='$nazev' AND c_vykresu='$cv'";
       $vysledek = mysqli_query($SRBD, $dotaz);
 
-      While ($data = @mysqli_Fetch_Array($vysledek)) {
+      While ($data = @mysqli_fetch_array($vysledek)) {
         $id = $data["id"];
       }
       
