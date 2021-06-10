@@ -22,7 +22,7 @@ echo '
 <h2>1. '.$texty["vyplnitHlavickuKarty"].'</h2>';
 
 if(!isset($_GET["id"])) {
-  if($_SESSION['promenneFormulare']['limit'] == "") {
+  if(isset($_SESSION['promenneFormulare']['limit']) && $_SESSION['promenneFormulare']['limit'] == "") {
     //pokud nebyl drive zadan limit, nastavi se jako defaultni hodnota nula
     $_SESSION['promenneFormulare']['limit']=0;
   }
@@ -33,9 +33,9 @@ if(!isset($_GET["id"])) {
 <fieldset>
 <legend>'.$texty['infoKarta'].'</legend>
 <label for="nazev_input">'.$texty['nazev'].':</label>
-<input type="text" maxlength="40" id="nazev_input" name="nazev_input" value="'.$_SESSION['promenneFormulare']['nazev_input'].'" /><br />
+<input type="text" maxlength="40" id="nazev_input" name="nazev_input" value="'. ($_SESSION['promenneFormulare']['nazev_input'] ?? '') .'" /><br />
 <label for="cv_input">'.$texty['cv'].':</label>
-<input type="text" maxlength="40" id="cv_input" name="cv_input" value="'.$_SESSION['promenneFormulare']['cv_input'].'" /><br />
+<input type="text" maxlength="40" id="cv_input" name="cv_input" value="'. ($_SESSION['promenneFormulare']['cv_input'] ?? '') .'" /><br />
 <label for="jednotka">'.$texty['jednotka'].':</label>
 <select id="jednotka" name="jednotka">
   <option>kus</option>
@@ -43,9 +43,10 @@ if(!isset($_GET["id"])) {
   <option>kilogram</option>
 </select><br />
 <label for="limit">'.$texty['limit'].':</label>
-<input type="text" maxlength="40" id="limit" name="limit" value="'.$_SESSION['promenneFormulare']['limit'].'" /><br />
+<input type="text" maxlength="40" id="limit" name="limit" value="'. ($_SESSION['promenneFormulare']['limit'] ?? '') .'" /><br />
 <label for="cenaPrace">'.$texty['cenaPrace'].':</label>
-<input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'.$_SESSION['promenneFormulare']['cenaPrace'].'" /><br />
+<input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'. ($_SESSION['promenneFormulare']['cenaPrace'] ?? '') .'" /><br />
+<strong>'. $texty['prodejniCena'] .':</strong><br />
 ';
   //vypsani textovych poli pro vsechny prodejni ceny
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
@@ -53,8 +54,8 @@ if(!isset($_GET["id"])) {
   While ($data = @mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
-<label for="prodejniCena'.$idProdejni.'">'.$texty['prodejniCena'].' '.$data["popis"].':</label>
-<input type="text" maxlength="40" id="cenaPrace'.$idProdejni.'" name="cenaPrace'.$idProdejni.'" value="'.$_SESSION['promenneFormulare']['cenaPrace'.$idProdejni].'" /><br />
+<label for="prodejniCena'.$idProdejni.'">'.$data["popis"].':</label>
+<input type="text" maxlength="40" id="cenaPrace'.$idProdejni.'" name="cenaPrace'.$idProdejni.'" value="'. ($_SESSION['promenneFormulare']['cenaPrace'.$idProdejni] ?? '') .'" /><br />
 ';
   }//while
 echo '

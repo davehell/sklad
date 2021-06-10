@@ -69,7 +69,7 @@ $cv = $_SESSION['promenneFormulare']["cv_input"]; //cislo vykresu
 $jednotka = $_SESSION['promenneFormulare']["jednotka"];
 $limit = $_SESSION['promenneFormulare']["limit"];
 $cenaPrace = $_SESSION['promenneFormulare']["cenaPrace"];
-$id = odstraneniEscape($_POST["id"], 100);
+$id = odstraneniEscape($_POST["id"] ?? '', 100);
 
 //kontroly zadanych dat
 $korektniParametry = true;
@@ -106,7 +106,7 @@ if ($limit == "") { // limit nesmi byt prazdny
   $_SESSION['hlaseniChyba'] = $texty['prazdnyLimit'];
   $korektniParametry = false;
 }
-if ((!ereg("[0-9]", $limit)) || // limit muze obsahovat pouze cislice
+if ((!preg_match("/[0-9]/", $limit)) || // limit muze obsahovat pouze cislice
     ($limit < 0)) { //a nesmi byt zaporny
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['spatnyLimit'];
@@ -118,7 +118,7 @@ if ($cenaPrace == "") { // cena prace nesmi byt prazdna
   $_SESSION['hlaseniChyba'] = $texty['prazdnaCenaPrace'];
   $korektniParametry = false;
 }
-if ((!ereg("[0-9]", $cenaPrace)) || // cena prace muze obsahovat pouze cislice
+if ((!preg_match("/[0-9]/", $cenaPrace)) || // cena prace muze obsahovat pouze cislice
     ($cenaPrace < 0)) { //a nesmi byt zaporna
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['spatnaCenaPrace'];
@@ -128,9 +128,9 @@ if ((!ereg("[0-9]", $cenaPrace)) || // cena prace muze obsahovat pouze cislice
 $dotaz = "SELECT id as id_kat FROM prodejni_kategorie ORDER BY popis ASC";
 $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 While ($data = @mysqli_fetch_array($vysledek)) {
-  $cena = $_SESSION['promenneFormulare']["prodejniCena".$data["id_kat"]];
+  $cena = $_SESSION['promenneFormulare']["prodejniCena".$data["id_kat"]] ?? "";
   if ($cena != "") { // prodejni cena nesmi byt prazdna
-    if ((!ereg("[0-9]", $cena)) || //prodejni cena muze obsahovat pouze cislice
+    if ((!preg_match("/[0-9]/", $cena)) || //prodejni cena muze obsahovat pouze cislice
         ($cena < 0)) { //a nesmi byt zaporna
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['spatnaProdejniCena'];
@@ -149,20 +149,12 @@ if (! $korektniParametry)  { // byly chyby
  * vkladani NOVE karty
  ******************************************************************************/
 if($_POST["odeslat"] == $texty["pridatKartu"]) {
-/*
-  if(!($pos = strpos($cv, "-"))) //hleda pozici prvni pomlcky v cisle vykresu
-  { //pokud zadnou pomlcku nenajde, bude hledat tecku
-    $pos = strpos($cv, "."); //najde pozici prvni tecky
-  }
-  $zacatekCV = substr($cv,0,$pos); //pouze prvni cast c. vykresu
-*/
   $zacatekCV = dejZacVykresu($cv); //pouze prvni cast c. vykresu
   $cenaPrace = str_replace(",", ".", $cenaPrace); //pripadne desetinne carky nahradi za tecky
   //ulozeni hlavicky karty
   $dotaz = "INSERT INTO zbozi (id, nazev, c_vykresu, zac_c_vykresu, jednotka, min_limit, cena_prace, mnozstvi) VALUES (0, '$nazev', '$cv', '$zacatekCV', '$jednotka', '$limit', '$cenaPrace', 0)";
   mysqli_query($SRBD, $dotaz);
-  //echo $dotaz;
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['novaKarta']);
@@ -183,12 +175,12 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
       $cena = $_SESSION['promenneFormulare']["cenaPrace".$idKat];
       
       if($cena == "") { //misto ceny se vlozi NULL
-        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')"
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', 'NULL')";
         mysqli_query($SRBD, $dotaz);
       }
       else {
         $cena = str_replace(",", ".", $cena);//pripadne desetinne carky nahradi za tecky
-        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')"
+        $dotaz = "INSERT INTO prodejni_ceny (id, id_zbozi, id_kategorie, cena) VALUES (0, '$id', '$idKat', '$cena')";
         mysqli_query($SRBD, $dotaz);
       }
     }
@@ -223,13 +215,6 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
  * uprava STAVAJICI karty
  ******************************************************************************/
 if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
-/*
-  if(!($pos = strpos($cv, "-"))) //hleda pozici prvni tecky v cisle vykresu
-  { //pokud zadnou texku nenajde, bude hledat pomlcku
-  echo $pos;
-    $pos = strpos($cv, "-"); //najde pozici prvni pomlcky
-  }
-*/
   $zacatekCV = dejZacVykresu($cv); //pouze prvni cast c. vykresu
   $cenaPrace = str_replace(",", ".", $cenaPrace); //pripadne desetinne carky nahradi za tecky
   $dotaz = "UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', zac_c_vykresu='$zacatekCV', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'";
