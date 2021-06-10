@@ -53,7 +53,7 @@ if(!isset($_GET["odebrat"])) {
   $mnozstvi = str_replace(",", ".", $mnozstvi);
   $dotaz = "INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')";
   mysqli_query($SRBD, $dotaz);// or Die(mysqli_Error());
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
     header('Location: '.$_SERVER['HTTP_REFERER']);

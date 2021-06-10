@@ -48,7 +48,7 @@ if (! $korektniParametry)  { // byly chyby
 
 $dotaz = "INSERT INTO sestavy (id, celek, soucastka, kusy) VALUES (0, '$celek', '$soucastka', '$kusy')";
 mysqli_query($SRBD, $dotaz);
-if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
+if (mysqli_errno($SRBD) == 1582) { //vkladan duplicitni zaznam
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
   header('Location: '.$_SERVER['HTTP_REFERER']);

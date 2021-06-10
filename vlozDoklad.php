@@ -60,7 +60,7 @@ else //vse OK ve formulari
   
   mysqli_query($SRBD, $dotaz);
   
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['NovyDokladDuplicitni'];
     header('Location: '.$soubory['novyDoklad']);

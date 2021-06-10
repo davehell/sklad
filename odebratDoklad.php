@@ -39,7 +39,7 @@ else
     $dotaz = "DELETE FROM doklady WHERE id='$id'";
     $vysledek = mysqli_query($SRBD, $dotaz);
 
-    if (mysqli_errno() != 0) { 
+    if (mysqli_errno($SRBD) != 0) { 
      session_register('hlaseniChyba');
      $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniDokladu'];
     }

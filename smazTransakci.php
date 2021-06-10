@@ -91,7 +91,7 @@ function akceProSkupinu($skupina,$id)
    $dotaz = "DELETE FROM transakce WHERE id='$id'";
    $vysledek = mysqli_query($SRBD, $dotaz);
 
-   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+   if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
      //echo 'AA';
      session_register('hlaseniChyba');
      $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniTransakce'];

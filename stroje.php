@@ -141,7 +141,7 @@ function pridatStroj($nazev, $cv) {
   $dotaz = "INSERT INTO stroje (id,id_zbozi) VALUES (0, '$idZbozi')";
   mysqli_query($SRBD, $dotaz);
 
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novyStrojDuplicitni'];
   }

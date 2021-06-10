@@ -240,7 +240,7 @@ function akceProSkupinu($skupina,$id)
    $id_transakce = mysqli_insert_id();      //zjisteni posledniho id - pro vyrobu
    
    
-   if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+   if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
      session_register('hlaseniChyba');
      $_SESSION['hlaseniChyba'] = $texty['ChybaVlozeniTransakce'];
      header("Location: ".$_SERVER['HTTP_REFERER']);

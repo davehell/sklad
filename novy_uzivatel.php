@@ -96,7 +96,7 @@ if($_POST["odeslat"] == $texty["pridat"]) { //vkladani NOVEHO uzivatele
   mysqli_query($SRBD, "INSERT INTO uzivatele (id, login, heslo, prava, id_modulu)
   VALUES (0, '$loginUsername', '$zakodovaneHeslo', $loginRights, $idModulu)");
 
-  if(mysqli_errno() != 0) { //uzivatelem se stejnym loginem uz v modulu je
+  if(mysqli_errno($SRBD) != 0) { //uzivatelem se stejnym loginem uz v modulu je
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['duplicitniLogin'];
     header('Location: '.$soubory['uzivatele']);

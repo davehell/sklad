@@ -33,7 +33,7 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) { //vkladani NOVEHO zajezdu
   $dotaz = "INSERT INTO zbozi (id, nazev, c_vykresu, jednotka, min_limit, cena_prace) VALUES (0, '$nazev', '$cv', '$jednotka', '$limit', '$cenaPrace')";
   mysqli_query($SRBD, $dotaz);
 
-  if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) == 1582) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['novaKarta']);
@@ -60,7 +60,7 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) { //vkladani NOVEHO zajezdu
 if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   $dotaz = "UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'";
   mysqli_query($SRBD, $dotaz);
-  if (mysqli_errno() == 1582) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) == 1582) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['upravitKarta'].'?id='.$id);

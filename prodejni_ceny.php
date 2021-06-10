@@ -156,7 +156,7 @@ function pridatKategorii($udaje) {
   $dotaz = "INSERT INTO prodejni_kategorie (id,popis,nazev,mesto,ulice,ico,dic) VALUES (0, '$popis', '$nazev', '$ulice', '$mesto', '$ico', '$dic')";
   mysqli_query($SRBD, $dotaz);
 
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKategorieDuplicitni'];
   }
@@ -210,7 +210,7 @@ function upravitKategorii($udaje) {
             WHERE id=$upravovaneId";
   mysqli_query($SRBD, $dotaz);
 
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKategorieDuplicitni'];
   }

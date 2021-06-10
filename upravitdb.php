@@ -15,8 +15,8 @@ foreach ($dbs as $db) {
     else {
         mysqli_query($SRBD, "SET NAMES 'latin2';");
         mysqli_query($SRBD, 'ALTER TABLE `doklady` CHANGE `typ_vyroby` `typ_vyroby` enum("Montá¾","Obrobna","Svaøovna","Montá¾ vozíkù","Montá¾ blokù","Obrobna bloky")');
-        if(mysqli_errno() != 0)   { //dotaz se neprovedl
-            echo "CHYBA: ".mysqli_errno()."<br />\n";
+        if(mysqli_errno($SRBD) != 0)   { //dotaz se neprovedl
+            echo "CHYBA: ".mysqli_errno($SRBD)."<br />\n";
         }
         else {
             echo "OK<br />\n";

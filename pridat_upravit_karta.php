@@ -26,7 +26,7 @@ if(isset($_GET["odebrat"])) {
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     $dotaz = "DELETE FROM zbozi WHERE id='$odstranovaneID'";
     mysqli_query($dotaz, $SRBD);
-    if(mysqli_errno() != 0) { //zbozi nejde odstranit
+    if(mysqli_errno($SRBD) != 0) { //zbozi nejde odstranit
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['kartaOdebratChyba'];
       session_unregister('promenneFormulare');  // zru¹ení kontextu formuláøe
@@ -220,7 +220,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   $dotaz = "UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', zac_c_vykresu='$zacatekCV', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'";
   mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
 
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novaKartaDuplicitni'];
     header('Location: '.$soubory['upravitKarta'].'?id='.$id);
@@ -245,7 +245,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
         mysqli_query($SRBD, $dotaz);
       }
       
-      if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+      if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
         if($cena == "") { //misto ceny se vlozi NULL
           $dotaz = "UPDATE prodejni_ceny SET cena=NULL WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
           mysqli_query($SRBD, $dotaz);

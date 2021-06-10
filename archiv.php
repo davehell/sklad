@@ -38,7 +38,7 @@ if($_POST) {
   //vytvoreni nove db
   $db = $_SESSION["modul"].$rok;
   mysqli_query("create database `$db` COLLATE=latin2_czech_cs");
-  if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+  if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novyRokDuplicitni'];
     header('Location: '.$soubory['archiv'], true, 303);

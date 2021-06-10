@@ -34,7 +34,7 @@ if(isset($_POST['rezNaProdej']))
     $dotaz = "UPDATE doklady SET c_dokladu=$cDokladu, datum='$timestamp_date', skupina='Prodej' WHERE id='$id'";
     mysqli_query($SRBD, $dotaz);
     
-    if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+    if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['NovyDokladDuplicitni'];
       
@@ -69,7 +69,7 @@ elseif(isset($_POST['ruseniRez']))
     //smazani polozky z tabulky doklady
     $dotaz = "DELETE FROM doklady WHERE id=$id";
     mysqli_query($SRBD, $dotaz);
-    if (mysqli_errno() != 0) { //vkladan duplicitni zaznam
+    if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['chybaMazaniRezervace'];
       

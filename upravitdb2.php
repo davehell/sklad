@@ -34,8 +34,8 @@ foreach ($dbs as $db) {
 
           mysqli_query($SRBD, 'delimiter ;');
 
-        if(mysqli_errno() != 0 && mysqli_errno()!=1064)   { //dotaz se neprovedl
-            echo "CHYBA: ".mysqli_errno()."<br />\n";
+        if(mysqli_errno($SRBD) != 0 && mysqli_errno($SRBD)!=1064)   { //dotaz se neprovedl
+            echo "CHYBA: ".mysqli_errno($SRBD)."<br />\n";
         }
         else {
             echo "OK<br />\n";
