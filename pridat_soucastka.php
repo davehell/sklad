@@ -32,7 +32,7 @@ While ($data = @mysqli_fetch_array($vysledek)) {
 //kontroly
 $korektniParametry = true;
 //kusy
-if ((!ereg("[0-9]", $kusy)) || // limit muze obsahovat pouze cislice
+if ((!preg_match("/[0-9]/", $kusy)) || // limit muze obsahovat pouze cislice
     ($kusy < 0)) { //a nesmi byt zaporny
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['spatneKusy'];

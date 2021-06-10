@@ -12,8 +12,8 @@ session_start();
 
 //$nedostatek = array();
 //$reserved = array();
-    
-if(!isset($_GET['id']) || !isset($_GET['skupina']) || !ereg($soubory['dokladTransakce'],$_SERVER['HTTP_REFERER']))
+print_r($_SERVER['HTTP_REFERER']);
+if(!isset($_GET['id']) || !isset($_GET['skupina']) || !preg_match("/" . $soubory['dokladTransakce'] . "/", $_SERVER['HTTP_REFERER']))
 {
    session_register('hlaseniChyba');
    $_SESSION['hlaseniChyba'] = $texty['ChybaMazaniTransakce'];

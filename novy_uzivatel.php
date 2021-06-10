@@ -42,7 +42,7 @@ if (isset($_POST['loginRights'])) {
 $korektniParametry = true;
 // uzivatelske jmeno
 
-if (!preg_match('^[a-zA-Z0-9_]+$', $loginUsername)) {// jméno nesmí obsahovat bílé znaky
+if (!preg_match('/^[a-zA-Z0-9_]+$/', $loginUsername)) {// jméno nesmí obsahovat bílé znaky
   session_register('hlaseniChyba');
   $_SESSION['hlaseniChyba'] = $texty['deraveJmeno'];
   $korektniParametry = false;

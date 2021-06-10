@@ -91,7 +91,7 @@ function pridatModul($nazev) {
     $_SESSION['hlaseniChyba'] = $texty['neSklad'];
     $korektniParametry = false;
   }
-  if (!ereg("[a-zA-Z0-9]", $nazev)) { // jméno nesmí obsahovat bílé znaky
+  if (!preg_match("/[a-zA-Z0-9]/", $nazev)) { // jméno nesmí obsahovat bílé znaky
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['deravyNazev'];
     $korektniParametry = false;

@@ -168,7 +168,7 @@ global $texty;
 $korektniParametry=true;
 
 if(empty($datum)) ;
-elseif (!ereg("^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$",$datum, $dateParts))
+elseif (!preg_match("/^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$/",$datum, $dateParts))
 {  session_register('hlaseniChyba');
    $_SESSION['hlaseniChyba'] = $texty['nespravneDatum'];
    $korektniParametry = false;

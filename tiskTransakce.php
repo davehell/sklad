@@ -145,7 +145,7 @@ if(isset($_GET['od']) && $datumOK){
 //     $timestamp_datedo = strtotime($do);
 //     $dotaz2 .= "AND D.c_dokladu = '$cd' ";
 //   }
-//   if($typ == 'Výroba' && !empty($_REQUEST['typVyroby']) && !ereg('-',$_REQUEST['typVyroby']))
+//   if($typ == 'Výroba' && !empty($_REQUEST['typVyroby']) && !preg_match('/-/',$_REQUEST['typVyroby']))
 //   {
 //     $dotaz2 .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 //   }
@@ -238,7 +238,7 @@ global $texty;
 $korektniParametry=true;
 
 if(empty($datum)) ;
-elseif (!ereg("^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$",$datum, $dateParts))
+elseif (!preg_match("/^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$/",$datum, $dateParts))
 {  session_register('hlaseniChyba');
    $_SESSION['hlaseniChyba'] = $texty['nespravneDatum'];
    $korektniParametry = false;
@@ -280,7 +280,7 @@ if(!empty($_GET['c_dokladu']))
   $dotaz .= "AND D.c_dokladu = '$cd' ";
 }
 
-if($skupina == 'Výroba' && !empty($_REQUEST['typVyroby']) && !ereg('-',$_REQUEST['typVyroby']))
+if($skupina == 'Výroba' && !empty($_REQUEST['typVyroby']) && !preg_match('/-/',$_REQUEST['typVyroby']))
 {
   $dotaz .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 }
@@ -320,7 +320,7 @@ if(!empty($_GET['c_dokladu']))
   $dotaz .= "AND D.c_dokladu = '$cd' ";
 }
 
-if($skupina == 'Výroba' && !empty($_REQUEST['typVyroby']) && !ereg('-',$_REQUEST['typVyroby']))
+if($skupina == 'Výroba' && !empty($_REQUEST['typVyroby']) && !preg_match('/-/',$_REQUEST['typVyroby']))
 {
   $dotaz .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 }

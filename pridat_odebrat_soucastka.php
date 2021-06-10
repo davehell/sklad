@@ -37,7 +37,7 @@ if(!isset($_GET["odebrat"])) {
   //kontroly
   $korektniParametry = true;
   //mnozstvi
-  if ((!ereg("[0-9]", $mnozstvi)) || // limit muze obsahovat pouze cislice
+  if ((!preg_match("/[0-9]/", $mnozstvi)) || // limit muze obsahovat pouze cislice
       ($mnozstvi < 0)) { //a nesmi byt zaporny
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['spatneKusy'];

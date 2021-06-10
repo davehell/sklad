@@ -153,7 +153,7 @@ function sestavDotaz()
     $prvni = false;
   }
   
-  if(!ereg('-',$_REQUEST['skupina']) && !empty($_REQUEST['skupina']))
+  if(!preg_match('/-/',$_REQUEST['skupina']) && !empty($_REQUEST['skupina']))
   {
     if(!$prvni) $where .= 'AND ';
     $where .= 'skupina=' . "'".$_REQUEST['skupina']."' ";
@@ -161,14 +161,14 @@ function sestavDotaz()
   }
   
   if(($_REQUEST['skupina']=='Rezervace' || $_REQUEST['skupina']=='Prodej') &&
-      !ereg('-',$_REQUEST['prodejniCena']))
+      !preg_match('/-/',$_REQUEST['prodejniCena']))
   {
     if(!$prvni) $where .= 'AND ';
     $where .= 'prod_kategorie=' . "'".$_REQUEST['prodejniCena']."' ";
     $prvni = false;
   }
 
-  if($_REQUEST['skupina']=='Výroba'  && !empty($_REQUEST['typVyroby']) && !ereg('-',$_REQUEST['typVyroby']))
+  if($_REQUEST['skupina']=='Výroba'  && !empty($_REQUEST['typVyroby']) && !preg_match('/-/',$_REQUEST['typVyroby']))
   {
     if(!$prvni) $where .= 'AND ';
     $where .= 'typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
@@ -178,7 +178,7 @@ function sestavDotaz()
   if(!empty($_REQUEST['datum']))
   {
     if(!$prvni) $where .= 'AND ';
-    ereg("^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$",$_REQUEST['datum'], $dateParts);
+    preg_match("/^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$/",$_REQUEST['datum'], $dateParts);
     $datum = $dateParts[3].'-'.$dateParts[2].'-'.$dateParts[1];
     $timestamp_date = strtotime($datum);
     $where .= 'datum=' . $timestamp_date;

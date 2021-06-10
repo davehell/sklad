@@ -20,7 +20,7 @@ if($_POST) {
   //kontroly zadanych dat
   $korektniParametry = true;
   // nazev
-  if (!ereg("[0-9]", $rok)) {
+  if (!preg_match("/[0-9]/", $rok)) {
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['spatnyRok'];
     $korektniParametry = false;

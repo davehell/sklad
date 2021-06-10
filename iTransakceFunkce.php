@@ -374,7 +374,7 @@ elseif($skupina=="Kooperace")
 
 //cenaMJ
 if (!empty($_SESSION['promenneFormulare']["cenaMJvlastni"])) {
-  if ((!ereg("[0-9]", $_SESSION['promenneFormulare']["cenaMJvlastni"])) || // cena muze obsahovat pouze cislice
+  if ((!preg_match("/[0-9]/", $_SESSION['promenneFormulare']["cenaMJvlastni"])) || // cena muze obsahovat pouze cislice
       ($_SESSION['promenneFormulare']["cenaMJvlastni"] < 0)) { //a nesmi byt zaporna
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['spatnaCenaMJ'];

@@ -105,7 +105,7 @@ if (empty($_SESSION['promenneFormulare']["datum"])) { // nazev nesmi byt prazdny
   $_SESSION['hlaseniChyba'] = $texty['prazdneDatum'];
   $korektniParametry = false;
 }
-else if (!ereg("^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$",$_SESSION["promenneFormulare"]["datum"], $dateParts))
+else if (!preg_match("/^([0-9][0-9]?).([0-9][0-9]?).([0-9]{4})$/",$_SESSION["promenneFormulare"]["datum"], $dateParts))
 {  session_register('hlaseniChyba');
    $_SESSION['hlaseniChyba'] = $texty['nespravneDatum'];
    $korektniParametry = false;
