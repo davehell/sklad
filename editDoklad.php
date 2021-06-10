@@ -65,7 +65,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
     $SRBD=spojeniSRBD();
   }
-  $id = $_POST['id'];
+  $id = $_POST['id'] ?? "";
   $paging = true;
   
   $rows = POCET_RADKU;
@@ -82,7 +82,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   //echo $dotaz;
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
   
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'].'&odeslat';
+  $urldodatek2 ='&'. ($urldodatek ?? "") .'&o='. ($_GET['o'] ?? "") .'&ot='. ($_GET['ot'] ?? "") .'&odeslat';
   
   //if ($pocet>$rows)
   if($paging)
@@ -94,7 +94,7 @@ if(isset($_REQUEST['odeslat']) || isset($_REQUEST['o']) || isset($_REQUEST['tod'
   
   echo 
 '<table>';
-printTableHeader($jmena,$urldodatek);
+printTableHeader($jmena, $urldodatek ?? "");
   
   /*<thead>
   <tr>

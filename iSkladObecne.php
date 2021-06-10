@@ -742,7 +742,7 @@ function putPaging($count,$rows,$from, $urldodatek='')
     //zpìt - vytvoø fromkaz pouze pokud nejsme v prvních ROWS
      if ($from<$rows) echo '&lt; Pøedchozí&nbsp;|&nbsp;';
     else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from-$rows).$urldodatek.'" title="'.$texts['page_previous'].'">&lt; Pøedchozí</a>&nbsp;|&nbsp;';
-    //dal±í - vytvoø, pouze pokud nejsme v posledních ROWS
+    //dal¹í - vytvoø, pouze pokud nejsme v posledních ROWS
      if ($from+$rows>$count) echo 'Dal¹í &gt;&nbsp;|&nbsp;';
     else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from+$rows).$urldodatek.'"  title="'.$texts['page_next'].'">Dal¹í &gt;</a>&nbsp;|&nbsp;';
     //poslední - to je posledních (zbytek po dìlení ROWS) záznamù

@@ -296,6 +296,7 @@ $texty = array (
 
 //dokladTransakce
   'dokladTransakce'         =>      'Pøidání/editace polo¾ek v dokladu',
+  'doklad'                  =>      'Doklad',
   'transakceMnozstvi'       =>      'Mno¾ství',
   'pridatPolozku'           =>      'Pøidat polo¾ku',
   'cenaMJ'                  =>      'Cena za MJ',

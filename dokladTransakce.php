@@ -32,11 +32,14 @@ While ($data = @mysqli_fetch_array($vysledek)) {
   $skupina = $data["skupina"];
   $prodKategorie = $data["prod_kategorie"];
   $typVyroby = $data["typ_vyroby"];
+
+  if($prodKategorie) {
     // zjisteni popisku prodejni kategorie
-    $dotaz = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
-    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $dotaz2 = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
+    $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error());
     $data2 = @mysqli_fetch_array($vysledek2);
-    $prodKategoriePop = $data2["popis"];
+    $prodKategoriePop = $data2["popis"] ?? "";
+  }
 
 echo '
 <p class="noPrint">
@@ -119,7 +122,7 @@ echo '
 <select onchange="vyber_cv();" id="nazev" name="nazev">
 <option value="">---------- vyberte ----------</option>';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_query($dotaz_nazev, $SRBD) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz_nazev) or Die(mysqli_error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];

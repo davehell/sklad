@@ -28,7 +28,7 @@ $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
 While ($data = @mysqli_fetch_array($vysledek)) {
   $prodKategorie = $data["prod_kategorie"];
     // zjisteni udaju o odberateli
-     ldotaz = "SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'";
+    $dotaz = "SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'";
     $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
     $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"];
