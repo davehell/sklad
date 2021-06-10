@@ -5,7 +5,6 @@ header("Content-Type: text/html; charset=iso-8859-2");
 include "iSkladObecne.php";
 include_once "aktualizaceKonzistenceMnozstvi.php";
 
-session_start();
 $potrebnaPrava = ZAMESTNANEC;
 kontrolaPrihlaseni();
 kontrolaPrav($potrebnaPrava);

@@ -129,7 +129,7 @@ function uzivatele() {
     $sloupce = array('','uzivJmeno','uzivPrava2');
     echo '
 <table>';
-    printTableHeader($sloupce,"id=".$idZbozi);
+    printTableHeader($sloupce);
 
     While ($data = mysqli_fetch_array($vysledek)) {
       if($data["prava"] == 9) {

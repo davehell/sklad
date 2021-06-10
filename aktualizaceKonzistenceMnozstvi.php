@@ -78,20 +78,18 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
 
 //konstruktory
     public function __construct($nSRBD = -1){
-    if($nSRBD==-1)
-      $this->SRBD = spojeniSRBD();
-    else
-      $this->SRBD = $nSRBD;
+      if(is_int($nSRBD) && $nSRBD == -1) {
+        $this->SRBD = spojeniSRBD();
+      }
+      else {
+        $this->SRBD = $nSRBD;
+      }
     }
     
 
 
 //metody
-    public function testAllAmounts(){
-
-    
-
-//    echo $this->dotaz;
+    public function testAllAmounts() {
     // ulozeni vysledku do
     $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error());
 

@@ -32,7 +32,7 @@ else { //existuji nejake podlimitni polozky
   $sloupce = array('nazev','cv','kusy', 'limit');
   echo '
 <table>';
-  printTableHeader($sloupce,"id=".$idZbozi);
+  printTableHeader($sloupce,"id=". (isset($idZbozi) ? $idZbozi : ""));
 
   While ($data = mysqli_Fetch_Array($vysledek)) {
     if($sudyRadek) {
