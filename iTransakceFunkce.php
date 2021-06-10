@@ -223,12 +223,10 @@ function lzeVyrobit2($id_zbozi, $mnozstvi, $max_zanor)
  */ 
 function printNedostatekTable($nedostatek)
 {
-   //global $nedostatek;
    global $texty;
    global $soubory;
    $result = '';
-   
-   
+
    $result.= '
 <table>
   <tr>
@@ -240,7 +238,8 @@ function printNedostatekTable($nedostatek)
     <th>'.$texty['rezervovano'].'</th>
   </tr>';
    $sudy = false;
-   while(list($i, $prvek) = each($nedostatek))
+
+   foreach ($nedostatek as $i => $prvek)
    {
       if($prvek!=0)
       {
@@ -284,10 +283,11 @@ function printNedostatekTable($nedostatek)
       $sudy = !$sudy;
       }
    }
-$result.= '
-</table>';
 
-return $result;
+  $result.= '
+  </table>';
+
+  return $result;
 }//printNedostatek
 
 
@@ -350,7 +350,7 @@ if($skupina=="Nákup")
       $korektniParametry = false;
     }   
 }
-elseif(skupina=="Prodej")
+elseif($skupina=="Prodej")
 {
    //zadne dalsi kontroly, az pocty zbozi - to se dela jinde (akceProSkupinu)
 }
