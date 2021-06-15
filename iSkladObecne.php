@@ -736,18 +736,18 @@ function putPaging($count,$rows,$from, $urldodatek='')
     global $texts;
 
     echo '<div class="tab_nav">';
-    //zaèátek - vytvoø fromkaz pouze pokud nejsme na zaèátku
+    //zaèátek - vytvoø odkaz pouze pokud nejsme na zaèátku
      if ($from==1) echo '&lt;&lt; Zaèátek&nbsp;|&nbsp;';
-    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod=1'.$urldodatek.'"'.$texts['page_begin'].'">&lt;&lt; Zaèátek</a>&nbsp;|&nbsp;';
-    //zpìt - vytvoø fromkaz pouze pokud nejsme v prvních ROWS
+    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod=1'.$urldodatek.'"'.($texts['page_begin'] ?? '').'">&lt;&lt; Zaèátek</a>&nbsp;|&nbsp;';
+    //zpìt - vytvoø odkaz pouze pokud nejsme v prvních ROWS
      if ($from<$rows) echo '&lt; Pøedchozí&nbsp;|&nbsp;';
-    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from-$rows).$urldodatek.'" title="'.$texts['page_previous'].'">&lt; Pøedchozí</a>&nbsp;|&nbsp;';
-    //dal¹í - vytvoø, pouze pokud nejsme v posledních ROWS
+    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from-$rows).$urldodatek.'" title="'.($texts['page_previous'] ?? '').'">&lt; Pøedchozí</a>&nbsp;|&nbsp;';
+    //dal¹í - vytvoø odkaz, pouze pokud nejsme v posledních ROWS
      if ($from+$rows>$count) echo 'Dal¹í &gt;&nbsp;|&nbsp;';
-    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from+$rows).$urldodatek.'"  title="'.$texts['page_next'].'">Dal¹í &gt;</a>&nbsp;|&nbsp;';
+    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($from+$rows).$urldodatek.'"  title="'.($texts['page_next'] ?? '').'">Dal¹í &gt;</a>&nbsp;|&nbsp;';
     //poslední - to je posledních (zbytek po dìlení ROWS) záznamù
      if ($from>$count-$rows) echo 'Konec &gt;&gt;&nbsp;';
-    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($count-$count%$rows+1).$urldodatek.'" title="'.$texts['page_end'].'">Konec &gt;&gt;</a>';
+    else echo '<a href="'.$_SERVER['PHP_SELF'].'?tod='.($count-$count%$rows+1).$urldodatek.'" title="'.($texts['page_end'] ?? '').'">Konec &gt;&gt;</a>';
     echo '</div>';
 
 }//putPaging()
