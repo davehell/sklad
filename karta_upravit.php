@@ -172,6 +172,13 @@ if(isset($_GET["id"])) {
 <label for="cenaPrace">'.$texty['cenaPrace'].':</label>
 <input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'.$_SESSION['promenneFormulare']['cenaPrace'].'" /><br />
 ';
+
+echo '
+<fieldset>
+<legend>'.$texty['prodejniCeny'].'</legend>
+<button id="btnProdejniCeny" type="button">'.$texty['zobrazit'].' / '.$texty['skryt'].'</button>
+<div id="listProdejniCeny">
+';
 if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
 { //zamestnanci prodejni ceny neuvidi
   //vypsani textovych poli pro vsechny prodejni ceny
@@ -180,11 +187,16 @@ if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
   While ($data = @mysqli_Fetch_Array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
-<label for="prodejniCena'.$idProdejni.'">'.$texty['prodejniCena'].' '.$data["popis"].':</label>
+<label for="prodejniCena'.$idProdejni.'">'.$data["popis"].':</label>
 <input type="text" maxlength="40" id="prodejniCena'.$idProdejni.'" name="prodejniCena'.$idProdejni.'" value="'. (isset($_SESSION['promenneFormulare']['prodejniCena'.$idProdejni]) ? $_SESSION['promenneFormulare']['prodejniCena'.$idProdejni] : "") .'" /><br />
 ';
   }//while
 }
+echo '
+</div> <!-- #listProdejniCeny -->
+</fieldset>
+';
+
 echo '
 <br />'.
 dejTlacitko('odeslat','ulozitZmeny').'

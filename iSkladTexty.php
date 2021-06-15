@@ -336,8 +336,10 @@ $texty = array (
   'odberatelDic'            =>      'DIÈ',
   'cObjednavky'             =>      'Èíslo objednávky',
   'zpetKHlavicce'           =>      'Zpìt k hlavièce dodacího listu',
-  ''               =>      '',
-  ''               =>      '',
+
+
+  'zobrazit'               =>      'Zobrazit',
+  'skryt'                  =>      'Skrýt',
   ''               =>      '',
   ''               =>      '',
 

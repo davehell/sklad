@@ -46,7 +46,12 @@ if(!isset($_GET["id"])) {
 <input type="text" maxlength="40" id="limit" name="limit" value="'. ($_SESSION['promenneFormulare']['limit'] ?? '') .'" /><br />
 <label for="cenaPrace">'.$texty['cenaPrace'].':</label>
 <input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'. ($_SESSION['promenneFormulare']['cenaPrace'] ?? '') .'" /><br />
-<strong>'. $texty['prodejniCena'] .':</strong><br />
+';
+
+echo '
+<fieldset>
+<legend>'.$texty['prodejniCeny'].'</legend>
+<div id="listProdejniCeny">
 ';
   //vypsani textovych poli pro vsechny prodejni ceny
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
@@ -58,6 +63,10 @@ if(!isset($_GET["id"])) {
 <input type="text" maxlength="40" id="cenaPrace'.$idProdejni.'" name="cenaPrace'.$idProdejni.'" value="'. ($_SESSION['promenneFormulare']['cenaPrace'.$idProdejni] ?? '') .'" /><br />
 ';
   }//while
+echo '
+</div> <!-- #listProdejniCeny -->
+</fieldset>
+';
 echo '
 <br />
 <label for="jmeno_souboru">'.$texty['obrazek'].':</label>

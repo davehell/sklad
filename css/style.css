@@ -80,11 +80,11 @@ img.floatleft {margin: 1em 0 0 0;}
 .clearleft{clear:left; }
 hr {margin: 1em 0;}
 /* formulare */
-label {display: block; float: left; clear: left; width: 15em; margin-right: 1em; text-align: right; line-height: 1.8em;}
+label {display: block; float: left; clear: left; width: 15em; margin-right: 1em; text-align: right; line-height: 1.8em; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap;}
 #cv { width: 12em;}
 #nazev { width: 18em;}
 input {display: block; float: left;}
-.submit {width: auto; margin-left: 10em; background-color: #e0e8f1; padding: 0.1em; margin-top: 1em;}
+.submit {width: auto; margin-left: 10em; background-color: #e0e8f1; padding: 0.2em 0.5em; margin-top: 1em;}
 .rezerv .submit {margin-left: 5em;} /*tlacitka u dokladu pro rezervace */
 fieldset br {clear: both;}
 fieldset p {margin: 0.5em 0 0 0;}
@@ -106,3 +106,6 @@ text-decoration: none; font-size: 1.2em; background:#D9E7F4 url('../images/heade
 tbody {border-bottom:1px solid #039;}
 tfoot {border-top:1px solid #039;background-color: #c2d2e7;}
 .alignRight {text-align: right;}
+
+button#btnProdejniCeny {padding: 0.2em 0.5em;}
+#listProdejniCeny.hidden { display: none; }

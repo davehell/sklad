@@ -245,17 +245,21 @@ function osetriRadio()
 }
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  var hiddenClass = "hidden"
+  var btn = document.getElementById("btnProdejniCeny");
+  var list = document.getElementById("listProdejniCeny");
 
+  if(btn && list) {
+    list.addClass(hiddenClass);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    btn.addEventListener("click", function () {
+      if(list.className.indexOf(hiddenClass) == -1) {
+        list.addClass(hiddenClass);
+      }
+      else {
+        list.removeClass(hiddenClass);
+      }
+    });
+  }
+});
