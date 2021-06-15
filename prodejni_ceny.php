@@ -49,7 +49,7 @@ if(mysqli_num_rows($vysledek) != 0) {
   $sloupce = array('','popis');
   echo '
 <table>';
-  printTableHeader($sloupce,"id=".$idZbozi);
+  printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
   While ($data = @mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
@@ -90,18 +90,18 @@ echo '
 <fieldset>
 <legend>'.$formLegend.'</legend>
 <label for="popis">'.$texty['popis'].':</label>
-<input type="text" maxlength="40" id="popis" name="popis" value="'.$data3["popis"].'" /><br />
+<input type="text" maxlength="40" id="popis" name="popis" value="'.($data3["popis"] ?? '').'" /><br />
 <br />
 <label for="odberatelNazev">'.$texty['odberatelNazev'].':</label>
-<input type="text" name="odberatelNazev" value="'.$data3["nazev"].'" /><br />
+<input type="text" name="odberatelNazev" value="'.($data3["nazev"] ?? '').'" /><br />
 <label for="odberatelUlice">'.$texty['odberatelUlice'].':</label>
-<input type="text" name="odberatelUlice" value="'.$data3["ulice"].'" /><br />
+<input type="text" name="odberatelUlice" value="'.($data3["ulice"] ?? '').'" /><br />
 <label for="odberatelMesto">'.$texty['odberatelMesto'].':</label>
-<input type="text" name="odberatelMesto" value="'.$data3["mesto"].'" /><br />
+<input type="text" name="odberatelMesto" value="'.($data3["mesto"] ?? '').'" /><br />
 <label for="odberatelIco">'.$texty['odberatelIco'].':</label>
-<input type="text" name="odberatelIco" value="'.$data3["ico"].'" /><br />
+<input type="text" name="odberatelIco" value="'.($data3["ico"] ?? '').'" /><br />
 <label for="odberatelDic">'.$texty['odberatelDic'].':</label>
-<input type="text" name="odberatelDic" value="'.$data3["dic"].'" /><br />
+<input type="text" name="odberatelDic" value="'.($data3["dic"] ?? '').'" /><br />
 <br />';
 if(isset($_GET["upravit"])) {
   echo dejTlacitko('upravit','ulozit');

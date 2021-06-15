@@ -12,7 +12,7 @@ kontrolaPrihlaseni();
 kontrolaPrav($potrebnaPrava);
 $SRBD=spojeniSRBD();
 
-if($_POST["odeslat"] == $texty["pridatStroj"]) {
+if(isset($_POST["odeslat"]) && $_POST["odeslat"] == $texty["pridatStroj"]) {
   if(isset($_POST["nazev"])) $nazev = $_POST["nazev"];
   if(isset($_POST["cv"])) $cv = $_POST["cv"];
   pridatStroj($nazev, $cv);
@@ -37,7 +37,8 @@ echo '
 <option value="">---------- vyberte ----------</option>
 ';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_query("SELECT id, nazev FROM zbozi GROUP BY nazev", $SRBD) or Die(mysqli_Error());
+  $dotaz = "SELECT id, nazev FROM zbozi GROUP BY nazev";
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
@@ -87,7 +88,7 @@ if(mysqli_num_rows($vysledek) != 0) {
   $sloupce = array('','nazev', 'c_vykresu');
   echo '
 <table>';
-  printTableHeader($sloupce,"id=".$idZbozi);
+  printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
   While ($data = @mysqli_fetch_array($vysledek)) {

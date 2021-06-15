@@ -30,12 +30,10 @@ function session_unregister($key){
  * @return                  øetìzec s odstranìnými escape znaky
  */
 function odstraneniEscape($co, $maximalniDelka) {
-  echo $co;
    $co = substr($co, 0, $maximalniDelka);      // zkrácení vstupního øetìzce na po¾adovaný poèet znakù
    //$co = EscapeShellCmd($co);                  // odstranìní escape zankù standardní funkcí
-   echo $co;
    return ($co);
-   } // of odstraneniEscape
+} // of odstraneniEscape
 
 /**
  * zobrazení hlá¹ení v globální promìnné
@@ -556,7 +554,7 @@ function vypsatTransakce($idZbozi)
     $dotaz.=pageOrderQuery($pocet);
 
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
-    printTableHeader($sloupce,"id=".$idZbozi);
+    printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
     While ($data = @mysqli_fetch_array($vysledek)) {
       //pokud neni zadana cenaMJ, tiskne se misto ni pomlcka
