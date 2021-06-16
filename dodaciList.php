@@ -31,7 +31,7 @@ While ($data = @mysqli_fetch_array($vysledek)) {
     $dotaz = "SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'";
     $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
-    $prodKategoriePop = $data2["popis"];
+    $prodKategoriePop = $data2["popis"] ?? "";
 }
 
 echo '
@@ -47,15 +47,15 @@ echo '
 <legend>'.$texty["odberatel"].'</legend>
 
 <label for="odberatelNazev">'.$texty['odberatelNazev'].':</label>
-<input type="text" id="odberatelNazev" name="odberatelNazev" value="'.$data2["nazev"].'" /><br />
+<input type="text" id="odberatelNazev" name="odberatelNazev" value="'. ($data2["nazev"] ?? '') .'" /><br />
 <label for="odberatelUlice">'.$texty['odberatelUlice'].':</label>
-<input type="text" id="odberatelUlice" name="odberatelUlice" value="'.$data2["ulice"].'" /><br />
+<input type="text" id="odberatelUlice" name="odberatelUlice" value="'. ($data2["ulice"] ?? '') .'" /><br />
 <label for="odberatelMesto">'.$texty['odberatelMesto'].':</label>
-<input type="text" id="odberatelMesto" name="odberatelMesto" value="'.$data2["mesto"].'" /><br />
+<input type="text" id="odberatelMesto" name="odberatelMesto" value="'. ($data2["mesto"] ?? '') .'" /><br />
 <label for="odberatelIco">'.$texty['odberatelIco'].':</label>
-<input type="text" id="odberatelIco" name="odberatelIco" value="'.$data2["ico"].'" /><br />
+<input type="text" id="odberatelIco" name="odberatelIco" value="'. ($data2["ico"] ?? '') .'" /><br />
 <label for="odberatelDic">'.$texty['odberatelDic'].':</label>
-<input type="text" id="odberatelDic" name="odberatelDic" value="'.$data2["dic"].'" /><br />
+<input type="text" id="odberatelDic" name="odberatelDic" value="'. ($data2["dic"] ?? '') .'" /><br />
 
 <br />
 

@@ -34,7 +34,7 @@ While ($data = @mysqli_fetch_array($vysledek)) {
     $dotaz = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
     $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
-    $prodKategoriePop = $data2["popis"];
+    $prodKategoriePop = $data2["popis"] ?? "";
 }
 
 echo '
