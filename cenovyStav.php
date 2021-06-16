@@ -20,12 +20,12 @@ foreach($_GET as $jmenoPromenne => $hodnota) { // promìnné formuláøe jsou pøedáv
 } // foreach
 
 
-if(!checkFormDatum($_GET['od']) || !checkFormDatum($_GET['do']))
+if(!checkFormDatum($_GET['od'] ?? "") || !checkFormDatum($_GET['do'] ?? ""))
   $datumOK = false;
 else $datumOK = true;
 
 //detekce strankovani
-if($_GET['paging']=='no')
+if(isset($_GET['paging']) && $_GET['paging']=='no')
  $paging = false;
 else $paging=true;
 
@@ -34,15 +34,16 @@ uvodHTML('cenovyStavSkladu');
 echo
 '<h1>'.$texty['cenovyStavSkladu'].'</h1>';
 zobrazitHlaseni();
+$typ = "";
 if($typ!="Chyba"){
 echo '
-<form type="GET" action="'.$soubory['cenovyStav'].'" class="noPrint">
+<form type="GET" action="'.$soubory['cenovyStavSkladu'].'" class="noPrint">
 <fieldset>
 <legend>'.$texty['casoveVymezeni'].'</legend>
 <label for="od">'.$texty['datumOd'].':</label>
-<input id="new_day" name="od" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['od'].'" /><br />
+<input id="new_day" name="od" type="text" class="DatePicker" value="'.($_SESSION['promenneFormulare']['od'] ?? '').'" /><br />
 <label for="do">'.$texty['datumDo'].':</label>
-<input id="new_day" name="do" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['do'].'" /><br />'.
+<input id="new_day" name="do" type="text" class="DatePicker" value="'.($_SESSION['promenneFormulare']['do'] ?? '').'" /><br />'.
 dejTlacitko('odeslat','najit').
 '</fieldset>
 </form>';
@@ -54,7 +55,7 @@ if(isset($_GET['od']) && $datumOK){
   ////// tabulka  ////////
   $rows = 5;
   
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
   {  $jmena = array('c','nazev','c_vykresu','mnozstvi','cena_MJ','cena_celkem');
      $zobrazit = array('c','nazev','c_vykresu','mnozstvi','cena_MJ','cena_celkem');
   } 
@@ -68,7 +69,7 @@ if(isset($_GET['od']) && $datumOK){
   // prvni dotaz (normalni)
   $dotaz = udelejDotaz($_GET['od'],$_GET['do'],"stroje");
   $dodatek = '';
-    $dodatek .= pageOrderQuery($pocet,$rows);
+  $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
@@ -76,7 +77,7 @@ if(isset($_GET['od']) && $datumOK){
   //echo $dotaz;
   
   // dodatek o puvodnim URL
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
+  $urldodatek2 ='&'.$urldodatek.'&o='.($_GET['o'] ?? '').'&ot='.($_GET['ot'] ?? '');
   
   echo '
   <h1>'.$texty['stroje'].'</h1>
@@ -86,10 +87,10 @@ if(isset($_GET['od']) && $datumOK){
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumstroje');
   $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
-  $data2 = mysqli_Fetch_Array($vysledek2);
+  $data2 = mysqli_fetch_array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     $colspan = 3;
   else $colspan = 2;
   //tisk zapati (suma cen)
@@ -106,7 +107,7 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = mysqli_Fetch_Array($vysledek)) 
+  While ($data = mysqli_fetch_array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
     $cenaMJ = number_format($data['prum_cena'], 2, ".", " ");
@@ -115,7 +116,7 @@ if(isset($_GET['od']) && $datumOK){
     if($sudy)
       echo ' class="sudyRadek"';
     echo'>';
-    if($_GET['print']==1)
+    if(isset($_GET['print']) && $_GET['print']==1)
       echo '<td>'.$i++.'</td>';
       echo
     '<td><a href="'.$soubory['nahledKarta'].'?id='.$data['id'].'">'.$data['nazev'].'</a></td>
@@ -137,20 +138,20 @@ if(isset($_GET['od']) && $datumOK){
   // prvni dotaz (normalni)
   $dotaz = udelejDotaz($_GET['od'],$_GET['do'],$typ="sestavy");
   $dodatek = '';
-    $dodatek .= pageOrderQuery($pocet,$rows);
+    $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
-  //echo $dotaz;
+
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
   // dodatek o puvodnim URL
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
+  $urldodatek2 ='&'.$urldodatek.'&o='.($_GET['o'] ?? '').'&ot='.($_GET['ot'] ?? '');
   
   //nadpis
   echo '<h1>'.$texty['sestavy'].'</h1>
   <table>';
   
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
   {  $jmena = array('c','zac_c_vykresu','mnozstvi','cena_celkem');
      $zobrazit = array('c','zac_c_vykresu','mnozstvi','cena_celkem');
   } 
@@ -163,18 +164,18 @@ if(isset($_GET['od']) && $datumOK){
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumsestavy');
   $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
-  $data2 = mysqli_Fetch_Array($vysledek2);
+  $data2 = mysqli_fetch_array($vysledek2);
   
-  // pocet slucovvanych radku se lisi u print
-  if($_GET['print']==1)
+  // pocet slucovanych radku se lisi u print
+  if(isset($_GET['print']) && $_GET['print']==1)
     $colspan = 2;
   else $colspan = 1;
   //tisk zapati (suma cen)
   echo '<tfoot>
          <tr>
            <td colspan="'.$colspan.'">'.$texty['celkem'].'</td>
-           <td class="alignRight">'.number_format($data2['mnozstvi'], 3, ".", " ").'</td>
-           <td class="alignRight">'.number_format($data2['cena_celkem'], 2, ".", " ").'</td>
+           <td class="alignRight">'.number_format($data2['mnozstvi'] ?? 0, 3, ".", " ").'</td>
+           <td class="alignRight">'.number_format($data2['cena_celkem'] ?? 0, 2, ".", " ").'</td>
           </tr>';
   echo '</tfoot>
       <tbody>';
@@ -182,21 +183,21 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = mysqli_Fetch_Array($vysledek)) 
+  While ($data = mysqli_fetch_array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
-    $cenaMJ = number_format($data['cena_MJ'], 2, ".", " ");
+    $cenaMJ = number_format($data['cena_MJ'] ?? 0, 2, ".", " ");
     echo '
     <tr';
     if($sudy)
       echo ' class="sudyRadek"';
     echo'>';
-    if($_GET['print']==1)
+    if(isset($_GET['print']) && $_GET['print']==1)
       echo '<td>'.$i++.'</td>';
       echo
-    ' <td>'.$data['zac_c_vykresu'].'</td>
-      <td class="alignRight">'.number_format($data['mnozstvi'], 3, ".", " ").'</td>
-      <td class="alignRight">'.number_format($data['cena_celkem'], 2, ".", " ").'</td>
+    ' <td>'.($data['zac_c_vykresu'] ?? "").'</td>
+      <td class="alignRight">'.number_format($data['mnozstvi'] ?? 0, 3, ".", " ").'</td>
+      <td class="alignRight">'.number_format($data['cena_celkem'] ?? 0, 2, ".", " ").'</td>
     </tr>';
     $sudy=!$sudy;
   }
@@ -211,20 +212,20 @@ if(isset($_GET['od']) && $datumOK){
   // prvni dotaz (normalni)
   $dotaz = udelejDotaz($_GET['od'],$_GET['do'],$typ="rozprac");
   $dodatek = '';
-    $dodatek .= pageOrderQuery($pocet,$rows);
+    $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
   // dodatek o puvodnim URL
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
+  $urldodatek2 ='&'.$urldodatek.'&o='.($_GET['o'] ?? '').'&ot='.($_GET['ot'] ?? '');
   
   //nadpis
   echo '<h1>'.$texty['rozprac_vyroba'].'</h1>
   <table>';
   
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
   {  $jmena = array('c','zac_c_vykresu','mnozstvi','cena_celkem');
      $zobrazit = array('c','zac_c_vykresu','mnozstvi','cena_celkem');
   } 
@@ -237,10 +238,10 @@ if(isset($_GET['od']) && $datumOK){
   //druhy dotaz (suma)
   $dotaz2 = udelejDotaz($_GET['od'],$_GET['do'],$typ='sumrozprac');
   $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
-  $data2 = mysqli_Fetch_Array($vysledek2);
+  $data2 = mysqli_fetch_array($vysledek2);
   
   // pocet slucovvanych radku se lisi u print
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     $colspan = 2;
   else $colspan = 1;
   //tisk zapati (suma cen)
@@ -256,21 +257,21 @@ if(isset($_GET['od']) && $datumOK){
   $mnozstvi_skladu += $data2['mnozstvi'];
   $sudy = false;
   $i=1;
-  While ($data = mysqli_Fetch_Array($vysledek)) 
+  While ($data = mysqli_fetch_array($vysledek)) 
   {
     //$cenaMJ = $data['cena_celkem']/$data['mnozstvi'];
-    $cenaMJ = $data['cena_MJ'];
+    $cenaMJ = $data['cena_MJ'] ?? 0;
     echo '
     <tr';
     if($sudy)
       echo ' class="sudyRadek"';
     echo'>';
-    if($_GET['print']==1)
+    if(isset($_GET['print']) && $_GET['print']==1)
       echo '<td>'.$i++.'</td>';
       echo
-    ' <td>'.$data['zac_c_vykresu'].'</td>
-      <td class="alignRight">'.number_format($data['mnozstvi'], 3, ".", " ").'</td>
-      <td class="alignRight">'.number_format($data['cena_celkem'], 2, ".", " ").'</td>
+    ' <td>'.($data['zac_c_vykresu'] ?? '').'</td>
+      <td class="alignRight">'.number_format($data['mnozstvi'] ?? 0, 3, ".", " ").'</td>
+      <td class="alignRight">'.number_format($data['cena_celkem'] ?? 0, 2, ".", " ").'</td>
     </tr>';
     $sudy=!$sudy;
   }
@@ -328,7 +329,7 @@ function udelejDotaz($od, $do, $typ)
 {
 $dotaz ='';
 
-
+$id = '';
 
 if($typ=='sumstroje' || $typ=='vsechno')
   {
@@ -451,7 +452,7 @@ if($typ=='stroje')
 elseif($typ=='sestavy' || $typ=='rozprac')
     $dotaz.=' GROUP BY zac_c_vykresu ';
 
-//echo $dotaz;
+
 return $dotaz;
 }//udelejDotaz()
 
