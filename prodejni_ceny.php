@@ -51,7 +51,7 @@ if(mysqli_num_rows($vysledek) != 0) {
 <table>';
   printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';

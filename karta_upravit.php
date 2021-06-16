@@ -28,7 +28,7 @@ if(isset($_POST["odeslat"]) && $_POST["odeslat"] == $texty["zobrazitKartu"]) {
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) {
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     header('Location: '.$soubory['upravitKarta'].'?id='.$id);
@@ -62,7 +62,7 @@ if(isset($_GET["id"])) {
         
         $dotaz = "SELECT cena, id_kategorie FROM prodejni_ceny WHERE id_zbozi='$id' ORDER BY id_kategorie ASC";
         $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-        While ($data2 = @mysqli_Fetch_Array($vysledek2)) {
+        While ($data2 = mysqli_fetch_array($vysledek2)) {
           $_SESSION['promenneFormulare']['prodejniCena'.$data2['id_kategorie']] = $data2['cena'];
         }
       
@@ -184,7 +184,7 @@ if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
   //vypsani textovych poli pro vsechny prodejni ceny
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
 <label for="prodejniCena'.$idProdejni.'">'.$data["popis"].':</label>
@@ -219,7 +219,7 @@ if(mysqli_num_rows($vysledek) == 0) { //zbozi nema v DB zadnou fotku
   <p>Toto zbo¾í nemá pøiøazen ¾ádný obrázek.</p>';
 }
 else {
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     echo '
 <p>Souèasný obrázek: '.$data["obrazek"].'&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$soubory["frmNovyObrazek"].'?odstranit='.$id.'" class="odebrat" title="'.$texty["odebratObrazekTitle"].'" onclick="return confirm(\''.$texty["opravdu"].'\')">'.$texty["odebrat"].'</a></p>
 <br />

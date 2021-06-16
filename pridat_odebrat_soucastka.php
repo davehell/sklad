@@ -30,7 +30,7 @@ if(!isset($_GET["odebrat"])) {
 
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  $data = @mysqli_fetch_array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
   $soucastka = $data["id"];
 
 

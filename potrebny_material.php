@@ -25,7 +25,7 @@ if(isset($_GET["id"])) {
     exit;
   }
   else {//pozadovana karta se nachazi v DB
-    $data = @mysqli_fetch_array($vysledek);
+    $data = mysqli_fetch_array($vysledek);
     $nazev = $data["nazev"];
     $cv = $data["c_vykresu"];
   }

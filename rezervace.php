@@ -57,7 +57,7 @@ elseif(isset($_POST['ruseniRez']))
     $vysledek = mysqli_query($SRBD, $dotaz);
     if(mysqli_num_rows($vysledek) > 0)         //jsou polozky v dokladu
     {
-      While ($data = @mysqli_fetch_array($vysledek)) {
+      While ($data = mysqli_fetch_array($vysledek)) {
         $id_transakce = $data['id'];
         // pro kazdou transakci musim vratit zbozi do skladu
         

@@ -21,7 +21,7 @@ if(isset($_POST["odeslat"]) && $_POST["odeslat"] == $texty["zobrazitKartu"]) {
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) {
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     header('Location: '.$soubory['nahledKarta'].'?id='.$id);
@@ -47,7 +47,7 @@ if(isset($_GET["id"])) {
     exit;
   }
   else {//pozadovana karta se nachazi v DB
-    $data = @mysqli_Fetch_Array($vysledek);
+    $data = mysqli_fetch_array($vysledek);
     $nazev = $data["nazev"];
     $cv = $data["c_vykresu"];
   }
@@ -133,7 +133,7 @@ if(isset($_GET["id"])) {
   $id = $_GET["id"];
   $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace, mnozstvi FROM zbozi WHERE id='$id'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  $data = @mysqli_Fetch_Array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
   if($data["mnozstvi"] == "") $data["mnozstvi"] = "0";
   
   echo '
@@ -155,7 +155,7 @@ if(isset($_GET["id"])) {
 <br class="clearleft" />';
   } //if
   else {
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       echo '
 <a href="nahledy/'.$data["obrazek"].'" alt="'.$data["obrazek"].'"
    title="'.$nazev.' '.$cv.'"
@@ -170,7 +170,7 @@ if(isset($_GET["id"])) {
 // druhy dl
   $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace, mnozstvi, prum_cena FROM zbozi WHERE id='$id'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  $data = @mysqli_Fetch_Array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
   $celkovaCena = $data["mnozstvi"]*$data["prum_cena"];
   if($data["prum_cena"] == "") $data["prum_cena"] = "-";
   
@@ -195,12 +195,12 @@ echo '
   //vypsani vsech prodejnich cen
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  While ($data = @mysqli_Fetch_Array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $idKat = $data["id"];
     $cena = "-";
     $dotaz = "SELECT cena FROM prodejni_ceny WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
     $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data2 = @mysqli_Fetch_Array($vysledek2)) {
+    While ($data2 = mysqli_fetch_array($vysledek2)) {
       if($data2["cena"] == "") {$cena = "-";}
       else {$cena = $data2["cena"];}
     }

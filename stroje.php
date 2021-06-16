@@ -91,7 +91,7 @@ if(mysqli_num_rows($vysledek) != 0) {
   printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';
@@ -129,7 +129,7 @@ function pridatStroj($nazev, $cv) {
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) {
-    $data = @mysqli_fetch_array($vysledek);
+    $data = mysqli_fetch_array($vysledek);
     $idZbozi = $data["id"];
   }
   else {

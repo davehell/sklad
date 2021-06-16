@@ -484,7 +484,7 @@ function spocitatCenuMaterialu($idCelku)
   WHERE celek='$idCelku'
   AND S.soucastka = Z.id") or Die(mysqli_error($SRBD));
 
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $cenaMaterialu += $data["mnozstvi"]*$data["prum_cena"];
   }//while
 
@@ -556,7 +556,7 @@ function vypsatTransakce($idZbozi)
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       //pokud neni zadana cenaMJ, tiskne se misto ni pomlcka
       //if($data["cena_MJ"] == "") $data["cena_MJ"] = "-";
 
@@ -611,7 +611,7 @@ function rezervovaneMnozstvi($idZbozi)
   AND D.id = T.id_dokladu
   AND D.skupina = 'Rezervace'") or Die(mysqli_error($SRBD));
 
-  $data = @mysqli_fetch_array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
 
   return $data["suma"];
 

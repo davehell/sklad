@@ -42,7 +42,7 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) { //vkladani NOVEHO zajezdu
   else {
     $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     session_register('hlaseniOK');

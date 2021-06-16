@@ -69,7 +69,7 @@ else //vse OK ve formulari
   else {
     $dotaz = "SELECT id FROM doklady WHERE c_dokladu='$cDokladu'";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_Fetch_Array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     session_register('hlaseniOK');

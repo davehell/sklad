@@ -127,7 +127,7 @@ if ((!preg_match("/[0-9]/", $cenaPrace)) || // cena prace muze obsahovat pouze c
 // vsechny prodejni ceny
 $dotaz = "SELECT id as id_kat FROM prodejni_kategorie ORDER BY popis ASC";
 $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-While ($data = @mysqli_fetch_array($vysledek)) {
+While ($data = mysqli_fetch_array($vysledek)) {
   $cena = $_SESSION['promenneFormulare']["prodejniCena".$data["id_kat"]] ?? "";
   if ($cena != "") { // prodejni cena nesmi byt prazdna
     if ((!preg_match("/[0-9]/", $cena)) || //prodejni cena muze obsahovat pouze cislice
@@ -164,13 +164,13 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
     //zjisteni id prave vlozene karty
     $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     //ulozeni prodejnich cen
     $dotaz = "SELECT id as id_kat, popis FROM prodejni_kategorie ORDER BY popis ASC";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $idKat = $data["id_kat"];
       $cena = $_SESSION['promenneFormulare']["cenaPrace".$idKat];
       
@@ -229,7 +229,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   else {
     $dotaz = "SELECT id as id_kategorie FROM prodejni_kategorie ORDER BY id";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $cena = $_SESSION['promenneFormulare']['prodejniCena'.$data['id_kategorie']];
 
       $idKat = $data["id_kategorie"];

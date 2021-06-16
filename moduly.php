@@ -37,7 +37,7 @@ if(mysqli_num_rows($vysledek) != 0) {
 <table>';
   printTableHeader($sloupce);
 
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
   <tr class="sudyRadek">';
@@ -160,7 +160,7 @@ function pridatModul($nazev) {
 /*
   //zjisteni id posledne vlozeneho modulu
   $vysledek = mysqli_query($SRBD, "SELECT id from moduly ORDER BY id DESC LIMIT 1");
-  $data = @mysqli_fetch_array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
   $posledniID = $data["id"];
   //vlozeni vychoziho admin. uctu k novemu modulu
   mysqli_query($SRBD, "INSERT INTO uzivatele (id,login, heslo, prava, id_modulu)
@@ -181,7 +181,7 @@ function odebratModul($odstranovaneID) {
 
   $dotaz = "SELECT modul FROM moduly WHERE id='$odstranovaneID'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  $data = @mysqli_fetch_array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
   $modul = $data["modul"] ?? "";
   
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku

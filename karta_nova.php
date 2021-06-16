@@ -56,7 +56,7 @@ echo '
   //vypsani textovych poli pro vsechny prodejni ceny
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
 <label for="prodejniCena'.$idProdejni.'">'.$data["popis"].':</label>
@@ -82,7 +82,7 @@ else {
 //pouze vypis hlavicky karty
   $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace FROM zbozi WHERE id='$id'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  $data = @mysqli_fetch_array($vysledek);
+  $data = mysqli_fetch_array($vysledek);
     echo '
 <dl class="floatleft">
   <dt>'.$texty["nazev"].':</dt><dd>'.$data["nazev"].'</dd>
@@ -102,7 +102,7 @@ else {
 <br class="clearleft" />';
   } //if
   else {
-    $data = @mysqli_fetch_array($vysledek);
+    $data = mysqli_fetch_array($vysledek);
       echo '
 <a href="nahledy/'.$data["obrazek"].'" alt="'.$data["obrazek"].'"
    title="'.$data['nazev'].' '.$data['c_vykresu'].'"
@@ -121,12 +121,12 @@ else {
     //vypsani vsech prodejnich cen
     $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    While ($data = @mysqli_fetch_array($vysledek)) {
+    While ($data = mysqli_fetch_array($vysledek)) {
       $idKat = $data["id"];
       $cena = "-";
       $dotaz = "SELECT cena FROM prodejni_ceny WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
       $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-      While ($data2 = @mysqli_fetch_array($vysledek2)) {
+      While ($data2 = mysqli_fetch_array($vysledek2)) {
         if($data2["cena"] == "") {$cena = "-";}
         else {$cena = $data2["cena"];}
       }

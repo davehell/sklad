@@ -50,7 +50,7 @@ else //vse OK ve formulari
     }
     //vseOK
     else {
-      While ($data = @mysqli_fetch_array($vysledek)) {
+      While ($data = mysqli_fetch_array($vysledek)) {
         $id = $data["id"];
       }
       //echo 'id:'.$id;

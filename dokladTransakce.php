@@ -26,7 +26,7 @@ $id = $_GET['id'];
 //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
 $dotaz = "SELECT * FROM doklady WHERE id='$id'";
 $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-While ($data = @mysqli_fetch_array($vysledek)) {
+While ($data = mysqli_fetch_array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
   $skupina = $data["skupina"];
@@ -37,7 +37,7 @@ While ($data = @mysqli_fetch_array($vysledek)) {
     // zjisteni popisku prodejni kategorie
     $dotaz2 = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
     $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
-    $data2 = @mysqli_fetch_array($vysledek2);
+    $data2 = mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"] ?? "";
   }
 
@@ -264,7 +264,7 @@ echo
   <tfoot>';
     $dotaz = "SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'";
     $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    $data = @mysqli_fetch_array($vysledek);
+    $data = mysqli_fetch_array($vysledek);
    echo'
    <tr>
     <td colspan="3">'.$texty['celkem'].'</td>
@@ -285,10 +285,10 @@ echo
   $dotaz = "SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
-While ($data = @mysqli_fetch_array($vysledek)) {
+While ($data = mysqli_fetch_array($vysledek)) {
     $dotaz = 'SELECT * FROM zbozi WHERE id='.$data["id_zbozi"];
     $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-    $data2 = @mysqli_fetch_array($vysledek2);
+    $data2 = mysqli_fetch_array($vysledek2);
     echo '
   <tr';
   if($sudyRadek)

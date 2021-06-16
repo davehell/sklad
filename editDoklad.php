@@ -111,7 +111,7 @@ printTableHeader($jmena, $urldodatek ?? "");
   //echo sestavDotaz();
   //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-  While ($data = @mysqli_fetch_array($vysledek)) {
+  While ($data = mysqli_fetch_array($vysledek)) {
     $cDokladu = $data["c_dokladu"];
     $datum = date("d.m.Y",$data["datum"]);
     $skupina = $data["skupina"];
