@@ -14,7 +14,7 @@ $SRBD=spojeniSRBD();
 
 
 //detekce strankovani
-if($_GET['paging']=='no')
+if(isset($_GET['paging']) && $_GET['paging']=='no')
  $paging = false;
 else $paging=true;
 
@@ -22,7 +22,7 @@ foreach($_GET as $jmenoPromenne => $hodnota) { // promìnné formuláøe jsou pøedáv
   $_SESSION['promenneFormulare'][$jmenoPromenne] = trim(odstraneniEscape($hodnota, 100));
 } // foreach
 
-if(!checkFormDatum($_GET['od']) || !checkFormDatum($_GET['do']))
+if(!checkFormDatum($_GET['od'] ?? "") || !checkFormDatum($_GET['do'] ?? ""))
   $datumOK = false;
 else $datumOK = true;
 
@@ -32,10 +32,10 @@ echo
 '<h1>'.$texty['mnozstevniStav'].'</h1>';
 zobrazitHlaseni();
 
-
+$typ = "";
 if($typ!="Chyba"){    //formular s datem od-do
 echo '
-<form type="GET" action="'.$soubory['cenovyStav'].'" class="noPrint">
+<form type="GET" action="'.$soubory['mnozstevniStavSkladu'].'" class="noPrint">
 <fieldset>
 <legend>'.$texty['casoveVymezeni'].'</legend>
 <label for="od">'.$texty['datumOd'].':</label>
@@ -53,11 +53,11 @@ if($datumOK){
 
   /*
     detekce jestli je vybrán stav za nìjaké èasové období nebo celkový. v pøípadì
-    celkového je jednodu‘‘í dotaz pro db
+    celkového je jednodu¹¹í dotaz pro db
     dotaz = vsechny polozky
     dotaz2 = suma vsech polozek, celkove mnozstvi
    */
-  if((empty($_GET['od'])  && empty($_GET['do'])))
+  if((empty($_GET['od']) && empty($_GET['do'])))
   {
      $dotaz = "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnozstvi,0)) AS mnozstvi
             from zbozi as Z left join (SELECT T.id_zbozi, T.mnozstvi as mnozstvi
@@ -81,12 +81,12 @@ if($datumOK){
   $rows = POCET_RADKU;
 
 
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     $jmena = array('c','nazev','c_vykresu','mnozstvi');
   else
     $jmena = array('nazev','c_vykresu','mnozstvi');
 
-  $urldodatek = 't='.$_GET['t'].'&od='.$_GET['od'].'&do='.$_GET['od'];
+  $urldodatek = 't='.($_GET['t'] ?? '').'&od='.($_GET['od'] ?? '').'&do='.($_GET['od'] ?? '');
             
   
   if($paging)
@@ -106,7 +106,7 @@ if($datumOK){
   if($paging)
     if (!isset($_GET["tod"])) $from=1; else $from=$_GET["tod"]; 
   
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
+  $urldodatek2 ='&'.$urldodatek.'&o='.($_GET['o'] ?? '').'&ot='.($_GET['ot'] ?? '');
   
   if($paging)
     putPaging($pocet,$rows,$from, $urldodatek2);
@@ -119,11 +119,11 @@ if($datumOK){
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   $sudy = false;
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     $colspan = 3;
   else $colspan = 2;
   
-  $mnozstvi2 = $data2['mnozstvi']+$data2['rezervace'];
+  $mnozstvi2 = ($data2['mnozstvi'] ?? 0) + ($data2['rezervace'] ?? 0);
   echo ' <tfoot>
          <tr>
            <td colspan="'.$colspan.'">'.$texty['celkem'].'</td>
@@ -135,14 +135,14 @@ if($datumOK){
   $i=1;
   While ($data = mysqli_Fetch_Array($vysledek)) {
   //$cenaCelkem = $data['cena_MJ']*$data['mnozstvi'];
-  $mnozstvi = $data['mnozstvi']+$data['rezervace'];
+  $mnozstvi = ($data['mnozstvi'] ?? 0) + ($data['rezervace'] ?? 0);
   
   echo '
   <tr';
   if($sudy)
     echo ' class="sudyRadek"';
   echo'>';
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     echo '<td>'.$i++.'</td>';
     echo
   '<td><a href="'.$soubory['nahledKarta'].'?id='.$data['id'].'">'.$data['nazev'].'</a></td>
