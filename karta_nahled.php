@@ -187,7 +187,11 @@ if(isset($_GET["id"])) {
 if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
 { //zamestnanci prodejni ceny neuvidi
 echo '
-<dl class="floatleft">';
+<div class="floatleft">
+<strong>'.$texty['prodejniCeny'].'</strong><br>
+<button id="btnProdejniCeny" type="button">'.$texty['zobrazit'].' / '.$texty['skryt'].'</button>
+<dl id="listProdejniCeny">
+';
   //vypsani vsech prodejnich cen
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
@@ -201,10 +205,12 @@ echo '
       else {$cena = $data2["cena"];}
     }
       echo '
-  <dt>'.$texty['prodejniCena'].' '.$data["popis"].':</dt><dd>'.$cena.'</dd>';
+  <dt class="' . ($cena == "-" || $cena == "0.00" ? 'nulovaCena' : '') . '">'.$data["popis"].':</dt><dd>'.$cena.'</dd>';
   }//while
 echo '
-</dl>';
+</dl>
+</div>
+';
 }//if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
 
 echo '

@@ -246,7 +246,7 @@ function osetriRadio()
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  var hiddenClass = "hidden"
+  var hiddenClass = "hidden";
   var btn = document.getElementById("btnProdejniCeny");
   var list = document.getElementById("listProdejniCeny");
 
