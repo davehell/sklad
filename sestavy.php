@@ -103,7 +103,7 @@ function lzeVyrobit($id_zbozi, $mnozstvi, $echo_offset='',$max_zanor)
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
         $dotaz = 'SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'];
-        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
         $record2 = mysqli_fetch_array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))
@@ -185,7 +185,7 @@ function lzeVyrobit2($id_zbozi, $mnozstvi, $max_zanor)
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
         $dotaz = 'SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'];
-        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
         $record2 = mysqli_fetch_array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))

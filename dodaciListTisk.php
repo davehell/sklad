@@ -25,14 +25,14 @@ $id = $_GET['id'];
 
 
 $dotaz = "SELECT * FROM doklady WHERE id='$id'";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 While ($data = @mysqli_fetch_array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
   $prodKategorie = $data["prod_kategorie"];
     // zjisteni udaju o odberateli
     $dotaz = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
-    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 }
@@ -96,7 +96,7 @@ WHERE t.id_dokladu='.$id.'
 AND t.id_zbozi = z.id
 ';
 //echo $sql;
-$vysledek = mysqli_query($sql, $SRBD) or Die(mysqli_error());
+$vysledek = mysqli_query($sql, $SRBD) or Die(mysqli_error($SRBD));
 $i=1;
 While ($data = mysqli_fetch_array($vysledek)) {
     echo '

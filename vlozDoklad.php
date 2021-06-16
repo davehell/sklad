@@ -36,7 +36,7 @@ else //vse OK ve formulari
   
   //muze existovat jen jeden doklad typu Inventura
   if($skupina == 'Inventura') {
-    $vysledekX = mysqli_query('select id from doklady where skupina="Inventura"') or Die(mysqli_Error());
+    $vysledekX = mysqli_query('select id from doklady where skupina="Inventura"') or Die(mysqli_error($SRBD));
     if(mysqli_num_rows($vysledekX) != 0) {
         session_register('hlaseniChyba');
         $_SESSION['hlaseniChyba'] = $texty['jenJednaInventura'];
@@ -68,7 +68,7 @@ else //vse OK ve formulari
   }
   else {
     $dotaz = "SELECT id FROM doklady WHERE c_dokladu='$cDokladu'";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     While ($data = @mysqli_Fetch_Array($vysledek)) {
       $id = $data["id"];
     }

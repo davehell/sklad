@@ -17,7 +17,7 @@ $SRBD=spojeniSRBD();
 if(isset($_GET["id"])) {
   $id = $_GET["id"];
   $dotaz = "SELECT nazev, c_vykresu FROM zbozi WHERE id='$id'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) != 1) { //zadane id neni v DB
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['neexistujiciKarta'];

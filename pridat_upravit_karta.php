@@ -20,7 +20,7 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
 if(isset($_GET["odebrat"])) {
   $odstranovaneID = $_GET["odebrat"];
   $dotaz = "SELECT obrazek FROM zbozi WHERE id='$odstranovaneID'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
@@ -126,7 +126,7 @@ if ((!preg_match("/[0-9]/", $cenaPrace)) || // cena prace muze obsahovat pouze c
 }
 // vsechny prodejni ceny
 $dotaz = "SELECT id as id_kat FROM prodejni_kategorie ORDER BY popis ASC";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 While ($data = @mysqli_fetch_array($vysledek)) {
   $cena = $_SESSION['promenneFormulare']["prodejniCena".$data["id_kat"]] ?? "";
   if ($cena != "") { // prodejni cena nesmi byt prazdna
@@ -163,13 +163,13 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
   else {//hlavicka karty je v poradku
     //zjisteni id prave vlozene karty
     $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     While ($data = @mysqli_fetch_array($vysledek)) {
       $id = $data["id"];
     }
     //ulozeni prodejnich cen
     $dotaz = "SELECT id as id_kat, popis FROM prodejni_kategorie ORDER BY popis ASC";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     While ($data = @mysqli_fetch_array($vysledek)) {
       $idKat = $data["id_kat"];
       $cena = $_SESSION['promenneFormulare']["cenaPrace".$idKat];
@@ -190,7 +190,7 @@ if($_POST["odeslat"] == $texty["pridatKartu"]) {
       $name = $_FILES["jmeno_souboru"]["name"];
       move_uploaded_file($_FILES["jmeno_souboru"]["tmp_name"], "./nahledy/$name");
       $dotaz = "UPDATE zbozi SET obrazek='$name' WHERE id='$id'";
-      mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+      mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
       zmensiObrazek($name, "thumb");
       zmensiObrazek($name, "normal");
     }
@@ -218,7 +218,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   $zacatekCV = dejZacVykresu($cv); //pouze prvni cast c. vykresu
   $cenaPrace = str_replace(",", ".", $cenaPrace); //pripadne desetinne carky nahradi za tecky
   $dotaz = "UPDATE zbozi SET nazev='$nazev', c_vykresu='$cv', zac_c_vykresu='$zacatekCV', jednotka='$jednotka', min_limit='$limit', cena_prace='$cenaPrace' WHERE id='$id'";
-  mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
   if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
@@ -228,7 +228,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   }
   else {
     $dotaz = "SELECT id as id_kategorie FROM prodejni_kategorie ORDER BY id";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     While ($data = @mysqli_fetch_array($vysledek)) {
       $cena = $_SESSION['promenneFormulare']['prodejniCena'.$data['id_kategorie']];
 

@@ -16,7 +16,7 @@ function getPrumernaCena($id)
 
   $SRBD=spojeniSRBD();
   $dotaz = "SELECT prum_cena FROM zbozi WHERE id='$id'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = mysqli_fetch_array($vysledek)) {
     $result = $data['prum_cena'];
   } 
@@ -46,7 +46,7 @@ function getPosledniCena($id, $typ)
              GROUP BY T.id
              ORDER BY datum DESC , T.id DESC
              LIMIT 1";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   if($typ == 'MJ')
     return $data['cena_MJ'];
@@ -92,7 +92,7 @@ function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
 {
   $SRBD=spojeniSRBD();
   $dotaz = "SELECT soucastka, mnozstvi FROM sestavy WHERE celek=$id";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   while ($data = mysqli_fetch_array($vysledek)) {
      $id_souc = $data['soucastka'];
      $souc_mnozstvi = $data['mnozstvi'];
@@ -103,7 +103,7 @@ function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
         if($id_vyroby!='')
         {
           $dotaz = "DELETE FROM vyroba_odpisy WHERE id_vyroby = '$id_vyroby'";
-          $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+          $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
         }
      }
      elseif($typ_akce=='odeber')
@@ -112,7 +112,7 @@ function akceSoucastkyCelku($typ_akce,$id,$mnozstvi,$id_vyroby='')
         if($id_vyroby!='')
         {
           $dotaz = "INSERT INTO vyroba_odpisy(id,id_vyroby,id_zbozi, mnozstvi) VALUES (0,'$id_vyroby','$id_souc','$celk_mnozstvi')";
-          $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+          $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
         }
      }
      else 
@@ -134,7 +134,7 @@ function pridejDoSkladu($id,$mnozstvi)
   $data = mysqli_fetch_array($vysledek);
   $noveMnozstvi = $data["mnozstvi"] + $mnozstvi;   
   
-  $vysledek3 = mysqli_query("UPDATE zbozi SET mnozstvi=$noveMnozstvi WHERE id=$id") or Die(mysqli_error());
+  $vysledek3 = mysqli_query("UPDATE zbozi SET mnozstvi=$noveMnozstvi WHERE id=$id") or Die(mysqli_error($SRBD));
 
 }//pridejDoSkladu()
 
@@ -176,7 +176,7 @@ function lzeVyrobit2($id_zbozi, $mnozstvi, $max_zanor)
         //kontrola poctu kazde casti na sklade
         $SRBD = spojeniSRBD();
         $dotaz = 'SELECT mnozstvi,typ FROM zbozi WHERE id='.$record['soucastka'];
-        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+        $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
         $record2 = mysqli_fetch_array($vysledek2);
          
         if (!isset($reserved[$record['soucastka']]))
@@ -466,7 +466,7 @@ function getCoefficient($nSRBD)
   global $SRBD;
  
   $dotaz = "SELECT hodnota FROM koeficienty WHERE id = 1";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());;
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));;
   $data = mysqli_fetch_array($vysledek);
   $hodnota = $data["hodnota"];
   

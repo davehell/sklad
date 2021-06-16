@@ -25,7 +25,7 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 $id = $_GET['id'];
 //*** UKAZANI INFORMACI O UPRAVOVANEM DOKLADU ***/
 $dotaz = "SELECT * FROM doklady WHERE id='$id'";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 While ($data = @mysqli_fetch_array($vysledek)) {
   $cDokladu = $data["c_dokladu"];
   $datum = date("d.m.Y",$data["datum"]);
@@ -36,7 +36,7 @@ While ($data = @mysqli_fetch_array($vysledek)) {
   if($prodKategorie) {
     // zjisteni popisku prodejni kategorie
     $dotaz2 = "SELECT id, popis FROM prodejni_kategorie WHERE id='$prodKategorie'";
-    $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error());
+    $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"] ?? "";
   }
@@ -122,7 +122,7 @@ echo '
 <select onchange="vyber_cv();" id="nazev" name="nazev">
 <option value="">---------- vyberte ----------</option>';
   //prvni rozbalovaci seznam (nazev / rozmer)
-  $vysledek = mysqli_query($SRBD, $dotaz_nazev) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz_nazev) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
@@ -142,7 +142,7 @@ echo '
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
   $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
@@ -263,7 +263,7 @@ echo
   </thead>
   <tfoot>';
     $dotaz = "SELECT sum(cena_MJ) as cena_MJ, sum(cena_KOO) as cena_KOO,sum(mnozstvi) as mnozstvi, sum(cena_MJ*mnozstvi) as cena_celkem FROM transakce WHERE id_dokladu='$id'";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data = @mysqli_fetch_array($vysledek);
    echo'
    <tr>
@@ -283,11 +283,11 @@ echo
   $sudyRadek = false;
   $i=1;
   $dotaz = "SELECT *, (cena_MJ*mnozstvi) as cenaCelkem FROM transakce WHERE id_dokladu='$id'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
 While ($data = @mysqli_fetch_array($vysledek)) {
     $dotaz = 'SELECT * FROM zbozi WHERE id='.$data["id_zbozi"];
-    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
     echo '
   <tr';

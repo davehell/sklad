@@ -129,7 +129,7 @@ if($_POST["odeslat"] == $texty["ulozitZmeny"]) {
   }
 
   //aktualizace udaju v profilu
-  mysqli_query($SRBD, "UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'") or Die(mysqli_error());
+  mysqli_query($SRBD, "UPDATE uzivatele SET login='$loginUsername', heslo='$zakodovaneHeslo' WHERE login='$puvodniLogin'") or Die(mysqli_error($SRBD));
   $_SESSION["uzivatelskeJmeno"] = $loginUsername; //aktualizuje se login prihlaseneho uzivatele
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['editOK'];

@@ -38,7 +38,7 @@ echo '
 ';
   //prvni rozbalovaci seznam (nazev / rozmer)
   $dotaz = "SELECT id, nazev FROM zbozi GROUP BY nazev";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];
@@ -57,7 +57,7 @@ echo '
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
   $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['cv'];
@@ -90,7 +90,7 @@ if(mysqli_num_rows($vysledek) != 0) {
 <table>';
   printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = @mysqli_fetch_array($vysledek)) {
     if($sudyRadek) {
       echo '
@@ -127,7 +127,7 @@ function pridatStroj($nazev, $cv) {
   }
 
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) {
     $data = @mysqli_fetch_array($vysledek);
     $idZbozi = $data["id"];
@@ -165,10 +165,10 @@ function odebratStroj($odstranovaneID) {
   }
 
   $dotaz = "SELECT id FROM stroje WHERE id='$odstranovaneID'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     $dotaz = "DELETE FROM stroje WHERE id='$odstranovaneID'";
-    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['strojOdebratOK'];
   }

@@ -31,7 +31,7 @@ zobrazitHlaseni();
 if(isset($_GET["upravit"])) {
   $upravovaneId = odstraneniEscape($_GET["upravit"], 5);
   $dotaz = "SELECT * FROM prodejni_kategorie WHERE id='$upravovaneId'";
-  $vysledek3 = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek3 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data3 = mysqli_fetch_array($vysledek3);
 }
 else {
@@ -43,7 +43,7 @@ echo '
 <h2>'.$texty["stavajiciKategorie"].'</h2>';
 
 $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 if(mysqli_num_rows($vysledek) != 0) {
   $sudyRadek = false;
   $sloupce = array('','popis');
@@ -234,10 +234,10 @@ function odebratKategorii($odstranovaneID) {
   }
 
   $dotaz = "SELECT id FROM prodejni_kategorie WHERE id='$odstranovaneID'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     $dotaz = "DELETE FROM prodejni_kategorie WHERE id='$odstranovaneID'";
-    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['kategorieOdebratOK'];
   }

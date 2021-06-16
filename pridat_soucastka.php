@@ -24,7 +24,7 @@ $kusy = $_SESSION['promenneFormulare']["kusy"];                  //soucastka
 $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
 $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND cv_rozmer='$cv'";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 While ($data = @mysqli_fetch_array($vysledek)) {
   $soucastka = $data["id"];
 }

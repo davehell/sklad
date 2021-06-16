@@ -55,7 +55,7 @@ echo '
 ';
   //vypsani textovych poli pro vsechny prodejni ceny
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis ASC";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = @mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];
     echo '
@@ -81,7 +81,7 @@ else {
 //Hlavicka karty uz byla vyplnena, tedy se zobrazi misto formulare zobrazi
 //pouze vypis hlavicky karty
   $dotaz = "SELECT nazev, c_vykresu, jednotka, min_limit, cena_prace FROM zbozi WHERE id='$id'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = @mysqli_fetch_array($vysledek);
     echo '
 <dl class="floatleft">
@@ -95,7 +95,7 @@ else {
 //////////////////////
 // obrazek
   $dotaz = "SELECT obrazek, nazev, c_vykresu FROM zbozi WHERE id='$id' AND obrazek is not NULL";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 0) { //zbozi nema v DB zadnou fotku
     echo '
 <p class="floatleft">Toto zbo¾í nemá pøiøazen ¾ádný obrázek.</p>
@@ -120,12 +120,12 @@ else {
 <dl>';
     //vypsani vsech prodejnich cen
     $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     While ($data = @mysqli_fetch_array($vysledek)) {
       $idKat = $data["id"];
       $cena = "-";
       $dotaz = "SELECT cena FROM prodejni_ceny WHERE id_zbozi='$id' AND id_kategorie='$idKat'";
-      $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+      $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
       While ($data2 = @mysqli_fetch_array($vysledek2)) {
         if($data2["cena"] == "") {$cena = "-";}
         else {$cena = $data2["cena"];}
@@ -165,7 +165,7 @@ else {
   //neobsahuje vyrobek, ktery je prave editovan (jinak by slo nastavit, ze
   //tento vyrobek je slozen z toho sameho vyrobku)
   $dotaz = "SELECT id, nazev FROM zbozi WHERE id<>'$id' GROUP BY nazev";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['nazev'].'">'.$data['nazev']."</option>\n";
   } //while
@@ -177,7 +177,7 @@ else {
 ';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
   $dotaz = "SELECT id, c_vykresu FROM zbozi GROUP BY c_vykresu";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['c_vykresu'].'">'.$data['c_vykresu']."</option>\n";
   } //while

@@ -44,7 +44,7 @@ if($_POST) {
     header('Location: '.$soubory['archiv'], true, 303);
     exit;
   }
-  mysqli_Select_Db($db, $SRBD) or Die(mysqli_error());
+  mysqli_Select_Db($db, $SRBD) or Die(mysqli_error($SRBD));
 
   //nacte ze souboru sql skript pro vytvoreni tabulek
   $query = "";

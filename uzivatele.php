@@ -120,7 +120,7 @@ function uzivatele() {
 <?php
   $idModulu = dejIdModulu($_SESSION['modul']);
   $dotaz = "SELECT id, login, prava FROM uzivatele WHERE id_modulu='$idModulu' AND login!='admin'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if (mysqli_num_rows($vysledek) == 0) { // v DB neni ulozeny zadny uzivatel
     echo "<p>V databázi nejsou ulo¾eni ¾ádní u¾ivatelé.<p>";
   }

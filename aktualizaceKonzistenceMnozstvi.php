@@ -91,9 +91,9 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
 //metody
     public function testAllAmounts() {
     // ulozeni vysledku do
-    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error());
+    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error($SRBD));
 
-    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error());
+    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error($SRBD));
     
     $numrows1 = mysqli_num_rows($result1);
     $numrows2 = mysqli_num_rows($result2);
@@ -168,9 +168,9 @@ const dotazAmount =   "select id, nazev, c_vykresu, (Z.mnozstvi + IFNULL(T2.mnoz
      */
     public function echoInconsistentItems()
     {
-    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error());
+    $result1 = mysqli_query($this->SRBD, self::dotazTrans) or Die(mysqli_error($SRBD));
 
-    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error());
+    $result2 = mysqli_query($this->SRBD, self::dotazAmount) or Die(mysqli_error($SRBD));
     
     $numrows1 = mysqli_num_rows($result1);
     $numrows2 = mysqli_num_rows($result2);

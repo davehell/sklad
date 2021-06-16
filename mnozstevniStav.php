@@ -90,7 +90,7 @@ if($datumOK){
             
   
   if($paging)
-  {$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  {$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
   //zjisteni poctu radku
   $pocet = mysqli_num_rows($vysledek);
@@ -100,7 +100,7 @@ if($datumOK){
   }//pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
   
   if($paging)
@@ -115,7 +115,7 @@ if($datumOK){
   
   printTableHeader($jmena,$urldodatek);
 
-  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz2) or Die(mysqli_error($SRBD));
   $data2 = mysqli_Fetch_Array($vysledek2);
   
   $sudy = false;

@@ -53,7 +53,7 @@ makeArraySelectList('skupina',$poleSkupin,$_SESSION['promenneFormulare']['skupin
 <option value="">----- vyberte -----</option>';
   //druhy rozbalovaci seznam (c. vykresu / jakost)
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['prodejniCena'];

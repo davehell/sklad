@@ -12,12 +12,12 @@ if (!isset($SRBD)) { // u¾ jsme pøipojeni k databázi
 if(isset($_GET["odstranit"])) {
   $id = $_GET["odstranit"];
   $dotaz = "SELECT obrazek FROM zbozi WHERE id='$id'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   if(File_Exists("nahledy/".$data["obrazek"])) unlink("nahledy/".$data["obrazek"]);  //vymazani souboru
   if(File_Exists("nahledy/thumb_".$data["obrazek"])) unlink("nahledy/thumb_".$data["obrazek"]);//vymazani souboru
   $dotaz = "UPDATE zbozi SET obrazek=NULL WHERE id='$id'";
-  mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['odebratObrazekOK'];
@@ -36,13 +36,13 @@ if(isset($_POST["id"])) {
     zmensiObrazek($name, "normal");
     //smazani predchoziho obrazku
     $dotaz = "SELECT obrazek FROM zbozi WHERE id='$id'";
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data = mysqli_fetch_array($vysledek);
     if(File_Exists("nahledy/".$data["obrazek"])) unlink("nahledy/".$data["obrazek"]);  //vymazani souboru
     if(File_Exists("nahledy/thumb_".$data["obrazek"])) unlink("nahledy/thumb_".$data["obrazek"]);//vymazani souboru
     //ulozeni nazvu noveho souboru do db
     $dotaz = "UPDATE zbozi SET obrazek='$name' WHERE id='$id'";
-    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['novyObrazekOK'];

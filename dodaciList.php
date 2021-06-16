@@ -24,12 +24,12 @@ if (!isset($SRBD)) { // uz jsme pøipojeni k databázi
 $id = $_GET['id'];
 
 $dotaz = "SELECT * FROM doklady WHERE id='$id'";
-$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 While ($data = @mysqli_fetch_array($vysledek)) {
   $prodKategorie = $data["prod_kategorie"];
     // zjisteni udaju o odberateli
     $dotaz = "SELECT * FROM prodejni_kategorie WHERE id='$prodKategorie'";
-    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek2 = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     $data2 = @mysqli_fetch_array($vysledek2);
     $prodKategoriePop = $data2["popis"];
 }

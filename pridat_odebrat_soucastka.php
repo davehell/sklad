@@ -29,7 +29,7 @@ if(!isset($_GET["odebrat"])) {
   $celek = odstraneniEscape($_POST["id"], 100);                    //celek
 
   $dotaz = "SELECT id FROM zbozi WHERE nazev='$nazev' AND c_vykresu='$cv'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = @mysqli_fetch_array($vysledek);
   $soucastka = $data["id"];
 
@@ -52,7 +52,7 @@ if(!isset($_GET["odebrat"])) {
 
   $mnozstvi = str_replace(",", ".", $mnozstvi);
   $dotaz = "INSERT INTO sestavy (id, celek, soucastka, mnozstvi) VALUES (0, '$celek', '$soucastka', '$mnozstvi')";
-  mysqli_query($SRBD, $dotaz);// or Die(mysqli_Error());
+  mysqli_query($SRBD, $dotaz);// or Die(mysqli_error($SRBD));
   if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['soucastkaDuplicitni'];
@@ -75,10 +75,10 @@ else {
   $soucastka = $_GET["odebrat"];
 
   $dotaz = "SELECT id FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     $dotaz = "DELETE FROM sestavy WHERE soucastka='$soucastka' AND celek='$celek'";
-    mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+    mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     session_register('hlaseniOK');
     $_SESSION['hlaseniOK'] = $texty['soucastkaOdebratOK'];
     session_unregister('promenneFormulare');  // zru¹ení kontextu formuláøe

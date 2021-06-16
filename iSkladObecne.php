@@ -127,13 +127,13 @@ function spojeniSRBD($databaze='') {
   }
 
   include 'iSkladDatabaze.php';
-  $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_error());
+  $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_error($SRBD));
 
   if($databaze != "") {
     $vysledek = mysqli_select_db($SRBD, $databaze);
   }
   else {
-    $vysledek = mysqli_select_db($SRBD, SQL_DBNAME); // or Die(mysqli_error());
+    $vysledek = mysqli_select_db($SRBD, SQL_DBNAME); // or Die(mysqli_error($SRBD));
   }
 
   if($vysledek == 0)   { //nepovedlo se pripojeni k DB
@@ -366,7 +366,7 @@ echo '
     <ul>
       <li><a href="'.$soubory['archiv'].'?action=add">'.$texty['novyArchiv'].'</a></li>
       <li><a href="'.$soubory['inventura'].'" onclick="return confirm(\''.$texty["potvrzeniInventury"].'\')">'.$texty['lonskaInventura'].'</a></li>';
-    $vysledek = mysqli_query($SRBD, "show databases like 'lmr%'") or Die(mysqli_error());
+    $vysledek = mysqli_query($SRBD, "show databases like 'lmr%'") or Die(mysqli_error($SRBD));
     While ($data = mysqli_fetch_array($vysledek)) {
       $rok = substr($data[0],-4);
       echo '
@@ -408,7 +408,7 @@ SELECT Z.id, Z.nazev, Z.c_vykresu, S.mnozstvi
 FROM sestavy as S, zbozi as Z
 WHERE celek='$idCelku'
   AND S.soucastka = Z.id ";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $pocet = mysqli_num_rows($vysledek);
 
   if(mysqli_num_rows($vysledek) == 0)
@@ -432,7 +432,7 @@ WHERE celek='$idCelku'
 <table>';
 
     $dotaz.=pageOrderQuery($pocet);
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     printTableHeader($sloupce,"id=".$idCelku);
 
     While ($data = mysqli_fetch_array($vysledek)) {
@@ -482,7 +482,7 @@ function spocitatCenuMaterialu($idCelku)
   SELECT Z.id, S.mnozstvi, Z.prum_cena
   FROM sestavy as S, zbozi as Z
   WHERE celek='$idCelku'
-  AND S.soucastka = Z.id") or Die(mysqli_error());
+  AND S.soucastka = Z.id") or Die(mysqli_error($SRBD));
 
   While ($data = @mysqli_fetch_array($vysledek)) {
     $cenaMaterialu += $data["mnozstvi"]*$data["prum_cena"];
@@ -534,7 +534,7 @@ function vypsatTransakce($idZbozi)
     )
   ) as vysl ";
   
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $pocet = mysqli_num_rows($vysledek);
 
   if(mysqli_num_rows($vysledek) == 0) {
@@ -553,7 +553,7 @@ function vypsatTransakce($idZbozi)
 <table>';
     $dotaz.=pageOrderQuery($pocet);
 
-    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     printTableHeader($sloupce,"id=".($idZbozi ?? ""));
 
     While ($data = @mysqli_fetch_array($vysledek)) {
@@ -609,7 +609,7 @@ function rezervovaneMnozstvi($idZbozi)
   FROM transakce as T, doklady as D
   WHERE id_zbozi	='$idZbozi'
   AND D.id = T.id_dokladu
-  AND D.skupina = 'Rezervace'") or Die(mysqli_error());
+  AND D.skupina = 'Rezervace'") or Die(mysqli_error($SRBD));
 
   $data = @mysqli_fetch_array($vysledek);
 
@@ -845,7 +845,7 @@ function getTableCount($table )
 {
   $SRBD=spojeniSRBD();
 
-  $vysledek = mysqli_query($SRBD, 'SELECT count(*) as pocet FROM '.$table.$wh) or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, 'SELECT count(*) as pocet FROM '.$table.$wh) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   return $data['pocet'];
 }//getTableCount()
@@ -913,14 +913,14 @@ function ulozObrazek($name) {
   $SRBD=spojeniSRBD();
 
   move_uploaded_file($_FILES["jmeno_souboru"]["tmp_name"], "./nahledy/$name");
-  mysqli_query($SRBD, "UPDATE zbozi SET obrazek='$name' WHERE id='$id'") or Die(mysqli_error());
+  mysqli_query($SRBD, "UPDATE zbozi SET obrazek='$name' WHERE id='$id'") or Die(mysqli_error($SRBD));
   zmensiObrazek($name, "thumb");
   zmensiObrazek($name, "normal");
 }
 
 function dejIdModulu($nazev) {
   $SRBD=spojeniSRBD("sklad");
-  $vysledek = mysqli_query($SRBD, "SELECT id FROM moduly WHERE modul='$nazev'") or Die(mysqli_error());
+  $vysledek = mysqli_query($SRBD, "SELECT id FROM moduly WHERE modul='$nazev'") or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
 
   return $data["id"];

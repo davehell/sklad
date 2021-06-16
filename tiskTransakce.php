@@ -108,7 +108,7 @@ if(isset($_GET['od']) && $datumOK){
   $urldodatek = 't='.$_GET['t'].'&od='.$_GET['od'].'&do='.$_GET['do'];
   
   $dotaz = udelejDotaz($typ,$_GET['od'],$_GET['do']);
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 
   $dotaz3 = udelejSumDotaz($typ,$_GET['od'],$_GET['do']);
 
@@ -121,7 +121,7 @@ if(isset($_GET['od']) && $datumOK){
   //pridani dodatku (ORDER, LIMIT)
   $dotaz .= $dodatek;
   //echo $dotaz;
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
   //if ($pocet>$rows)
   if($paging)
@@ -149,7 +149,7 @@ if(isset($_GET['od']) && $datumOK){
 //   {
 //     $dotaz2 .= 'AND typ_vyroby=' . "'".$_REQUEST['typVyroby']."' ";
 //   }
-  $vysledek2 = mysqli_query($SRBD, $dotaz3) or Die(mysqli_Error());
+  $vysledek2 = mysqli_query($SRBD, $dotaz3) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek2);
   
   $sudy = false;

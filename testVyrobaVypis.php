@@ -30,7 +30,7 @@ echo '
   //prvni rozbalovaci seznam - vyberou se jen veci ktere maji podsestavy/material = jsou celky
   /// WHERE id IN (select celek from sestavy where celek=Z.id)
   $dotaz = "SELECT Z.id, Z.nazev FROM zbozi Z GROUP BY nazev";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_Error());
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
     $selected = $_SESSION['promenneFormulare']['nazev'];

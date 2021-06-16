@@ -44,7 +44,7 @@ if($_POST) {
 
   $hodnota = str_replace(",", ".", $hodnota);//pripadne desetinne carky nahradi za tecky
   $dotaz = "UPDATE koeficienty SET hodnota='$hodnota' WHERE id=1";
-  mysqli_query($SRBD, $dotaz) or Die(mysqli_error());
+  mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   session_register('hlaseniOK');
   $_SESSION['hlaseniOK'] = $texty['editOK'];
   //header('Location: '.$_SERVER['HTTP_REFERER']);
