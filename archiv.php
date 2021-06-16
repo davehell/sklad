@@ -45,7 +45,7 @@ if($_POST) {
     header('Location: '.$soubory['archiv'], true, 303);
     exit;
   }
-  mysqli_select_db($SRBD, $db) or Die(mysqli_error($SRBD));
+  mysqli_select_db($SRBD, $db) or Die("query 1:" . mysqli_error($SRBD));
 
   //nacte ze souboru sql skript pro vytvoreni tabulek
   $query = "";
@@ -63,33 +63,38 @@ if($_POST) {
 
   //zkopirovani potrebnych dat ze stare db
   $soubor=$_SERVER["DOCUMENT_ROOT"]."/sql/data.txt";
-  $tabulky = array('prodejni_ceny', 'prodejni_kategorie', 'sestavy', 'stroje', 'zbozi', 'koeficienty');
+  $tabulky = array('zbozi', 'sestavy', 'stroje', 'prodejni_kategorie', 'prodejni_ceny', 'koeficienty');
   foreach($tabulky as $tab) {
     if(file_exists($soubor)) unlink($soubor);
     $stareSRBD=spojeniSRBD($_SESSION["modul"].$_SESSION["rokArchiv"]);
     $dotaz = "SELECT * FROM $tab INTO OUTFILE '".$soubor."'";
-    mysqli_query($stareSRBD, $dotaz, MYSQLI_USE_RESULT); //returns a mysqli_result object with unbuffered result set
+    // echo $dotaz . "<br>";
+    mysqli_query($stareSRBD, $dotaz, MYSQLI_USE_RESULT) or Die("query 2:" . mysqli_error($stareSRBD)); //returns a mysqli_result object with unbuffered result set
 
     $noveSRBD=spojeniSRBD($_SESSION["modul"].$rok);
     $dotaz = "LOAD DATA INFILE '".$soubor."' INTO TABLE $tab";
-    mysqli_query($noveSRBD, $dotaz, MYSQLI_USE_RESULT); //returns a mysqli_result object with unbuffered result set
+    // echo $dotaz . "<br>";
+    mysqli_query($noveSRBD, $dotaz, MYSQLI_USE_RESULT) or Die("query 3:" . mysqli_error($noveSRBD)); //returns a mysqli_result object with unbuffered result set
     if($tab == "zbozi") {
       $dotaz = "UPDATE zbozi SET mnozstvi=0";
-      mysqli_query($noveSRBD, $dotaz);
+      mysqli_query($noveSRBD, $dotaz) or Die("query 4:" . mysqli_error($noveSRBD));
     }
   }
 
   //pridani procedur
   mysqli_query($SRBD, "SET NAMES 'latin2';");
   mysqli_query($SRBD, 'delimiter //');
+  $query2 = "";
   $f = fopen("sql/transakce_triggery.sql", "r");
   while (!feof ($f)) {
-    $query .= fgets($f, 4096);
+    $query2 .= fgets($f, 4096);
   }
   fclose ($f);
-  foreach (explode('//', $query) as $sql) {
-    if(strlen($sql) > 0) {
-      mysqli_query($SRBD, $sql);
+
+  foreach (explode('//', $query2) as $dotaz) {
+    if(strlen($dotaz) > 0) {
+      // echo $dotaz . "<br>";
+      mysqli_query($SRBD, $dotaz) or Die("query 5:" . mysqli_error($SRBD));
     }
   }
   mysqli_query($SRBD, 'delimiter ;');
@@ -130,7 +135,7 @@ zobrazitHlaseni();
 <legend>'.$texty['novyArchiv'].'</legend>
 <p>Do nového roèníku budou pøenesena data z roku <strong>'.$_SESSION["rokArchiv"].'</strong></p>
 <br />
-<label for="rok">'.$texty['rok'].':</label>
+<label for="rok">'.$texty['rok'].'</label>
 <input type="text" maxlength="40" id="rok" name="rok" />
 <br />'.
 dejTlacitko('odeslat','zalozitRocnik').'

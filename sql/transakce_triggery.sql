@@ -17,7 +17,7 @@ CREATE PROCEDURE count_set_prumerna (p_id_zbozi INT)
 BEGIN
   DECLARE v_prum_cena DECIMAL(11,2);
   
-  SELECT sum(mnozstvi*cena_MJ)/sum(mnozstvi) INTO v_prum_cena
+  SELECT sum(mnozstvi*cena_MJ)/NULLIF(sum(mnozstvi),0) INTO v_prum_cena
   FROM transakce as T join doklady as D on T.id_dokladu = D.id
   WHERE id_zbozi=p_id_zbozi 
     AND D.skupina in ('Nákup','Inventura','Výroba','Kooperace');
