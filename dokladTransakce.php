@@ -194,7 +194,7 @@ elseif($skupina=='Prodej' || $skupina=='Rezervace')
 <input type="radio" name="prodSkupina" id="radioprum" value="skupina" checked onclick="osetriRadio()"><span id="prod_cena"></span><br />
 <label for="prodejniCena">'.$texty['vlastniCena'].':</label>
 <input type="radio" name="prodSkupina" value="vlastni" onclick="osetriRadio()">
-<input type="text" maxlength="40" name="cenaMJvlastni" value="'.$_SESSION['promenneFormulare']['cenaMJvlastni'].'">
+<input type="text" maxlength="40" name="cenaMJvlastni" value="'.($_SESSION['promenneFormulare']['cenaMJvlastni'] ?? '').'">
 <input type="hidden" id="prod_kat" name="prod_kat" value="'.$prodKategorie.'" />
 <input type="hidden" id="cenaMJ" name="cenaMJ" value="" />
 </fieldset>';
@@ -208,7 +208,7 @@ elseif($skupina=='Kooperace')
 <input type="radio" name="cenaKOO" id="radioposl" value="posledni"><span id="poslk"></span><br />
 <label for="cenaKOO">'.$texty['vlastniCena'].':</label>
 <input type="radio" name="cenaKOO" value="vlastni" checked>
-<input type="text" maxlength="40" name="cenaKOOvlastni" value='.$_SESSION['promenneFormulare']['cenaKOOvlastni'].'>
+<input type="text" maxlength="40" name="cenaKOOvlastni" value='.($_SESSION['promenneFormulare']['cenaKOOvlastni'] ?? '').'>
 </fieldset>
 ';
 }

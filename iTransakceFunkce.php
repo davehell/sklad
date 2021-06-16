@@ -416,7 +416,7 @@ function sumaCenMaterialu($id_celku)
   $vysledek = mysqli_query($SRBD, $dotaz);
   $data = mysqli_fetch_array($vysledek);
   
-  return $data['cena_matr'];
+  return $data['cena_matr'] ?? 0;
 
 }//sumaCenMaterialuCelku()
 
@@ -458,15 +458,14 @@ function zmenaMnozstviZbozi($typ_akce, $id, $mnozstvi)
 
 /**
  * vrati koeficient z tabulky koeficienty
- * @param SRBD - pripojeni k databazi
  * @return koeficient  
  */ 
-function getCoefficient($nSRBD)
+function getCoefficient()
 {
   global $SRBD;
  
   $dotaz = "SELECT hodnota FROM koeficienty WHERE id = 1";
-  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));;
+  $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   $hodnota = $data["hodnota"];
   

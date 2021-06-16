@@ -28,11 +28,11 @@ $poleTypuVyroby = array('--- v¹echny ---', 'Montá¾', 'Montá¾ vozíkù', 'Montá¾ bl
 <fieldset>
 <legend>'.$texty['hledatDoklad'].'</legend>
 <label for="datum">'.$texty['datum'].':</label>
-<input id="new_day" name="datum" type="text" class="DatePicker" value="'.$_POST['datum'].'" /><br />
+<input id="new_day" name="datum" type="text" class="DatePicker" value="'.($_POST['datum'] ?? '').'" /><br />
 <label for="cv">'.$texty['cDokladu'].':</label>
-<input type="text" maxlength="40" id="cDokladu" name="cDokladu" value="'.$_POST['cDokladu'].'" /><br />
+<input type="text" maxlength="40" id="cDokladu" name="cDokladu" value="'.($_POST['cDokladu'] ?? '').'" /><br />
 <label for="skupina">'.$texty['skupina'].':</label>'.
-makeArraySelectList('skupina',$poleSkupin,$_POST['skupina'],'','id="skupina" onchange="ukazProdejKomuVyroba(this)"',$vyberte=false).
+makeArraySelectList('skupina',$poleSkupin,($_POST['skupina'] ?? ''),'','id="skupina" onchange="ukazProdejKomuVyroba(this)"',$vyberte=false).
 '<br />
 
 <label for="prodejniCena">'.$texty['prodejKomu'].':</label>

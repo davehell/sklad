@@ -19,7 +19,7 @@ if(!isset($_SESSION['promenneFormulare']["datum"]))
 
 uvodHTML("zapisTitulek");
 echo '
-<h1>'.$texty["zapisNadpis"].'</h1>';
+<h1>'.$texty["zapis"].'</h1>';
 zobrazitHlaseni();
 
 $poleSkupin = array('Prodej','Rezervace','Zmetkování','Nákup','Kooperace','Výroba','Inventura');
@@ -41,11 +41,11 @@ echo '
 <fieldset>
 <legend>'.$texty['infoZapis'].'</legend>
 <label for="datum">'.$texty['datum'].':</label>
-<input id="new_day" name="datum" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']["datum"].'" /><br />
+<input id="new_day" name="datum" type="text" class="DatePicker" value="'.($_SESSION['promenneFormulare']["datum"] ?? '').'" /><br />
 <label for="cv">'.$texty['cDokladu'].':</label>
-<input type="text" maxlength="40" id="cDokladu" name="cDokladu" value="'.$_SESSION['promenneFormulare']['cDokladu'].'" /><br />
+<input type="text" maxlength="40" id="cDokladu" name="cDokladu" value="'.($_SESSION['promenneFormulare']['cDokladu'] ?? '').'" /><br />
 <label for="skupina">'.$texty['skupina'].':</label>'.
-makeArraySelectList('skupina',$poleSkupin,$_SESSION['promenneFormulare']['skupina'],'','id="skupina" onchange="ukazProdejKomuVyroba(this);"').
+makeArraySelectList('skupina',$poleSkupin,($_SESSION['promenneFormulare']['skupina'] ?? ''),'','id="skupina" onchange="ukazProdejKomuVyroba(this);"').
 '<br />
 
 <label for="prodejniCena">'.$texty['prodejKomu'].':</label>

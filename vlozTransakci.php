@@ -215,7 +215,7 @@ function akceProSkupinu($skupina,$id)
       else      //lze vyrobit - spocitani ceny vyrobku, tady by se melo nasobit koeficientem
       {
          $cenaMJ = sumaCenMaterialu($id);
-         $koeficient = getCoefficient($SRBD);
+         $koeficient = getCoefficient();
          $cenaKOO = cenaPrace($id);
          $cenaMJ += ($cenaKOO*$koeficient);
       }
@@ -236,8 +236,9 @@ function akceProSkupinu($skupina,$id)
    $cenaMJ = str_replace(",", ".", $cenaMJ); //pripadne desetinne carky nahradi za tecky
    $cenaKOO = str_replace(",", ".", $cenaKOO); //pripadne desetinne carky nahradi za tecky
    $dotaz = "INSERT INTO transakce(id,id_zbozi, id_dokladu, mnozstvi, cena_MJ, cena_KOO) VALUES (0,'$id','$id_dokladu','$mnozstvi',$cenaMJ,$cenaKOO)";
+   print_r($dotaz);
    $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
-   $id_transakce = mysqli_insert_id();      //zjisteni posledniho id - pro vyrobu
+   //$id_transakce = mysqli_insert_id($SRBD);      //zjisteni posledniho id - pro vyrobu
    
    
    if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam

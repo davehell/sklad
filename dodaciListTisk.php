@@ -89,14 +89,13 @@ echo '
   </tr>
 ';
 
-$sql = '
+$dotaz = '
 SELECT nazev, c_vykresu, t.mnozstvi as mnozstvi
 FROM zbozi z, transakce t
 WHERE t.id_dokladu='.$id.'
 AND t.id_zbozi = z.id
 ';
-//echo $sql;
-$vysledek = mysqli_query($sql, $SRBD) or Die(mysqli_error($SRBD));
+$vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
 $i=1;
 While ($data = mysqli_fetch_array($vysledek)) {
     echo '
