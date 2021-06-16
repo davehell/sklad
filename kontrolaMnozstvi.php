@@ -33,5 +33,7 @@ echo '<br />
       </form>';
 konecHTML();
 
-session_unregister($_POST['odeslano']);
+if(isset($_POST['odeslano'])) {
+  session_unregister($_POST['odeslano']);
+}
 
