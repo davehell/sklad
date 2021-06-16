@@ -22,7 +22,8 @@ foreach($_GET as $jmenoPromenne => $hodnota) { // promìnné formuláøe jsou pøedáv
 
 // kontrola typu
 if(isset($_GET['t']))
-{ if($_GET['t']=='n')
+{
+  if($_GET['t']=='n')
     {$typ = "Nákup";$typAscii="Nakup";}
   elseif($_GET['t']=='p')
     {$typ = "Prodej";$typAscii="Prodej";}
@@ -40,12 +41,12 @@ if($typ == "Chyba")
 {  session_register('hlaseniChyba');
    $_SESSION['hlaseniChyba'] = $texty['spatneParametry'];
 }
-if(!checkFormDatum($_GET['od']) || !checkFormDatum($_GET['do']))
+if(!checkFormDatum($_GET['od'] ?? "") || !checkFormDatum($_GET['do'] ?? ""))
   $datumOK = false;
 else $datumOK = true;
 
 //detekce strankovani
-if($_GET['paging']=='no')
+if(isset($_GET['paging']) && $_GET['paging']=='no')
  $paging = false;
 else $paging=true;
 
@@ -56,20 +57,20 @@ echo
 zobrazitHlaseni();
 if($typ!="Chyba"){
 echo '
-<form type="GET" action="'.$soubory['tiskTransakce'].'" class="noPrint">
+<form type="GET" action="'.$soubory['tiskNakupy'].'" class="noPrint">
 <fieldset>
 <legend>'.$texty['casoveVymezeni'].'</legend>
 <label for="od">'.$texty['datumOd'].':</label>
-<input id="new_day" name="od" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['od'].'" /><br />
+<input id="new_day" name="od" type="text" class="DatePicker" value="'.($_SESSION['promenneFormulare']['od'] ?? '').'" /><br />
 <label for="do">'.$texty['datumDo'].':</label>
-<input id="new_day" name="do" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['do'].'" /><br />
+<input id="new_day" name="do" type="text" class="DatePicker" value="'.($_SESSION['promenneFormulare']['do'] ?? '').'" /><br />
 <label for="c_dokladu">'.$texty['c_dokladu'].':</label>
-<input type="text" name="c_dokladu" value="'.$_SESSION['promenneFormulare']['c_dokladu'].'"/><br />
+<input type="text" name="c_dokladu" value="'.($_SESSION['promenneFormulare']['c_dokladu'] ?? '').'"/><br />
 <input type="hidden" name="t" value="'.$_GET['t'].'">';
 if($typ == 'Výroba')
 {
   echo '<label for="skupina">'.$texty['typ_vyroby'].':</label>'.
-  makeArraySelectList('typVyroby',$poleTypuVyroby,$_SESSION['promenneFormulare']['typVyroby'],'','id="typVyroby"').'<br />';
+  makeArraySelectList('typVyroby',$poleTypuVyroby,($_SESSION['promenneFormulare']['typVyroby'] ?? ''),'','id="typVyroby"').'<br />';
 }
 echo dejTlacitko('odeslat','najit').
 '</fieldset>
@@ -81,7 +82,7 @@ if(isset($_GET['od']) && $datumOK){
   ////// tabulka  ////////
   $rows = POCET_RADKU;
   
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
   {
     if($typ == 'Výroba')
     {    $jmena = array('c','nazev','c_vykresu','datum','c_dokladu','typ_vyroby','mnozstvi','cena_KOO','koo_mnozstvi','cenaCelkem');
@@ -127,7 +128,7 @@ if(isset($_GET['od']) && $datumOK){
   if($paging)
     if (!isset($_GET["tod"])) $from=1; else $from=$_GET["tod"]; 
   
-  $urldodatek2 ='&'.$urldodatek.'&o='.$_GET['o'].'&ot='.$_GET['ot'];
+  $urldodatek2 ='&'.$urldodatek.'&o='.($_GET['o'] ?? '').'&ot='.($_GET['ot'] ?? '');
   
   if($paging)
     putPaging($pocet,$rows,$from, $urldodatek2);
@@ -153,7 +154,7 @@ if(isset($_GET['od']) && $datumOK){
   $data = mysqli_fetch_array($vysledek2);
   
   $sudy = false;
-  if($_GET['print']==1)
+  if(isset($_GET['print']) && $_GET['print']==1)
     $colspan = 5;
   else $colspan = 4;
   if($typ == 'Výroba')   // je potreba posunout jeste o jedno policko
@@ -194,7 +195,7 @@ if(isset($_GET['od']) && $datumOK){
     if($sudy)
     echo ' class="sudyRadek"';
     echo'>';
-    if($_GET['print']==1)
+    if(isset($_GET['print']) && $_GET['print']==1)
     echo '<td>'.$i++.'</td>';
     echo
     '<td><a href="'.$soubory['nahledKarta'].'?id='.$data['id_zbozi'].'">'.$data['nazev'].'</a></td>

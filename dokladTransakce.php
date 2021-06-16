@@ -157,7 +157,7 @@ echo '
   echo '</select><br />
 <br />
 <label for="mnozstvi">'.$texty['transakceMnozstvi'].':</label>
-<input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'.$_SESSION['promenneFormulare']['mnozstvi'].'" /><br />
+<input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'.($_SESSION['promenneFormulare']['mnozstvi'] ?? '').'" /><br />
 ';
 
 ////////////// PODMINKY - POLOZKY JEN PRO URCITE SKUPINY /////////////////////
@@ -173,7 +173,7 @@ if($skupina == 'Nákup' || $skupina == 'Inventura')
 <input type="radio" name="cenaMJ" id="radioprum" value="prumerna"><span id="prumn"></span><br />
 <label for="cenaMJ">'.$texty['vlastniCena'].':</label>
 <input type="radio" name="cenaMJ" value="vlastni" checked >
-<input type="text" maxlength="40" name="cenaMJvlastni" value='.$_SESSION['promenneFormulare']['cenaMJvlastni'].'>
+<input type="text" maxlength="40" name="cenaMJvlastni" value='.($_SESSION['promenneFormulare']['cenaMJvlastni'] ?? '').'>
 </fieldset>
 ';
 }//konecNakup

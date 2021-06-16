@@ -126,7 +126,7 @@ function pridatModul($nazev) {
 
   $nazev .= $_SESSION["rokArchiv"];
   mysqli_query($SRBD, "create database `$nazev` COLLATE=latin2_czech_cs") or Die(mysqli_error($SRBD));
-  mysqli_Select_Db($SRBD, $nazev) or Die(mysqli_error($SRBD));
+  mysqli_select_db($SRBD, $nazev) or Die(mysqli_error($SRBD));
   
 
   $query = "";

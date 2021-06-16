@@ -37,14 +37,15 @@ if($_POST) {
   
   //vytvoreni nove db
   $db = $_SESSION["modul"].$rok;
-  mysqli_query("create database `$db` COLLATE=latin2_czech_cs");
+  $dotaz = "create database `$db` COLLATE=latin2_czech_cs";
+  mysqli_query($SRBD, $dotaz);
   if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
     session_register('hlaseniChyba');
     $_SESSION['hlaseniChyba'] = $texty['novyRokDuplicitni'];
     header('Location: '.$soubory['archiv'], true, 303);
     exit;
   }
-  mysqli_Select_Db($db, $SRBD) or Die(mysqli_error($SRBD));
+  mysqli_select_db($SRBD, $db) or Die(mysqli_error($SRBD));
 
   //nacte ze souboru sql skript pro vytvoreni tabulek
   $query = "";
@@ -66,12 +67,15 @@ if($_POST) {
   foreach($tabulky as $tab) {
     if(file_exists($soubor)) unlink($soubor);
     $stareSRBD=spojeniSRBD($_SESSION["modul"].$_SESSION["rokArchiv"]);
-    mysqli_unbuffered_query ("SELECT * FROM $tab INTO OUTFILE '".$soubor."'", $stareSRBD);
+    $dotaz = "SELECT * FROM $tab INTO OUTFILE '".$soubor."'";
+    mysqli_query($stareSRBD, $dotaz, MYSQLI_USE_RESULT); //returns a mysqli_result object with unbuffered result set
+
     $noveSRBD=spojeniSRBD($_SESSION["modul"].$rok);
-    mysqli_unbuffered_query ("LOAD DATA INFILE '".$soubor."' INTO TABLE $tab", $noveSRBD);
+    $dotaz = "LOAD DATA INFILE '".$soubor."' INTO TABLE $tab";
+    mysqli_query($noveSRBD, $dotaz, MYSQLI_USE_RESULT); //returns a mysqli_result object with unbuffered result set
     if($tab == "zbozi") {
       $dotaz = "UPDATE zbozi SET mnozstvi=0";
-      mysqli_query ($noveSRBD, $dotaz);
+      mysqli_query($noveSRBD, $dotaz);
     }
   }
 
@@ -84,7 +88,9 @@ if($_POST) {
   }
   fclose ($f);
   foreach (explode('//', $query) as $sql) {
-    mysqli_query($SRBD, $sql);
+    if(strlen($sql) > 0) {
+      mysqli_query($SRBD, $sql);
+    }
   }
   mysqli_query($SRBD, 'delimiter ;');
 

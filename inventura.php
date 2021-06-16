@@ -5,7 +5,10 @@ include "iSkladObecne.php";
 include "iTransakceFunkce.php";
 include "aktualizaceKonzistenceMnozstvi.php";
 
-session_start();
+if(!isset($_SESSION)) 
+{ 
+  session_start(); 
+} 
 $potrebnaPrava = ZAMESTNANEC;
 kontrolaPrihlaseni();
 kontrolaPrav($potrebnaPrava);
@@ -13,7 +16,7 @@ $noveSRBD=spojeniSRBD($_SESSION["modul"].$_SESSION["rokArchiv"]);
 
 //zjisteni, jestli uz doklad s inventurou existuje
 $sql2 = 'select id from doklady where skupina="Inventura"';
-$vysledek2 = mysqli_query($noveSRBD, $sql2) or Die(mysqli_error($SRBD));
+$vysledek2 = mysqli_query($noveSRBD, $sql2) or Die(mysqli_error($noveSRBD));
 $data2 = mysqli_fetch_array($vysledek2);
 
 if(mysqli_num_rows($vysledek2) != 0) {
@@ -22,15 +25,15 @@ if(mysqli_num_rows($vysledek2) != 0) {
     
     //smazeme jeho transakce
     $sql4 = 'delete from transakce where id_dokladu='.$idDokladu;
-    mysqli_query($sql4, $noveSRBD) or Die(mysqli_error($SRBD));
+    mysqli_query($noveSRBD, $sql4) or Die(mysqli_error($noveSRBD));
 }
 else {
     //vytvoreni noveho dokladu + zjisteni jeho id
     $now = strtotime("1.1.".$_SESSION["rokArchiv"]);
     $dotaz = 'INSERT INTO doklady (id, c_dokladu, skupina, datum, prod_kategorie, typ_vyroby) VALUES (0, "Inventura", "Inventura", '.$now.', null, null)';
-    mysqli_query($noveSRBD, $dotaz) or Die(mysqli_error($SRBD));
+    mysqli_query($noveSRBD, $dotaz) or Die(mysqli_error($noveSRBD));
     
-    $vysledek3 = mysqli_query($noveSRBD, $sql2) or Die(mysqli_error($SRBD));
+    $vysledek3 = mysqli_query($noveSRBD, $sql2) or Die(mysqli_error($noveSRBD));
     $data3 = mysqli_fetch_array($vysledek3);
     $idDokladu = $data3["id"];
 }
@@ -39,7 +42,7 @@ else {
 $stareSRBD=spojeniSRBD($_SESSION["modul"].($_SESSION["rokArchiv"]-1));
 
 $sql = 'select id, IFNULL(mnozstvi,"0") as mnozstvi, IFNULL(prum_cena,"NULL") as prum_cena from zbozi';
-$vysledek = mysqli_query($stareSRBD, $sql) or Die(mysqli_error($SRBD));
+$vysledek = mysqli_query($stareSRBD, $sql) or Die(mysqli_error($stareSRBD));
 
 $noveSRBD=spojeniSRBD($_SESSION["modul"].$_SESSION["rokArchiv"]);
 while($data = mysqli_fetch_array($vysledek)) {
@@ -52,7 +55,7 @@ while($data = mysqli_fetch_array($vysledek)) {
     //echo $strPom."<br/>";
     
     //vlozeni jednotlivych transakci
-    mysqli_query($noveSRBD, $strPom) or Die(mysqli_error($SRBD));
+    mysqli_query($noveSRBD, $strPom) or Die(mysqli_error($noveSRBD));
     
     //prepocet mnozstvi zbozi na sklade
 }//while
