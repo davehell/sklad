@@ -90,7 +90,6 @@ function prihlasovaciStranka() {
 <form method="post" action="<?php echo $soubory['prihlaseni']; ?>">
 <?php zobrazitHlaseni(); ?>
 <fieldset>
-  <legend><?php echo $texty['prihlaseniFormular']; ?></legend>
   <label for="rok"><?php echo $texty['rok']; ?></label>
   <input type="text" size="20" maxlength="30" id="rok" name="rok" value="<?php echo date("Y"); ?>" /><br />
   <label for="db"><?php echo $texty['zadaniModulu']; ?></label>
@@ -100,7 +99,7 @@ function prihlasovaciStranka() {
   $dotaz = "SELECT modul FROM moduly ORDER BY id ASC";
   $vysledek = mysqli_query($SRBD, $dotaz);
   While ($data = mysqli_fetch_array($vysledek)) {
-    echo '<option value="'.$data['modul'].'">'.$data['modul']."</option>\n";
+    echo '<option value="'.$data['modul'].'" '. ($data['modul'] == "lmr" ? 'selected' : '') .'>'.$data['modul']."</option>\n";
   } //while
 ?>
   </select><br />
@@ -112,6 +111,15 @@ function prihlasovaciStranka() {
   <input type="hidden" name="odeslano" />
 </fieldset>
 </form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var input = document.getElementById("loginUsername");
+    if(input) {
+      input.focus();
+    }
+  });
+</script>
 
 <?php
   konecHTML();

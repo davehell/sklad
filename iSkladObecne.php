@@ -227,13 +227,13 @@ global $texty;
 global $soubory;
 
 echo '
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+<!DOCTYPE html>
+<html>
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 ';
   if (isset($_GET["print"])) {
     echo '<link rel="stylesheet" href="css/styleprint.css" media="screen" />';
