@@ -51,6 +51,7 @@ if(!isset($_GET["id"])) {
 echo '
 <fieldset>
 <legend>'.$texty['prodejniCeny'].'</legend>
+<button id="btnProdejniCeny" type="button">'.$texty['zobrazit'].' / '.$texty['skryt'].'</button>
 <div id="listProdejniCeny">
 ';
   //vypsani textovych poli pro vsechny prodejni ceny

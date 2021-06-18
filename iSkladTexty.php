@@ -380,7 +380,7 @@ $texty = array (
 
 // test Výroby
   'testVyroba'              =>      'Test výroby',
-  'testVyrobaTitle'         =>      'ES - test výroby',
+  'testVyrobaTitle'         =>      'Test výroby',
   'lzeVyrobit'              =>      'Zbo¾í lze vyrobit v po¾adovaném mno¾ství.',
   'vyrobek'                 =>      'Výrobek',
   'casoveVymezeni'          =>      'Èasové vymezení',
