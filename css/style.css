@@ -57,7 +57,7 @@ tr.sudyRadek {background-color: #e0e8f1;}
 /* seznamy definic */
 dl{margin:0em 0 2em 0; }
 dt,dd{padding-top:0.5em; margin:0;}
-dt{margin:0; float:left; font-weight:bold;}
+dt{margin:0; float:left; font-weight:bold; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap; width: 15em;}
 dd{margin-left:15em; }
 dl input {float: none;}
 /* seznamy */
@@ -109,3 +109,6 @@ tfoot {border-top:1px solid #039;background-color: #c2d2e7;}
 
 button#btnProdejniCeny {padding: 0.2em 0.5em;}
 #listProdejniCeny.hidden { display: none; }
+#listProdejniCeny.kartaNahled.hidden { display: block; }
+#listProdejniCeny.hidden dt.nulovaCena { display: none; }
+#listProdejniCeny.hidden dt.nulovaCena + dd { display: none; }
