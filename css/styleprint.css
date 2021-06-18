@@ -13,7 +13,7 @@ margin: 1em 0;}
 th, td {padding: 0.25em 1em; border: 1px solid #000;}
 th {text-align: left; padding: 0.5em 1em; background-color: #ddd; color:
 #000;}
-td.alignRight {text-align: right;}
+td.alignRight {text-align: right; white-space: nowrap;}
 .malaTabulka td, .malaTabulka th {padding-left: 5px; padding-right: 5px;}
 #dodaciListHlavicka, #dodaciListPolozky {width: 100%;}
 #dodaciListHlavicka td {width: 50%;}
@@ -24,8 +24,7 @@ td.alignRight {text-align: right;}
 .dodakLeft, .dodakRight {width: 45%; float: left; margin-top: 2em;}
 .dodakRight {float: right;}
 /* formulare */
-label {display: block; float: left; clear: left; width: 15em; margin-right:
-1em; text-align: right; line-height: 1.8em;}
+label {display: block; float: left; clear: left; width: 15em; margin-right: 1em; text-align: right; line-height: 1.8em; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap;}
 #cv { width: 9em;}
 input {display: block; float: left;}
 .submit {width: auto; margin-left: 10em; padding: 0.1em; margin-top: 1em;}
@@ -38,7 +37,7 @@ margin-bottom: 1em;}
 /* seznamy definic */
 dl{margin:0em 0 2em 0; }
 dt,dd{padding-top:0.5em; margin:0;}
-dt{margin:0; float:left; font-weight:bold;}
+dt{margin:0; float:left; font-weight:bold; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap; width: 13em;}
 dd{margin-left:13em; }
 dl input {float: none;}
 
@@ -64,3 +63,4 @@ img{border:none;}
 
 tbody {border-bottom:1px solid #000;}
 tfoot {border-top:1px solid #000;background-color: #ddd;}
+#btnProdejniCeny {display: none;}

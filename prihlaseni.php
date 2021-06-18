@@ -93,7 +93,7 @@ function prihlasovaciStranka() {
   <label for="rok"><?php echo $texty['rok']; ?></label>
   <input type="text" size="20" maxlength="30" id="rok" name="rok" value="<?php echo date("Y"); ?>" /><br />
   <label for="db"><?php echo $texty['zadaniModulu']; ?></label>
-  <select id="moduly" name="moduly" onchange="vyber_cv()">
+  <select id="moduly" name="moduly">
   <option value="">-------- vyberte --------</option>
 <?php
   $dotaz = "SELECT modul FROM moduly ORDER BY id ASC";
