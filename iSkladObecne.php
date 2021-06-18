@@ -234,6 +234,8 @@ echo '
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <script src="js/autocomplete/autocomplete.min.js"></script>
+  <link rel="stylesheet" href="js/autocomplete/css/autoComplete.02.css">
 ';
   if (isset($_GET["print"])) {
     echo '<link rel="stylesheet" href="css/styleprint.css" media="screen" />';
@@ -249,10 +251,7 @@ echo '
   <link rel="stylesheet" href="slimbox/css/slimbox.css" type="text/css" media="screen" />
   <script type="text/javascript" src="js/calendar.js"></script>
   <link rel="stylesheet" href="css/calendar.css" type="text/css" media="screen" />
-
-<script type="text/javascript">
-// The following should be put in your external js file,
-// with the rest of your ondomready actions.
+<script>
 window.addEvent(\'domready\', function(){
 	$$(\'input.DatePicker\').each( function(el){
 		new DatePicker(el);
@@ -263,6 +262,7 @@ window.addEvent(\'domready\', function(){
   <script type="text/javascript" src="js/nazev_cv.js"></script>
   <script type="text/javascript" src="js/odpocitavani.js"></script>
   <script type="text/javascript" src="js/prod_cena.js"></script>
+  <script type="text/javascript" src="js/kartaAutocomplete.js"></script>
   <title>'.$texty[$indexTextu].'</title>
 </head>
 <body onload="';

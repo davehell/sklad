@@ -81,10 +81,10 @@ img.floatleft {margin: 1em 0 0 0;}
 hr {margin: 1em 0;}
 /* formulare */
 label {display: block; float: left; clear: left; width: 15em; margin-right: 1em; text-align: right; line-height: 1.8em; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap;}
-#cv { width: 12em;}
-#nazev { width: 18em;}
+#cv { width: 17em;}
+#nazev { width: 17em; margin-bottom: 1em;}
 input {display: block; float: left;}
-.submit {width: auto; margin-left: 10em; background-color: #e0e8f1; padding: 0.2em 0.5em; margin-top: 1em; clear: left;}
+.submit {width: auto; margin-left: 15em; background-color: #e0e8f1; padding: 0.2em 0.5em; margin-top: 1em; clear: left;}
 .rezerv .submit {margin-left: 5em;} /*tlacitka u dokladu pro rezervace */
 fieldset br {clear: both;}
 fieldset p {margin: 0.5em 0 0 0;}
@@ -112,3 +112,6 @@ button#btnProdejniCeny {padding: 0.2em 0.5em;}
 #listProdejniCeny.kartaNahled.hidden { display: block; }
 #listProdejniCeny.hidden dt.nulovaCena { display: none; }
 #listProdejniCeny.hidden dt.nulovaCena + dd { display: none; }
+
+.autoComplete_wrapper {margin-left: 16em;}
+.autoComplete_wrapper > ul > li mark {color: blue;}
