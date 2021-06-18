@@ -157,6 +157,8 @@ else {
 <fieldset>
 <legend>'.$texty['vyrobenoZ'].'</legend>
 <p>'.$texty["vyberteSoucastky"].'</p><br />
+
+<input id="nazevAutoComplete" type="search" autocomplete="off"><br />
 <label for="nazev">'.$texty['nazev'].':</label>
 <select id="nazev" name="nazev" onchange="vyber_cv()">
 <option value="">---------- vyberte ----------</option>
@@ -171,6 +173,8 @@ else {
   } //while
   echo '
 </select><br />
+
+<input id="cvAutoComplete" type="search" autocomplete="off"><br />
 <label for="cv">'.$texty['cv'].':</label>
 <select id="cv" name="cv" onchange="osetri_cv();">
 <option value="">----- vyberte -----</option>
@@ -194,7 +198,12 @@ vypisSoucastky($id, "uprava");
 
   echo '
 </fieldset>
-</form>';
+</form>
+<script>
+  const autoCompleteForNazev = new autoComplete(getAutocompleteConfig("nazev"));
+  const autoCompleteForCv = new autoComplete(getAutocompleteConfig("cv"));
+</script>
+';
 }//else
 
 if(session_register('promenneFormulare')) {

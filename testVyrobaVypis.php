@@ -24,6 +24,8 @@ echo '
 <form method="GET" action="'.$soubory['testVyroba'].'">
 <fieldset>
 <legend>'.$texty['vyrobek'].'</legend>
+
+<input id="nazevAutoComplete" type="search" autocomplete="off"><br />
 <label for="nazev">'.$texty['nazev'].':</label>
 <select id="nazev" name="nazev" onchange="vyber_cv()">
 <option value="">---------- vyberte ----------</option>';
@@ -44,13 +46,20 @@ echo '
   } //while
   echo '
 </select><br />
+
+<input id="cvAutoComplete" type="search" autocomplete="off"><br />
 <label for="cv">'.$texty['cv'].':</label>
 <select onchange="osetri_cv();" id="cv" name="cv">
 </select><br />
 <label for="mnozstvi">'.$texty['transakceMnozstvi'].':</label>
 <input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'.$_SESSION['promenneFormulare']['mnozstvi'].'" /><br />'.
 dejTlacitko('odeslat','testVyroba');
-echo '</fieldset></form>';
+echo '</fieldset></form>
+<script>
+  const autoCompleteForNazev = new autoComplete(getAutocompleteConfig("nazev"));
+  const autoCompleteForCv = new autoComplete(getAutocompleteConfig("cv"));
+</script>
+';
 
 // doslo k poslani nedostatkoveho pole
 if(session_is_registered('nedostatek'))

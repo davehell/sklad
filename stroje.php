@@ -32,6 +32,8 @@ echo '
 <form method="post" action="'.$soubory['stroje'].'" class="noPrint">
 <fieldset>
 <legend>'.$texty['pridaniStroje'].'</legend>
+
+<input id="nazevAutoComplete" type="search" autocomplete="off"><br />
 <label for="nazev">'.$texty['nazev'].':</label>
 <select id="nazev" name="nazev" onchange="vyber_cv()">
 <option value="">---------- vyberte ----------</option>
@@ -51,6 +53,8 @@ echo '
     echo '>'.$data['nazev']."</option>\n";
   } //while
   echo '</select><br />
+
+<input id="cvAutoComplete" type="search" autocomplete="off"><br />
 <label for="cv">'.$texty['cv'].':</label>
 <select onchange="osetri_cv();" id="cv" name="cv">
 <option value="">----- vyberte -----</option>
@@ -76,6 +80,10 @@ dejTlacitko('odeslat','pridatStroj').'
 echo '
 </fieldset>
 </form>
+<script>
+  const autoCompleteForNazev = new autoComplete(getAutocompleteConfig("nazev"));
+  const autoCompleteForCv = new autoComplete(getAutocompleteConfig("cv"));
+</script>
 ';
 
 echo '
@@ -148,7 +156,7 @@ function pridatStroj($nazev, $cv) {
   }
   else {
     session_register('hlaseniOK');
-    $_SESSION['hlaseniOK'] = $texty['novaKategorieOK'];
+    $_SESSION['hlaseniOK'] = $texty['novyStrojOK'];
   }
 
   //zabrani opetovnemu zaslani POST dat pri refreshi stranky

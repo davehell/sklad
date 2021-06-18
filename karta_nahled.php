@@ -75,6 +75,8 @@ echo '
 <fieldset>
 <legend>'.$texty['vybratKartu'].'</legend>
 <p>'.$texty["vyberKarty"].'</p><br />
+
+<input id="nazevAutoComplete" type="search" autocomplete="off"><br />
 <label for="nazev">'.$texty['nazev'].':</label>
 <select id="nazev" name="nazev" onchange="vyber_cv()">
 <option value="">---------- vyberte ----------</option>
@@ -94,6 +96,8 @@ echo '
     echo '>'.$data['nazev']."</option>\n";
   } //while
   echo '</select><br />
+
+<input id="cvAutoComplete" type="search" autocomplete="off"><br />
 <label for="cv">'.$texty['cv'].':</label>
 <select id="cv" name="cv" onchange="osetri_cv();">
 <option value="">----- vyberte -----</option>
@@ -121,6 +125,10 @@ dejTlacitko('odeslat','zobrazitKartu').'
 echo '
 </fieldset>
 </form>
+<script>
+  const autoCompleteForNazev = new autoComplete(getAutocompleteConfig("nazev"));
+  const autoCompleteForCv = new autoComplete(getAutocompleteConfig("cv"));
+</script>
 ';
 }//else if(isset($_GET["id"]))
 
