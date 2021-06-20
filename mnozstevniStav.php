@@ -39,9 +39,9 @@ echo '
 <fieldset>
 <legend>'.$texty['casoveVymezeni'].'</legend>
 <label for="od">'.$texty['datumOd'].':</label>
-<input id="new_day" name="od" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['od'].'" /><br />
+<input id="new_day" name="od" type="text" class="DatePicker" value="'. ($_SESSION['promenneFormulare']['od'] ?? '') .'" /><br />
 <label for="do">'.$texty['datumDo'].':</label>
-<input id="new_day" name="do" type="text" class="DatePicker" value="'.$_SESSION['promenneFormulare']['do'].'" /><br />'.
+<input id="new_day" name="do" type="text" class="DatePicker" value="'. ($_SESSION['promenneFormulare']['do'] ?? '') .'" /><br />'.
 dejTlacitko('odeslat','najit').
 '</fieldset>
 </form>';
