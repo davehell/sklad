@@ -198,7 +198,7 @@ echo '
 <div class="floatleft">
 <strong>'.$texty['prodejniCeny'].'</strong><br>
 <button id="btnProdejniCeny" type="button">'.$texty['zobrazit'].' / '.$texty['skryt'].'</button>
-<dl id="listProdejniCeny" class="kartaNahled">
+<dl id="listProdejniCeny">
 ';
   //vypsani vsech prodejnich cen
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";

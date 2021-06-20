@@ -38,6 +38,43 @@ else {
   $upravovaneId = "";
 }
 
+if(isset($_GET["upravit"])) {
+  $formLegend = $texty['upravaKategorie'];
+}
+else {
+  $formLegend = $texty['pridaniKategorie'];
+}
+
+echo '
+<form method="post" action="'.$soubory['prodejniCeny'].'">
+<fieldset>
+<legend>'.$formLegend.'</legend>
+<label for="popis">'.$texty['popis'].':</label>
+<input type="text" maxlength="40" id="popis" name="popis" value="'.($data3["popis"] ?? '').'" /><br />
+<br />
+<label for="odberatelNazev">'.$texty['odberatelNazev'].':</label>
+<input type="text" name="odberatelNazev" value="'.($data3["nazev"] ?? '').'" /><br />
+<label for="odberatelUlice">'.$texty['odberatelUlice'].':</label>
+<input type="text" name="odberatelUlice" value="'.($data3["ulice"] ?? '').'" /><br />
+<label for="odberatelMesto">'.$texty['odberatelMesto'].':</label>
+<input type="text" name="odberatelMesto" value="'.($data3["mesto"] ?? '').'" /><br />
+<label for="odberatelIco">'.$texty['odberatelIco'].':</label>
+<input type="text" name="odberatelIco" value="'.($data3["ico"] ?? '').'" /><br />
+<label for="odberatelDic">'.$texty['odberatelDic'].':</label>
+<input type="text" name="odberatelDic" value="'.($data3["dic"] ?? '').'" /><br />
+<br />';
+if(isset($_GET["upravit"])) {
+  echo dejTlacitko('upravit','ulozit');
+}
+else {
+  echo dejTlacitko('pridat','pridatKategorii');
+}
+
+echo '
+<input type="hidden" name="odeslano" value="ano" />
+<input type="hidden" name="id" value="'.$upravovaneId.'" />
+</fieldset>
+</form>';
 
 echo '
 <h2>'.$texty["stavajiciKategorie"].'</h2>';
@@ -77,44 +114,6 @@ else {
   echo '
   <p>'.$texty["zadnaKategorie"].'</p>';
 }
-
-if(isset($_GET["upravit"])) {
-  $formLegend = $texty['upravaKategorie'];
-}
-else {
-  $formLegend = $texty['pridaniKategorie'];
-}
-
-echo '
-<form method="post" action="'.$soubory['prodejniCeny'].'">
-<fieldset>
-<legend>'.$formLegend.'</legend>
-<label for="popis">'.$texty['popis'].':</label>
-<input type="text" maxlength="40" id="popis" name="popis" value="'.($data3["popis"] ?? '').'" /><br />
-<br />
-<label for="odberatelNazev">'.$texty['odberatelNazev'].':</label>
-<input type="text" name="odberatelNazev" value="'.($data3["nazev"] ?? '').'" /><br />
-<label for="odberatelUlice">'.$texty['odberatelUlice'].':</label>
-<input type="text" name="odberatelUlice" value="'.($data3["ulice"] ?? '').'" /><br />
-<label for="odberatelMesto">'.$texty['odberatelMesto'].':</label>
-<input type="text" name="odberatelMesto" value="'.($data3["mesto"] ?? '').'" /><br />
-<label for="odberatelIco">'.$texty['odberatelIco'].':</label>
-<input type="text" name="odberatelIco" value="'.($data3["ico"] ?? '').'" /><br />
-<label for="odberatelDic">'.$texty['odberatelDic'].':</label>
-<input type="text" name="odberatelDic" value="'.($data3["dic"] ?? '').'" /><br />
-<br />';
-if(isset($_GET["upravit"])) {
-  echo dejTlacitko('upravit','ulozit');
-}
-else {
-  echo dejTlacitko('pridat','pridatKategorii');
-}
-
-echo '
-<input type="hidden" name="odeslano" value="ano" />
-<input type="hidden" name="id" value="'.$upravovaneId.'" />
-</fieldset>
-</form>';
 
 konecHTML();
 
