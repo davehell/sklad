@@ -118,6 +118,8 @@ echo '
 <form name="form" method="post" action="'.$soubory['vlozTransakci'].'" class="noPrint">
 <fieldset>
 <legend>'.$skupina.'</legend>
+
+<input id="nazevAutoComplete" type="search" autocomplete="off"><br />
 <label for="nazev">'.$texty['nazev'].':</label>
 <select onchange="vyber_cv();" id="nazev" name="nazev">
 <option value="">---------- vyberte ----------</option>';
@@ -136,6 +138,8 @@ echo '
   } //while
   echo '
 </select><br />
+
+<input id="cvAutoComplete" type="search" autocomplete="off"><br />
 <label for="cv">'.$texty['cv'].':</label>
 <select id="cv" name="cv" onchange="osetri_cv();">
 <option value="">----- vyberte -----</option>
@@ -158,6 +162,10 @@ echo '
 <br />
 <label for="mnozstvi">'.$texty['transakceMnozstvi'].':</label>
 <input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'.($_SESSION['promenneFormulare']['mnozstvi'] ?? '').'" /><br />
+<script>
+  const autoCompleteForNazev = new autoComplete(getAutocompleteConfig("nazev"));
+  const autoCompleteForCv = new autoComplete(getAutocompleteConfig("cv"));
+</script>
 ';
 
 ////////////// PODMINKY - POLOZKY JEN PRO URCITE SKUPINY /////////////////////

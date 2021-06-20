@@ -91,6 +91,7 @@ fieldset p {margin: 0.5em 0 0 0;}
 fieldset {border: 1px solid #039; padding: 1em; margin: 2em 0em 1em 0; width: auto;}
 legend {color: #039; padding: 0 1em; font-weight: bold; font-size: 1em; margin-bottom: 1em;}
 html>/**/body legend {margin-bottom: 0;} /* vse krome IE */
+#nazev_input, #cv_input {width: 15em;}
 
 .obal {margin: 0 auto; width: 53em;}
 .tlacitko {float: left; display: block; margin:1em 1em 1em 0; padding: 2em 0 2em 1em; border: 1px solid #009; width: 300px; height: auto;
@@ -115,3 +116,5 @@ button#btnProdejniCeny {padding: 0.2em 0.5em;}
 
 .autoComplete_wrapper {margin-left: 16em;}
 .autoComplete_wrapper > ul > li mark {color: blue;}
+
+.dodaciList input[type=text]  {width: 25em;}
