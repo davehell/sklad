@@ -98,9 +98,11 @@ function prihlasovaciStranka() {
 <?php
   $dotaz = "SELECT modul FROM moduly ORDER BY id ASC";
   $vysledek = mysqli_query($SRBD, $dotaz);
-  While ($data = mysqli_fetch_array($vysledek)) {
-    echo '<option value="'.$data['modul'].'" '. ($data['modul'] == "lmr" ? 'selected' : '') .'>'.$data['modul']."</option>\n";
-  } //while
+  if($vysledek) {
+    While ($data = mysqli_fetch_array($vysledek)) {
+      echo '<option value="'.$data['modul'].'" '. ($data['modul'] == "lmr" ? 'selected' : '') .'>'.$data['modul']."</option>\n";
+    } //while
+  }
 ?>
   </select><br />
   <label for="loginUsername"><?php echo $texty['zadaniJmena']; ?></label>

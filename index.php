@@ -5,7 +5,7 @@ include 'iSkladObecne.php';
 session_start();    // inicializace sezení, buïto se vytvoøí nové sezení nebo se znovuvytvoøí stávající
 kontrolaPrihlaseni();
 $SRBD = spojeniSRBD();
-uvodHTML('indexNadpis');
+uvodHTML('index');
 
 ?>
 <h1><?php echo $texty["indexNadpis"]; ?></h1>
