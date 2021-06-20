@@ -123,7 +123,7 @@ $texty = array (
   'deraveJmeno'        =>    'Jméno smí obsahovat pouze alfanumerické znaky.',
   'jmenoNad30'         =>    'Jméno nesmí být del¹í ne¾ 30 znakù.',
   'jmenoPod3'          =>    'Jméno nesmí být krat¹í ne¾ 3 znaky.',
-  'formatPassword'     =>    'Délka hesla musí být 4 a¾ 10 znakù.',
+  'formatPassword'     =>    'Délka hesla musí být 4 a¾ 30 znakù.',
   'wrongPassword'      =>    'Zadaná hesla nejsou stejná.',
 //editace udaju
   'ulozitZmeny'        =>    'Ulo¾it zmìny',

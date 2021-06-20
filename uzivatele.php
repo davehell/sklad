@@ -74,16 +74,16 @@ function formAddEdit($akce) {
 <fieldset>
   <legend><?php echo $texty['infoUzivatele']; ?></legend>
   <label for="loginUsername"><?php echo $texty['zadaniJmena']; ?></label>
-  <input type="text" size="30" maxlength="30" id="loginUsername" name="loginUsername" value="<?php if(isset($_GET["login"])) echo $_GET["login"]; ?>" /> (èíslice, velka a malá písmena bez háèkù a èárek)<br />
+  <input type="text" size="30" maxlength="33" id="loginUsername" name="loginUsername" value="<?php if(isset($_GET["login"])) echo $_GET["login"]; ?>" /> (èíslice, velka a malá písmena bez háèkù a èárek)<br />
   <label for="loginRights"><?php echo $texty['uzivPrava']; ?></label>
   <select id="loginRights" name="loginRights">
     <option selected="selected">Zamìstnanec</option>
     <option>Administrátor</option>
   </select><br />
   <label for="loginPassword"><?php echo $texty['uzivHeslo']; ?></label>
-  <input type="password" size="30" maxlength="30" id="loginPassword" name="loginPassword" /><br />
+  <input type="password" size="30" maxlength="33" id="loginPassword" name="loginPassword" /><br />
   <label for="loginPassword2"><?php echo $texty['uzivHesloZnovu']; ?></label>
-  <input type="password" size="30" maxlength="30" id="loginPassword2" name="loginPassword2" /><br />
+  <input type="password" size="30" maxlength="33" id="loginPassword2" name="loginPassword2" /><br />
 <br />
 <?php echo dejTlacitko('odeslat','pridat'); ?>
 </fieldset>

@@ -91,7 +91,7 @@ function prihlasovaciStranka() {
 <?php zobrazitHlaseni(); ?>
 <fieldset>
   <label for="rok"><?php echo $texty['rok']; ?></label>
-  <input type="text" size="20" maxlength="30" id="rok" name="rok" value="<?php echo date("Y"); ?>" /><br />
+  <input type="text" size="20" maxlength="33" id="rok" name="rok" value="<?php echo date("Y"); ?>" /><br />
   <label for="db"><?php echo $texty['zadaniModulu']; ?></label>
   <select id="moduly" name="moduly">
   <option value="">-------- vyberte --------</option>
@@ -104,9 +104,9 @@ function prihlasovaciStranka() {
 ?>
   </select><br />
   <label for="loginUsername"><?php echo $texty['zadaniJmena']; ?></label>
-  <input type="text" size="20" maxlength="30" id="loginUsername" name="loginUsername" /><br />
+  <input type="text" size="20" maxlength="33" id="loginUsername" name="loginUsername" /><br />
   <label for="loginPassword"><?php echo $texty['zadaniHesla']; ?></label>
-  <input type="password" size="20" maxlength="10" id="loginPassword" name="loginPassword" /><br />
+  <input type="password" size="20" maxlength="33" id="loginPassword" name="loginPassword" /><br />
 <?php echo dejTlacitko('','prihlaseniPotvrzeni');?>
   <input type="hidden" name="odeslano" />
 </fieldset>
