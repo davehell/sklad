@@ -328,7 +328,7 @@ vypisSoucastky($id, "uprava");
 }//if
 
 
-if(session_register('promenneFormulare')) {
+if(session_is_registered('promenneFormulare')) {
   session_unregister('promenneFormulare');
 }
 konecHTML();
