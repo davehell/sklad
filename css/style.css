@@ -108,6 +108,7 @@ tbody {border-bottom:1px solid #039;}
 tfoot {border-top:1px solid #039;background-color: #c2d2e7;}
 .alignRight {text-align: right; white-space: nowrap;}
 
+#listProdejniCeny dt {font-weight: normal;}
 button#btnProdejniCeny {padding: 0.2em 0.5em;}
 #listProdejniCeny.hidden { display: none; }
 #listProdejniCeny.kartaNahled.hidden { display: block; }

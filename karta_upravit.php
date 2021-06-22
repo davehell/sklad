@@ -190,7 +190,7 @@ echo '
 if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
 { //zamestnanci prodejni ceny neuvidi
   //vypsani textovych poli pro vsechny prodejni ceny
-  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = mysqli_fetch_array($vysledek)) {
     $idProdejni = $data["id"];

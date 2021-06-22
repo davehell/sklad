@@ -201,7 +201,7 @@ echo '
 <dl id="listProdejniCeny">
 ';
   //vypsani vsech prodejnich cen
-  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY id";
+  $dotaz = "SELECT id, popis FROM prodejni_kategorie ORDER BY popis";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   While ($data = mysqli_fetch_array($vysledek)) {
     $idKat = $data["id"];
