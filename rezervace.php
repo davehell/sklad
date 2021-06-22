@@ -31,7 +31,7 @@ if(isset($_POST['rezNaProdej']))
     }
     
     $timestamp_date = strtotime($datum);
-    $dotaz = "UPDATE doklady SET c_dokladu=$cDokladu, datum='$timestamp_date', skupina='Prodej' WHERE id='$id'";
+    $dotaz = "UPDATE doklady SET c_dokladu='$cDokladu', datum='$timestamp_date', skupina='Prodej' WHERE id='$id'";
     mysqli_query($SRBD, $dotaz);
     
     if (mysqli_errno($SRBD) != 0) { //vkladan duplicitni zaznam
