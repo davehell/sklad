@@ -14,11 +14,11 @@ foreach($_POST as $jmenoPromenne => $hodnota) { // promìnné formuláøe jsou pøedá
   $_SESSION['promenneFormulare'][$jmenoPromenne] = trim(odstraneniEscape($hodnota, 100));
 } // foreach
 
-$datum = $_SESSION['promenneFormulare']["datum"];
-$cDokladu = $_SESSION['promenneFormulare']["cDokladu"];
-$skupina = $_SESSION['promenneFormulare']["skupina"];
-$prodejniCena = $_SESSION['promenneFormulare']["prodejniCena"];
-$typVyroby = $_SESSION['promenneFormulare']["typVyroby"];
+$datum = $_SESSION['promenneFormulare']["datum"] ?? '';
+$cDokladu = $_SESSION['promenneFormulare']["cDokladu"] ?? '';
+$skupina = $_SESSION['promenneFormulare']["skupina"] ?? '';
+$prodejniCena = $_SESSION['promenneFormulare']["prodejniCena"] ?? '';
+$typVyroby = $_SESSION['promenneFormulare']["typVyroby"] ?? '';
 
 
 $korektniParametry = checkFormData();
@@ -36,7 +36,8 @@ else //vse OK ve formulari
   
   //muze existovat jen jeden doklad typu Inventura
   if($skupina == 'Inventura') {
-    $vysledekX = mysqli_query('select id from doklady where skupina="Inventura"') or Die(mysqli_error($SRBD));
+    $dotaz = 'select id from doklady where skupina="Inventura"';
+    $vysledekX = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
     if(mysqli_num_rows($vysledekX) != 0) {
         session_register('hlaseniChyba');
         $_SESSION['hlaseniChyba'] = $texty['jenJednaInventura'];

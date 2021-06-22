@@ -42,7 +42,7 @@ makeArraySelectList('skupina',$poleSkupin,($_POST['skupina'] ?? ''),'','id="skup
   $dotaz = "SELECT id, popis FROM prodejni_kategorie ";
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
-  $selected = $_POST['prodejniCena'];
+  $selected = $_POST['prodejniCena'] ?? '';
   
   While ($data = mysqli_fetch_array($vysledek)) {
     echo '<option value="'.$data['id'].'"';
@@ -53,7 +53,7 @@ makeArraySelectList('skupina',$poleSkupin,($_POST['skupina'] ?? ''),'','id="skup
 echo '</select>
 <br />
 <label for="skupina">'.$texty['typ_vyroby'].':</label>'.
-makeArraySelectList('typVyroby',$poleTypuVyroby,$_SESSION['promenneFormulare']['typVyroby'],'','id="typVyroby"',$vyberte=false).'<br />'.
+makeArraySelectList('typVyroby',$poleTypuVyroby,$_SESSION['promenneFormulare']['typVyroby'] ?? '','','id="typVyroby"',$vyberte=false).'<br />'.
 dejTlacitko('odeslat','najit').'<br />
 <input type="hidden" name="odeslano" value="ano" />
 </fieldset>

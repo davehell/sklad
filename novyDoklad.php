@@ -55,7 +55,7 @@ makeArraySelectList('skupina',$poleSkupin,($_SESSION['promenneFormulare']['skupi
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['prodejniCena'];
+    $selected = $_SESSION['promenneFormulare']['prodejniCena'] ?? '';
   else $selected = '';
   
   While ($data = mysqli_fetch_array($vysledek)) {
@@ -67,7 +67,7 @@ makeArraySelectList('skupina',$poleSkupin,($_SESSION['promenneFormulare']['skupi
 echo '</select>
 <br />
 <label for="skupina">'.$texty['typ_vyroby'].':</label>'.
-makeArraySelectList('typVyroby',$poleTypuVyroby,$_SESSION['promenneFormulare']['typVyroby'],'','id="typVyroby"').
+makeArraySelectList('typVyroby',$poleTypuVyroby,$_SESSION['promenneFormulare']['typVyroby'] ?? '','','id="typVyroby"').
 dejTlacitko('odeslat','vytvoritDoklad').'
 <input type="hidden" name="odeslano" value="ano" />
 </fieldset>

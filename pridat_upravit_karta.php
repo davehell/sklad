@@ -25,7 +25,7 @@ if(isset($_GET["odebrat"])) {
   
   if(mysqli_num_rows($vysledek) == 1) { //vse v poradku
     $dotaz = "DELETE FROM zbozi WHERE id='$odstranovaneID'";
-    mysqli_query($dotaz, $SRBD);
+    mysqli_query($SRBD, $dotaz);
     if(mysqli_errno($SRBD) != 0) { //zbozi nejde odstranit
       session_register('hlaseniChyba');
       $_SESSION['hlaseniChyba'] = $texty['kartaOdebratChyba'];

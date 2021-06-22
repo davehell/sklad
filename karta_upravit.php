@@ -102,7 +102,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {
@@ -123,7 +123,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['cv'];
+    $selected = $_SESSION['promenneFormulare']['cv'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {
@@ -135,7 +135,7 @@ echo '
   echo '</select><br />
 <br />'.
 dejTlacitko('odeslat','zobrazitKartu').'
-<input type="hidden" name="id" value="'.$id.'" />
+<input type="hidden" name="id" value="'. ($id ?? '') .'" />
 <input type="hidden" name="odeslano" value="ano" />';
 
 echo '
@@ -166,9 +166,9 @@ if(isset($_GET["id"])) {
 
 <br />
 <label for="nazev_input">'.$texty['nazev'].':</label>
-<input type="text" maxlength="40" id="nazev_input" name="nazev_input" value="'.$_SESSION['promenneFormulare']['nazev_input'].'" /><br />
+<input type="text" maxlength="40" id="nazev_input" name="nazev_input" value="'. ($_SESSION['promenneFormulare']['nazev_input'] ?? '') .'" /><br />
 <label for="cv_input">'.$texty['cv'].':</label>
-<input type="text" maxlength="40" id="cv_input" name="cv_input" value="'.$_SESSION['promenneFormulare']['cv_input'].'" /><br />
+<input type="text" maxlength="40" id="cv_input" name="cv_input" value="'. ($_SESSION['promenneFormulare']['cv_input'] ?? '') .'" /><br />
 <label for="jednotka">'.$texty['jednotka'].':</label>
 <select id="jednotka" name="jednotka">
   <option>kus</option>
@@ -176,9 +176,9 @@ if(isset($_GET["id"])) {
   <option>kilogram</option>
 </select><br />
 <label for="limit">'.$texty['limit'].':</label>
-<input type="text" maxlength="40" id="limit" name="limit" value="'.$_SESSION['promenneFormulare']['limit'].'" /><br />
+<input type="text" maxlength="40" id="limit" name="limit" value="'. ($_SESSION['promenneFormulare']['limit'] ?? '') .'" /><br />
 <label for="cenaPrace">'.$texty['cenaPrace'].':</label>
-<input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'.$_SESSION['promenneFormulare']['cenaPrace'].'" /><br />
+<input type="text" maxlength="40" id="cenaPrace" name="cenaPrace" value="'. ($_SESSION['promenneFormulare']['cenaPrace'] ?? '') .'" /><br />
 ';
 
 echo '
@@ -196,7 +196,7 @@ if($_SESSION['uzivatelskaPrava'] > ZAMESTNANEC)
     $idProdejni = $data["id"];
     echo '
 <label for="prodejniCena'.$idProdejni.'">'.$data["popis"].':</label>
-<input type="text" maxlength="40" id="prodejniCena'.$idProdejni.'" name="prodejniCena'.$idProdejni.'" value="'. (isset($_SESSION['promenneFormulare']['prodejniCena'.$idProdejni]) ? $_SESSION['promenneFormulare']['prodejniCena'.$idProdejni] : "") .'" /><br />
+<input type="text" maxlength="40" id="prodejniCena'.$idProdejni.'" name="prodejniCena'.$idProdejni.'" value="'. ($_SESSION['promenneFormulare']['prodejniCena'.$idProdejni] ?? '') .'" /><br />
 ';
   }//while
 }
@@ -270,7 +270,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {
@@ -291,7 +291,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['cv'];
+    $selected = $_SESSION['promenneFormulare']['cv'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {

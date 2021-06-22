@@ -35,7 +35,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
   
   While ($data = mysqli_fetch_array($vysledek)) {
@@ -52,7 +52,7 @@ echo '
 <select onchange="osetri_cv();" id="cv" name="cv">
 </select><br />
 <label for="mnozstvi">'.$texty['transakceMnozstvi'].':</label>
-<input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'.$_SESSION['promenneFormulare']['mnozstvi'].'" /><br />'.
+<input type="text" maxlength="40" id="mnozstvi" name="mnozstvi" value="'. ($_SESSION['promenneFormulare']['mnozstvi'] ?? '') .'" /><br />'.
 dejTlacitko('odeslat','testVyroba');
 echo '</fieldset></form>
 <script>

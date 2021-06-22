@@ -49,9 +49,9 @@ function getPosledniCena($id, $typ)
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   $data = mysqli_fetch_array($vysledek);
   if($typ == 'MJ')
-    return $data['cena_MJ'];
+    return $data['cena_MJ'] ?? '';
   else
-    return $data['cena_KOO'];
+    return $data['cena_KOO'] ?? '';
 }//getPosledniCena()
 
 /**

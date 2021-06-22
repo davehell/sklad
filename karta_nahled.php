@@ -86,7 +86,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {
@@ -107,7 +107,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['cv'];
+    $selected = $_SESSION['promenneFormulare']['cv'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_Fetch_Array($vysledek)) {

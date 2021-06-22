@@ -43,7 +43,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_fetch_array($vysledek)) {
@@ -64,7 +64,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['cv'];
+    $selected = $_SESSION['promenneFormulare']['cv'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_fetch_array($vysledek)) {
@@ -76,7 +76,7 @@ echo '
   echo '</select>
 <br />'.
 dejTlacitko('odeslat','pridatStroj').'
-<input type="hidden" name="id" value="'.$id.'" />';
+<input type="hidden" name="id" value="'. ($id ?? '') .'" />';
 echo '
 </fieldset>
 </form>

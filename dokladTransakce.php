@@ -63,9 +63,10 @@ echo '
         <dt class="noPrint">'.$texty["prodejKomu"].':</dt><dd class="noPrint">'.$prodKategoriePop.'</dd>
       </dl>
       <input type="hidden" name="id" value="'.$id.'" />
-      <input type="submit" class="submit" name="rezNaProdej" value="'.$texty['rezervaceNaProdej'].'" id="odeslat"/>
-      <input type="submit" class="submit" name="ruseniRez" value="'.$texty['zrusRezervaci'].'" id="odeslat"/><br />
-     </form><br /><br /><hr />';
+      <input type="submit" class="submit" name="rezNaProdej" value="'.$texty['rezervaceNaProdej'].'" />
+      <input type="submit" class="submit" name="ruseniRez" value="'.$texty['zrusRezervaci'].'" /><br />
+     </form>
+     <hr class="clearleft" />';
   }
   else
   {      
@@ -127,7 +128,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz_nazev) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['nazev'];
+    $selected = $_SESSION['promenneFormulare']['nazev'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_fetch_array($vysledek)) {
@@ -149,7 +150,7 @@ echo '
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   //testovani zaregistrovane session, aby se mohla vybrat jako hodnota v nabidce
   if(session_is_registered('promenneFormulare'))
-    $selected = $_SESSION['promenneFormulare']['cv'];
+    $selected = $_SESSION['promenneFormulare']['cv'] ?? '';
   else $selected = '';
 
   While ($data = mysqli_fetch_array($vysledek)) {
