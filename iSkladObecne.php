@@ -127,13 +127,17 @@ function spojeniSRBD($databaze='') {
   }
 
   include 'iSkladDatabaze.php';
-  $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD) or Die(mysqli_error($SRBD));
+  $SRBD = mysqli_connect(SQL_HOST, SQL_USERNAME, SQL_PASSWORD);
+  if (!$SRBD) {
+    echo mysqli_connect_error();
+    exit;
+  }
 
   if($databaze != "") {
     $vysledek = mysqli_select_db($SRBD, $databaze);
   }
   else {
-    $vysledek = mysqli_select_db($SRBD, SQL_DBNAME); // or Die(mysqli_error($SRBD));
+    $vysledek = mysqli_select_db($SRBD, SQL_DBNAME);
   }
 
   if($vysledek == 0)   { //nepovedlo se pripojeni k DB
