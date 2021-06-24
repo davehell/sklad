@@ -98,7 +98,7 @@ if($datumOK){
   $dodatek .= pageOrderQuery($pocet,$rows);
 
   }//pridani dodatku (ORDER, LIMIT)
-  $dotaz .= $dodatek;
+  $dotaz .= ($dodatek ?? '');
   //echo $dotaz;
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   

@@ -71,7 +71,7 @@ if(isset($_GET['od']) && $datumOK){
   $dodatek = '';
   $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
-  $dotaz .= $dodatek;
+  $dotaz .= ($dodatek ?? '');
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
   //echo $dotaz;
@@ -140,7 +140,7 @@ if(isset($_GET['od']) && $datumOK){
   $dodatek = '';
     $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
-  $dotaz .= $dodatek;
+  $dotaz .= ($dodatek ?? '');
 
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
@@ -214,7 +214,7 @@ if(isset($_GET['od']) && $datumOK){
   $dodatek = '';
     $dodatek .= pageOrderQuery($pocet ?? 0,$rows);
   //pridani dodatku (ORDER, LIMIT)
-  $dotaz .= $dodatek;
+  $dotaz .= ($dodatek ?? '');
   //echo $dotaz;
   $vysledek = mysqli_query($SRBD, $dotaz) or Die(mysqli_error($SRBD));
   
