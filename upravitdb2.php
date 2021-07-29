@@ -1,7 +1,7 @@
 <?php
 define ("SQL_HOST","localhost");
 define ("SQL_USERNAME","root");
-define ("SQL_PASSWORD","root");
+define ("SQL_PASSWORD","");
 //$dbs = array("lmr2008","lmr2009","obrobna2008", "obrobna2009", "test2008","test2009");
 //$dbs = array("lmr2011","obrobna2011","test2011");
 $dbs = array("lmr2021");
